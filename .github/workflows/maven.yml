@@ -23,7 +23,7 @@ jobs:
     - name: Check code coverage
       run: |
         coverage=$(grep -oP '(?<=<lineRate>)\d+\.\d+' target/site/jacoco/jacoco.xml)
-        if [ $(echo "$coverage < 0.8" | bc -l) -eq 1 ]; then
-          echo "Code coverage is below 80% (actual: $coverage%)"
+        if [ $(echo "$(echo $coverage*100 | bc -l | awk '{printf "%.0f", $0}') < 80" | bc -l) -eq 1 ]; then
+          echo "Code coverage is below 80% (actual: $(echo $coverage*100 | bc -l)%)"
           exit 1
         fi
