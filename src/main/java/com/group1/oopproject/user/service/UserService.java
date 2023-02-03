@@ -26,6 +26,8 @@ public class UserService {
                 throw new UserNotFoundException("No users found in the database");
             }
             return users;
+        } catch (UserNotFoundException e) {
+            throw e;
         } catch (Exception e) {
             throw new DatabaseCommunicationException("Error communicating with database", e);
         }
