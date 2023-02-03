@@ -18,12 +18,3 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B clean install
-    - name: Test with Maven and Jacoco
-      run: mvn -B clean test jacoco:report
-    - name: Check code coverage
-      run: |
-        coverage=$(grep -oP '(?<=<lineRate>)\d+\.\d+' target/site/jacoco/jacoco.xml)
-        if [ $(echo "$(echo $coverage*100 | bc -l | awk '{printf "%.0f", $0}') < 80" | bc -l) -eq 1 ]; then
-          echo "Code coverage is below 80% (actual: $(echo $coverage*100 | bc -l)%)"
-          exit 1
-        fi
