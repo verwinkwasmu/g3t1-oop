@@ -51,4 +51,18 @@ public class FormService {
         }
     }
 
+    public List<Form> findByAssignedTo(String assignedTo) {
+        try {
+            List<Form> forms = formRepository.findByAssignedTo(assignedTo);
+            if (forms.isEmpty()) {
+                throw new FormNotFoundException("No forms found in the database for user with id: " + assignedTo);
+            }
+            return forms;
+        } catch (FormNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new DatabaseCommunicationException("Error communicating with database", e);
+        }
+    }
+
 }

@@ -19,6 +19,8 @@ import org.springframework.data.mongodb.UncategorizedMongoDbException;
 import com.group1.oopproject.exception.DatabaseCommunicationException;
 import com.group1.oopproject.exception.FormNotFoundException;
 import com.group1.oopproject.form.entity.Form;
+import com.group1.oopproject.form.entity.Status;
+import com.group1.oopproject.form.entity.ApprovalStatus;
 
 @ExtendWith(MockitoExtension.class)
 public class FormServiceTest {
@@ -137,5 +139,51 @@ public class FormServiceTest {
 
         // when
         assertThrows(DatabaseCommunicationException.class, () -> formService.createForm(form));
+    }
+
+    @Test
+    public void testFindByAssignedToSuccess() {
+
+        // given
+        List<Form> forms = new ArrayList<>();
+        forms.add(new Form("1", "John doe", "joedoe-uuid", "admin-uuid", "test", Status.COMPLETED,
+                ApprovalStatus.APPROVED,
+                null, null));
+
+        when(formRepository.findByAssignedTo("test-id")).thenReturn(forms);
+
+        // when
+        List<Form> result = formService.findByAssignedTo("test-id");
+
+        // then
+        assertEquals(result, forms);
+    }
+
+    @Test
+    public void testFindByAssignedToNoFormsFound() {
+
+        // given
+        when(formRepository.findByAssignedTo("test-id")).thenReturn(Collections.emptyList());
+
+        // when
+        try {
+            //when
+            formService.findByAssignedTo("test-id");
+            fail("Expected FormNotFoundException to be thrown");
+        } catch (FormNotFoundException e) {
+            assertEquals("No forms found in the database for user with id: test-id" , e.getMessage());
+
+        }
+       
+    }
+
+    @Test
+    public void testFindByAssignedToDatabaseError() {
+
+        //given
+        when(formRepository.findByAssignedTo("test-id")).thenThrow(new UncategorizedMongoDbException("Error communicating with database", null));
+
+        // when
+        assertThrows(DatabaseCommunicationException.class, () -> formService.findByAssignedTo("test-id"));
     }
 }

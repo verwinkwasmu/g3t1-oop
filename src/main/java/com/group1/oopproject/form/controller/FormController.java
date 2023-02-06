@@ -55,4 +55,15 @@ public class FormController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<Form>> findAllForms(@PathVariable String userId) {
+        try {
+            return ResponseEntity.ok(formService.findByAssignedTo(userId));
+        } catch (FormNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (DatabaseCommunicationException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

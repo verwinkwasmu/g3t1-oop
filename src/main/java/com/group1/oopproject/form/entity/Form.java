@@ -19,7 +19,7 @@ public class Form {
     @Id
     private String id;
     private String name;
-    private String createdBy;
+    private String assignedTo;
     private String assignedBy;
     private String formType;
     private Status status;
