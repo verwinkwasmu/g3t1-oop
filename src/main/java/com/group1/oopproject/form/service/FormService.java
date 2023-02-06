@@ -28,7 +28,7 @@ public class FormService {
         } catch (FormNotFoundException e) {
             throw e;
         } catch (Exception e) {
-            throw new DatabaseCommunicationException("Error communicating with database", e);
+            throw new DatabaseCommunicationException("Error communicating with database for method findAllForms", e);
         }
     }
 
@@ -37,7 +37,7 @@ public class FormService {
             Optional<Form> form = formRepository.findById(id);
             return form.orElseThrow(() -> new FormNotFoundException("Form not found with id: " + id));
         } catch (UncategorizedMongoDbException e) {
-            throw new DatabaseCommunicationException("Error communicating with database", e);
+            throw new DatabaseCommunicationException("Error communicating with database for method findById", e);
         }
     }
 
@@ -46,7 +46,7 @@ public class FormService {
             form.setCreatedAt(LocalDateTime.now());
             return formRepository.save(form);
         } catch (Exception e) {
-            throw new DatabaseCommunicationException("Error communicating with the database while creating the user",
+            throw new DatabaseCommunicationException("Error communicating with the database for method createForm",
                     e);
         }
     }
@@ -61,7 +61,7 @@ public class FormService {
         } catch (FormNotFoundException e) {
             throw e;
         } catch (Exception e) {
-            throw new DatabaseCommunicationException("Error communicating with database", e);
+            throw new DatabaseCommunicationException("Error communicating with database for method findByAssignedTo", e);
         }
     }
 
