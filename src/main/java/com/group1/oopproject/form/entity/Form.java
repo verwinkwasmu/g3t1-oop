@@ -22,8 +22,7 @@ public class Form {
     private String assignedTo;
     private String assignedBy;
     private String formType;
-    private Status status;
-    private ApprovalStatus approvalStatus;
+    private WorkflowStatus approvalStatus;
     private Document fields;
 
     @CreatedDate

@@ -57,7 +57,7 @@ public class FormController {
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<List<Form>> findAllForms(@PathVariable String userId) {
+    public ResponseEntity<List<Form>> findByAssignedTo(@PathVariable String userId) {
         try {
             return ResponseEntity.ok(formService.findByAssignedTo(userId));
         } catch (FormNotFoundException e) {

@@ -19,8 +19,7 @@ import org.springframework.data.mongodb.UncategorizedMongoDbException;
 import com.group1.oopproject.exception.DatabaseCommunicationException;
 import com.group1.oopproject.exception.FormNotFoundException;
 import com.group1.oopproject.form.entity.Form;
-import com.group1.oopproject.form.entity.Status;
-import com.group1.oopproject.form.entity.ApprovalStatus;
+import com.group1.oopproject.form.entity.WorkflowStatus;
 
 @ExtendWith(MockitoExtension.class)
 public class FormServiceTest {
@@ -146,8 +145,8 @@ public class FormServiceTest {
 
         // given
         List<Form> forms = new ArrayList<>();
-        forms.add(new Form("1", "John doe", "joedoe-uuid", "admin-uuid", "test", Status.COMPLETED,
-                ApprovalStatus.APPROVED,
+        forms.add(new Form("1", "John doe", "joedoe-uuid", "admin-uuid", "test",
+                WorkflowStatus.APPROVED,
                 null, null));
 
         when(formRepository.findByAssignedTo("test-id")).thenReturn(forms);

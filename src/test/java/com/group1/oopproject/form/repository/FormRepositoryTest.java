@@ -14,9 +14,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 
-import com.group1.oopproject.form.entity.ApprovalStatus;
+import com.group1.oopproject.form.entity.WorkflowStatus;
 import com.group1.oopproject.form.entity.Form;
-import com.group1.oopproject.form.entity.Status;
 
 @ExtendWith(MockitoExtension.class)
 @DataMongoTest
@@ -29,7 +28,7 @@ public class FormRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        form = new Form("1", "John doe", "joedoe-uuid", "admin-uuid", "test", Status.COMPLETED, ApprovalStatus.APPROVED,
+        form = new Form("1", "John doe", "joedoe-uuid", "admin-uuid", "test", WorkflowStatus.APPROVED,
                 null, null);
     }
 
