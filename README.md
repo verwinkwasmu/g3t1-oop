@@ -1,6 +1,6 @@
-# g3t1-oop
+# g3t1-oop hello!
 
-# Backend - Starting the Spring Boot Server
+# Backend - Starting the Spring Boot Server 
 
 This guide will provide instructions on how to start our backend springboot monolithic server.
 
