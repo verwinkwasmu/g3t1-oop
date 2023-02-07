@@ -31,6 +31,7 @@ jobs:
     - name: Check coverage threshold
       run: |
         coverage=$(grep -oP "(?<=Overall coverage:).*" target/site/jacoco/index.html | awk '{print $1}')
+        echo "Coverage is set to $coverage"
         coverage=${coverage%\%}
         if [ $coverage -lt 80 ]; then
           echo "Coverage is below 80%"
