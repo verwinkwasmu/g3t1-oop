@@ -17,4 +17,23 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn -B clean install
+      run: mvn clean install
+      
+    - name: Check code coverage
+      run: mvn jacoco:report
+      
+    - name: Upload code coverage report
+      uses: actions/upload-artifact@v1
+      with:
+        name: code-coverage-report
+        path: target/site/jacoco/index.html
+        
+    - name: Check coverage threshold
+      run: |
+        coverage=$(grep -oP "(?<=Overall coverage:).*" target/site/jacoco/index.html | awk '{print $1}')
+        coverage=${coverage%\%}
+        if [ $coverage -lt 80 ]; then
+          echo "Coverage is below 80%"
+          exit 1
+        fi
+        echo "Coverage is above 80%"
