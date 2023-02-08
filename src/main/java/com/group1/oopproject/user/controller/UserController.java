@@ -2,6 +2,8 @@ package com.group1.oopproject.user.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +26,17 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         try {
             return ResponseEntity.ok(userService.getAllUsers());
         } catch (UserNotFoundException e) {
+            logger.error("UserNotFoundException: {}", e.getMessage());
             return ResponseEntity.notFound().build();
         } catch (DatabaseCommunicationException e) {
+            logger.error("Error communicating with database: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -40,8 +46,10 @@ public class UserController {
         try {
             return ResponseEntity.ok(userService.findUserById(id));
         } catch (UserNotFoundException e) {
+            logger.error("UserNotFoundException: {}", e.getMessage());
             return ResponseEntity.notFound().build();
         } catch (DatabaseCommunicationException e) {
+            logger.error("Error communicating with database: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -51,6 +59,7 @@ public class UserController {
         try {
             return ResponseEntity.ok(userService.createUser(user));
         } catch (DatabaseCommunicationException e) {
+            logger.error("Error communicating with database: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
