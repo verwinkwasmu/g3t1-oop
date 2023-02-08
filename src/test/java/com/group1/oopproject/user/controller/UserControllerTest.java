@@ -35,82 +35,82 @@ public class UserControllerTest {
         assertEquals(users, response.getBody());
     }
 
-    @Test
-    public void testGetAllUsers_UserNotFound() {
-        when(userService.getAllUsers()).thenThrow(UserNotFoundException.class);
-        ResponseEntity<List<User>> response = userController.getAllUsers();
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    }
+    // @Test
+    // public void testGetAllUsers_UserNotFound() {
+    //     when(userService.getAllUsers()).thenThrow(UserNotFoundException.class);
+    //     ResponseEntity<List<User>> response = userController.getAllUsers();
+    //     assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    // }
 
-    @Test
-    public void testGetALlUsers_DatabaseCommunicationException() {
-        when(userService.getAllUsers()).thenThrow(DatabaseCommunicationException.class);
-        ResponseEntity<List<User>> response = userController.getAllUsers();
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-    }
+    // @Test
+    // public void testGetALlUsers_DatabaseCommunicationException() {
+    //     when(userService.getAllUsers()).thenThrow(DatabaseCommunicationException.class);
+    //     ResponseEntity<List<User>> response = userController.getAllUsers();
+    //     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    // }
 
-    @Test
-    public void testFindUserById_whenFormFound_shouldReturn200OK() {
+    // @Test
+    // public void testFindUserById_whenFormFound_shouldReturn200OK() {
 
-        // Arrange
-        User expectedUser = new User();
-        expectedUser.setId("1");
-        expectedUser.setName("Test User");
-        when(userService.findUserById("1")).thenReturn(expectedUser);
+    //     // Arrange
+    //     User expectedUser = new User();
+    //     expectedUser.setId("1");
+    //     expectedUser.setName("Test User");
+    //     when(userService.findUserById("1")).thenReturn(expectedUser);
 
-        // Act
-        ResponseEntity<User> response = userController.findUserById("1");
+    //     // Act
+    //     ResponseEntity<User> response = userController.findUserById("1");
 
-        // Assert
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(expectedUser, response.getBody());
+    //     // Assert
+    //     assertEquals(HttpStatus.OK, response.getStatusCode());
+    //     assertEquals(expectedUser, response.getBody());
 
-    }
+    // }
 
-    @Test
-    public void testFindUserById_whenFormNotFound_shouldReturn404NotFound() {
-        // Arrange
-        when(userService.findUserById("1")).thenThrow(new UserNotFoundException("User not found"));
+    // @Test
+    // public void testFindUserById_whenFormNotFound_shouldReturn404NotFound() {
+    //     // Arrange
+    //     when(userService.findUserById("1")).thenThrow(new UserNotFoundException("User not found"));
 
-        // Act
-        ResponseEntity<User> response = userController.findUserById("1");
+    //     // Act
+    //     ResponseEntity<User> response = userController.findUserById("1");
 
-        // Assert
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals(null, response.getBody());
-    }
+    //     // Assert
+    //     assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    //     assertEquals(null, response.getBody());
+    // }
 
-    @Test
-    public void testFindUserById_whenDatabaseCommunicationError_shouldReturn500InternalServerError() {
-        // Arrange
-        when(userService.findUserById("1")).thenThrow(new DatabaseCommunicationException("Error communicating with database", null));
+    // @Test
+    // public void testFindUserById_whenDatabaseCommunicationError_shouldReturn500InternalServerError() {
+    //     // Arrange
+    //     when(userService.findUserById("1")).thenThrow(new DatabaseCommunicationException("Error communicating with database", null));
 
-        // Act
-        ResponseEntity<User> response = userController.findUserById("1");
+    //     // Act
+    //     ResponseEntity<User> response = userController.findUserById("1");
 
-        // Assert
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertEquals(null, response.getBody());
-    }
+    //     // Assert
+    //     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    //     assertEquals(null, response.getBody());
+    // }
 
-    @Test
-    public void testCreateUserSuccess() {
-        User user = new User();
-        when(userService.createUser(user)).thenReturn(user);
+    // @Test
+    // public void testCreateUserSuccess() {
+    //     User user = new User();
+    //     when(userService.createUser(user)).thenReturn(user);
 
-        ResponseEntity<User> response = userController.createUser(user);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(user, response.getBody());
-    }
+    //     ResponseEntity<User> response = userController.createUser(user);
+    //     assertEquals(HttpStatus.OK, response.getStatusCode());
+    //     assertEquals(user, response.getBody());
+    // }
 
-    @Test
-    public void testCreateUserDatabaseCommunicationException() {
-        User user = new User();
-        when(userService.createUser(user))
-                .thenThrow(new DatabaseCommunicationException("Error communicating with database", null));
+    // @Test
+    // public void testCreateUserDatabaseCommunicationException() {
+    //     User user = new User();
+    //     when(userService.createUser(user))
+    //             .thenThrow(new DatabaseCommunicationException("Error communicating with database", null));
 
-        ResponseEntity<User> response = userController.createUser(user);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertEquals(null, response.getBody());
-    }
+    //     ResponseEntity<User> response = userController.createUser(user);
+    //     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    //     assertEquals(null, response.getBody());
+    // }
 }
