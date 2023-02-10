@@ -1,4 +1,4 @@
-package com.group1.oopproject.form.entity;
+package com.group1.oopproject.user.entity;
 
 import java.time.LocalDateTime;
 
@@ -10,21 +10,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Document(collection = "forms")
+@Document(collection = "users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Form {
+public class User {
 
     @Id
     private String id;
     private String name;
-    private String assignedTo;
-    private String assignedBy;
-    private String formType;
-    private WorkflowStatus approvalStatus;
-    private Document fields;
-
+    private String email;
+    private UserType userType;
+    
     @CreatedDate
     private LocalDateTime createdAt;
 
