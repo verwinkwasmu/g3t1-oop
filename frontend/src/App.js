@@ -3,7 +3,7 @@ import NavBar from './components/NavBar';
 import MainDash from './components/Admin/MainDash';
 import WorkflowDash from './components/Admin/WorkflowDash';
 import FormDash from './components/Admin/FormDash';
-import UserDash from './components/Admin/UserDash';
+import UserDash from './components/Admin/UserManagement/UserDash';
 import Profile from './components/Profile';
 
 

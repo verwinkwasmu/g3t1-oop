@@ -1,6 +1,8 @@
 function MainDash() {
     return (
+        <>
         <h1>MainDash</h1>
+        </>
     )
 }
 
