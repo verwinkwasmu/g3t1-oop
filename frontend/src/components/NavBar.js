@@ -51,9 +51,9 @@ export default function Navbar({ fixed }) {
     <li className="nav-item">
         <Link
             className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-blue hover:opacity-75"
-            to="/users"
+            to="/accounts"
         >
-            <MdGroup /><span>Users</span>
+            <MdGroup /><span>Accounts</span>
         </Link>
     </li>
     </ul>
