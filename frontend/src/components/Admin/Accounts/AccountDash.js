@@ -1,8 +1,20 @@
+import { MdEdit } from 'react-icons/md';
+
+import { useNavigate } from "react-router-dom";
+
 import CreateUser from './CreateAccount';
 import RemoveUser from './RemoveAccount';
 
 
 function AccountDash() {
+
+    const navigate = useNavigate();
+
+    const toAccountView = () => {
+        console.log("===== INSIDE TOACCOUNTVIEW =====")
+        navigate(`/accounts/id`);
+    }
+
     return (
         <>
             <div className="rounded-t-3xl mx-10 mt-10 h-screen py-12 px-20 shadow-2xl">    
@@ -12,7 +24,7 @@ function AccountDash() {
                         </div>
                         <div className="flex ">
                             <CreateUser></CreateUser>
-                            <RemoveUser></RemoveUser>                        
+                            <RemoveUser></RemoveUser>  
                     </div>
                     </div>
                     <div className="flex flex-wrap text-left">
@@ -24,6 +36,7 @@ function AccountDash() {
                                     <th>Name</th>
                                     <th>Company</th>
                                     <th>Status</th>
+                                    <th></th>
                                 </tr>           
                             </thead>
                             <tbody>
@@ -33,6 +46,9 @@ function AccountDash() {
                                     <td>Jane Smith</td>
                                     <td>ABC Corporation</td>
                                     <td>Active</td>
+                                    <td className="text-right">
+                                        <button className="text-blue hover:opacity-75" onClick={() => {toAccountView()}}><MdEdit></MdEdit></button>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td className="p-2">X</td>
@@ -40,6 +56,9 @@ function AccountDash() {
                                     <td>Jane Smith</td>
                                     <td>ABC Corporation</td>
                                     <td>Active</td>
+                                    <td className="text-right">
+                                        <button className="text-blue hover:opacity-75" onClick={() => {toAccountView()}}><MdEdit></MdEdit></button>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td className="p-2">X</td>
@@ -47,6 +66,9 @@ function AccountDash() {
                                     <td>Jane Smith</td>
                                     <td>ABC Corporation</td>
                                     <td>Active</td>
+                                    <td className="text-right">
+                                        <button className="text-blue hover:opacity-75" onClick={() => {toAccountView()}}><MdEdit></MdEdit></button>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td className="p-2">X</td>
@@ -54,6 +76,9 @@ function AccountDash() {
                                     <td>Jane Smith</td>
                                     <td>ABC Corporation</td>
                                     <td>Active</td>
+                                    <td className="text-right">
+                                        <button className="text-blue hover:opacity-75" onClick={() => {toAccountView()}}><MdEdit></MdEdit></button>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td className="p-2">X</td>
@@ -61,6 +86,9 @@ function AccountDash() {
                                     <td>Jane Smith</td>
                                     <td>ABC Corporation</td>
                                     <td>Active</td>
+                                    <td className="text-right">
+                                        <button className="text-blue hover:opacity-75" onClick={() => {toAccountView()}}><MdEdit></MdEdit></button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

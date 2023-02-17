@@ -1,12 +1,30 @@
+import { MdKeyboardArrowLeft } from 'react-icons/md';
+
+import { useNavigate } from "react-router-dom";
+
 import FollowUpUser from './FollowUpAccount';
 import RemoveUser from './RemoveAccount';
 
 
 function UserView() {
+
+    const navigate = useNavigate();
+
+    const toAccountDash = () => {
+        console.log("===== INSIDE TOACCOUNTDASH =====")
+        navigate(`/accounts`);
+    }
+
     return (
         <>
             <div className="rounded-t-3xl mx-10 mt-10 h-screen py-12 px-20 shadow-2xl">    
-                <div className="flex flex-wrap mb-10">
+                <div>
+                    <button className="text-blue flex hover:opacity-75" onClick={() => {toAccountDash()}}>
+                        <MdKeyboardArrowLeft className="font-bold"></MdKeyboardArrowLeft>
+                        <span className="text-xs font-semibold">BACK TO ACCOUNTS</span>
+                    </button>  
+                </div>
+                <div className="flex flex-wrap my-10">
                     <div className="mr-12">
                         <img className="rounded-full w-32 h-32" src="https://img.freepik.com/free-photo/headshot-charismatic-pleasant-friendly-european-woman-short-chestnut-haircut-smiling-positive-feeling-happy-upbeat-enjoying-lifes-casually-talking-friends-amused-cheerful-standing-white-background_176420-34680.jpg?w=2000" alt="image description"/>
                     </div>
