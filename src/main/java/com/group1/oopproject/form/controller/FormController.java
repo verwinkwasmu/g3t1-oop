@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RestController
-@RequestMapping("/api/v1/forms")
+@RequestMapping("/api/v1/form")
 public class FormController {
 
     @Autowired
@@ -50,7 +50,7 @@ public class FormController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Form> createForm(@RequestBody Form form) {
         try {
             return ResponseEntity.ok(formService.createForm(form));
