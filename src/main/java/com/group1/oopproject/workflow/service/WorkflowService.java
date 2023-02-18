@@ -56,6 +56,7 @@ public class WorkflowService {
             Workflow workflowToUpdate = workflowRepository.findById(workflow.getId()).get();
             workflowToUpdate.setWorkflowName(workflow.getWorkflowName());
             workflowToUpdate.setAttachedUserId(workflow.getAttachedUserId());
+            workflowToUpdate.setWorkflowList(workflow.getWorkflowList());
             return workflowRepository.save(workflowToUpdate);
         } catch (WorkflowNotFoundException e) {
             throw e;

@@ -32,6 +32,8 @@ public class Workflow {
     // @DocumentReference
     // private User attachedUser;
 
+    private List <String> workflowList;
+
     private String attachedUserId; 
     
     @CreatedDate
