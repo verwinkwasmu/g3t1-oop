@@ -1,8 +1,29 @@
+import NavBar from './components/NavBar';
+
+import MainDash from './components/Admin/MainDash';
+import WorkflowDash from './components/Admin/WorkflowDash';
+import FormDash from './components/Admin/FormDash';
+import UserDash from './components/Admin/UserDash';
+import Profile from './components/Profile';
+
+
+import { Route, Routes } from "react-router-dom";
+
 function App() {
   return (
-    <h1 className="text-3xl font-bold underline">
-      QuantumLeap Vendor Management System
-    </h1>
+    <div>
+      <NavBar></NavBar>
+      <Routes>
+        <Route path="/" element={<MainDash />} />
+        <Route path="/workflows" element={<WorkflowDash />} />
+        <Route path="/forms" element={<FormDash />} />
+        <Route path="/users" element={<UserDash />} />
+        {/* <Route path="/profile" element={<Profile />} /> */}
+
+      </Routes>
+
+    </div>
+    
   );
 }
 
