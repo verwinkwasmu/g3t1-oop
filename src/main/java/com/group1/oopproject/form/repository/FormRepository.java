@@ -12,4 +12,6 @@ public interface FormRepository extends MongoRepository<Form, String> {
     Optional<Form> findById(String id);
 
     List<Form> findByAssignedTo(String assignedTo);
+
+    void deleteById(String id);
 }
