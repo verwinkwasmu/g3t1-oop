@@ -3,6 +3,9 @@ package com.group1.oopproject.form.controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 
 import java.util.List;
 import java.util.Arrays;
@@ -161,4 +164,87 @@ public class FormControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, actualResponse.getStatusCode());
         assertNull(actualResponse.getBody());
     }
+
+    @Test
+    public void testDeleteById_Success() {
+        String id = "test-id";
+
+        doNothing().when(formService).deleteById(id);
+        ResponseEntity<Void> actualResponse = formController.deleteById(id);
+
+        verify(formService).deleteById(id);
+        assertEquals(HttpStatus.NO_CONTENT, actualResponse.getStatusCode());
+        assertNull(actualResponse.getBody());
+    }
+
+    @Test
+    public void testDeleteByIdForm_NotFoundException() throws Exception {
+        String id = "test-id";
+
+        doThrow(FormNotFoundException.class).when(formService).deleteById(id);
+        ResponseEntity<Void> actualResponse = formController.deleteById(id);
+
+        verify(formService).deleteById(id);
+        assertEquals(HttpStatus.NOT_FOUND, actualResponse.getStatusCode());
+        assertNull(actualResponse.getBody());
+    }
+
+    @Test
+    public void testDeleteById_DatabaseCommunicationException() throws Exception {
+        String id = "test-id";
+
+        doThrow(DatabaseCommunicationException.class).when(formService).deleteById(id);
+        ResponseEntity<Void> actualResponse = formController.deleteById(id);
+
+        verify(formService).deleteById(id);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, actualResponse.getStatusCode());
+        assertNull(actualResponse.getBody());
+    }
+
+    @Test
+    public void testUpdateForm_Success(){
+        // Arrange
+        Form form = new Form();
+        form.setId("test-id");
+
+        // Act
+        when(formService.updateForm(form)).thenReturn(form);
+        ResponseEntity<Form> actualResponse = formController.updateForm(form);
+
+        // Assert
+        assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
+        assertEquals(form, actualResponse.getBody());
+    }
+
+
+    @Test
+    public void testUpdateForm_FormNotFoundException(){
+        // Arrange
+        Form form = new Form();
+        form.setId("test-id");
+
+        // Act
+        when(formService.updateForm(form)).thenThrow(FormNotFoundException.class);
+        ResponseEntity<Form> actualResponse = formController.updateForm(form);
+
+        // Assert
+        assertEquals(HttpStatus.NOT_FOUND, actualResponse.getStatusCode());
+        assertNull(actualResponse.getBody());
+    }
+
+    @Test
+    public void testUpdateForm_DatabaseCommunicationException(){
+        // Arrange
+        Form form = new Form();
+        form.setId("test-id");
+
+        // Act
+        when(formService.updateForm(form)).thenThrow(DatabaseCommunicationException.class);
+        ResponseEntity<Form> actualResponse = formController.updateForm(form);
+
+        // Assert
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, actualResponse.getStatusCode());
+        assertNull(actualResponse.getBody());
+    }
+
 }
