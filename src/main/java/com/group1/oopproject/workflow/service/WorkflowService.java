@@ -51,11 +51,30 @@ public class WorkflowService {
         }
     }
 
-    public Workflow deleteWorkflow(Workflow workflow) throws DatabaseCommunicationException {
+    public Workflow updateWorkflow(Workflow workflow) throws DatabaseCommunicationException {
         try{
-            workflowRepository.delete(workflow);
-            return workflow;
-        } catch(Exception e){
+            Workflow workflowToUpdate = workflowRepository.findById(workflow.getId()).get();
+            workflowToUpdate.setWorkflowName(workflow.getWorkflowName());
+            workflowToUpdate.setAttachedUserId(workflow.getAttachedUserId());
+            return workflowRepository.save(workflowToUpdate);
+        } catch (WorkflowNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new DatabaseCommunicationException("Error communicating with database for method findAllWorkflows", e);
+        }
+    }   
+    
+    
+    
+    
+    public Workflow deleteWorkflow(String workflowId) throws DatabaseCommunicationException {
+        try{
+            Optional<Workflow> deletedWorkflow = workflowRepository.findById(workflowId);
+            workflowRepository.deleteById(workflowId);
+            return deletedWorkflow.orElseThrow(() -> new WorkflowNotFoundException("Workflow deleted"));
+        } catch (WorkflowNotFoundException e) {
+            throw e;
+        }catch(Exception e){
             throw new DatabaseCommunicationException("Error communicating with the database for method createWorkflow",
             e); 
         }

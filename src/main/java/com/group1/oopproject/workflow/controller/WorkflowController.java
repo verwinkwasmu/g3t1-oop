@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -67,11 +68,26 @@ public class WorkflowController {
         }
     }
 
-    @DeleteMapping
-    public ResponseEntity<Workflow> deleteWorkflow(@RequestBody Workflow workflow){
+    @PutMapping
+    public ResponseEntity<Workflow> updateWorkflow(@RequestBody Workflow workflow){
         try{
-            return ResponseEntity.ok(workflowService.deleteWorkflow(workflow));
-        }catch(DatabaseCommunicationException e){
+            return ResponseEntity.ok(workflowService.updateWorkflow(workflow));
+        }catch (WorkflowNotFoundException e) {
+            logger.error("WorkflowNotFoundException: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
+        } catch(DatabaseCommunicationException e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Workflow> deleteWorkflow(@PathVariable String id){
+        try{
+            return ResponseEntity.ok(workflowService.deleteWorkflow(id));
+        }catch (WorkflowNotFoundException e) {
+            logger.error("WorkflowNotFoundException: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
+        } catch(DatabaseCommunicationException e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
