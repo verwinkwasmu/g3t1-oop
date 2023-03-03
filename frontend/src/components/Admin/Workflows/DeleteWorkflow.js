@@ -22,7 +22,7 @@ function DeleteWorkflow() {
                     </label>
                 </div>
                 <div className="flex justify-center">
-                    <label htmlFor="DeleteWorkflow" className="btn btn-md btn-wide bg-red border-transparent outline-none rounded-full mt-4" type="button">
+                    <label htmlFor="DeleteWorkflow" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" type="button">
                         Confirm Deletion
                     </label>
                 </div>

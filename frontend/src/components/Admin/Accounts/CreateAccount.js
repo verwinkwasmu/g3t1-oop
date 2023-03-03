@@ -45,7 +45,7 @@ function CreateUser() {
                 </div>
                 <div className="flex justify-center">
                     <label htmlFor="CreateUser" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full" type="button">
-                        Add New Account
+                        Create New Workflow
                     </label>
                 </div>
                 </form>
