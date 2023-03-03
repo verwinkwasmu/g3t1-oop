@@ -1,10 +1,11 @@
 import NavBar from './components/NavBar';
 
 import MainDash from './components/Admin/MainDash';
-import WorkflowDash from './components/Admin/WorkflowDash';
+import WorkflowDash from './components/Admin/Workflows/WorkflowDash';
 import FormDash from './components/Admin/FormDash';
 import AccountDash from './components/Admin/Accounts/AccountDash';
 import AccountView from './components/Admin/Accounts/AccountView';
+import WorkflowView from './components/Admin/Workflows/WorkflowView';
 
 import Profile from './components/Profile';
 
@@ -22,14 +23,14 @@ function App() {
 
         <Route path="/accounts" element={<AccountDash />} />
         <Route path="/accounts/id" element={<AccountView />} />
-        {/* <Route path="/accounts/:accountid" element={<AccountView />} /> */}
-
+        <Route path="/workflows/id" element={<WorkflowView />} />
+        <Route path="/accounts/:accountid" element={<AccountView />} />
         {/* <Route path="/profile" element={<Profile />} /> */}
 
       </Routes>
 
     </div>
-    
+
   );
 }
 
