@@ -60,9 +60,9 @@ function WorkflowView() {
                         </div>
                     </div>
                     <div className='grid grid-rows-1 grid-cols-2 mt-5'>
-                        <div className="card w-[35rem] bg-base-100 m-3 drop-shadow-xl">
+                        <div className="card w-[35rem] bg-base-100 ml-3 drop-shadow-xl">
                             <div className="card-body text-left">
-                                <div className="mt-3">
+                                <div>
                                     <h2 className="text-xl font-semibold text-blue">Included Forms</h2>
                                 </div>
                                 <div className="card w-80">
@@ -70,7 +70,7 @@ function WorkflowView() {
                                         <table>
                                             <tbody>
                                                 <tr>
-                                                    <h2 className="card-title text-blue">Form 1</h2>
+                                                    <h2 className="card-title text-blue text-md">Form 1</h2>
                                                 </tr>
                                                 <tr className='mb-2'>
                                                     <td>
@@ -78,7 +78,7 @@ function WorkflowView() {
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <h2 className="card-title text-blue">Form 2</h2>
+                                                    <h className="card-title text-blue">Form 2</h>
                                                 </tr>
                                                 <tr>
                                                     <td>Lorem Ipsum</td>
@@ -95,13 +95,13 @@ function WorkflowView() {
                                 </div>
                             </div>
                         </div>
-                        <div className="card w-[35rem] bg-base-100 m-3 drop-shadow-xl">
+                        <div className="card w-[35rem] bg-base-100 ml-3 drop-shadow-xl">
                             <div className="card-body text-left">
-                                <div className="mt-3">
+                                <div>
                                     <h2 className="text-xl font-semibold text-blue">Assigned Users</h2>
                                 </div>
                                 <div className="card w-80">
-                                    <div className="card-body text-left">
+                                    <div className="card-body text-left text-blue">
                                         <table>
                                             <tbody>
                                                 <tr>
