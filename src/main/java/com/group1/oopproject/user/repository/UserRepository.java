@@ -9,4 +9,7 @@ import com.group1.oopproject.user.entity.User;
 public interface UserRepository extends MongoRepository<User, String> {
 
     Optional<User> findById(String Id);
+
+    
+    void deleteUser(String id);
 }
