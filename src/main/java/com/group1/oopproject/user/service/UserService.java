@@ -51,4 +51,28 @@ public class UserService {
                     e);
         }
     }
+
+    public void deleteUser(String id) {
+        try {
+            User user = userRepository.findById(id)
+                    .orElseThrow(() -> new UserNotFoundException("No users found in the database for user with id: " + id));
+            userRepository.deleteById(user.getId());
+        } catch (UncategorizedMongoDbException e) {
+            throw new DatabaseCommunicationException("Error communicating with database for method deleteById", e);
+        }
+    }
+
+    public User updateUser(User user) {
+        try {
+            // Check if user exists
+            if (userRepository.findById(user.getId()).isPresent()){
+                // UPDATE
+                return userRepository.save(user);
+            } else {
+                throw new UserNotFoundException("No users found in the database for user with id: " + user.getId());
+            }
+        } catch (UncategorizedMongoDbException e) {
+            throw new DatabaseCommunicationException("Error communicating with database for method deleteById", e);
+        }
+    }
 }
