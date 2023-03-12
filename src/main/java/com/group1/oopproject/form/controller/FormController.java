@@ -2,6 +2,7 @@ package com.group1.oopproject.form.controller;
 
 import java.util.List;
 
+import com.group1.oopproject.form.entity.WorkflowStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -95,6 +96,19 @@ public class FormController {
             logger.error("FormNotFoundException: {}", e.getMessage());
             return ResponseEntity.notFound().build();
         } catch (DatabaseCommunicationException e){
+            logger.error("DatabaseCommunicationException: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/workflowStatus/{workflowStatus}")
+    public ResponseEntity<List<Form>> getSubmittedForms(@PathVariable String workflowStatus) {
+        try {
+            return ResponseEntity.ok(formService.getFormsByWorkflowStatus(WorkflowStatus.valueOf(workflowStatus)));
+        } catch (FormNotFoundException e) {
+            logger.error("FormNotFoundException: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
+        } catch (DatabaseCommunicationException e) {
             logger.error("DatabaseCommunicationException: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

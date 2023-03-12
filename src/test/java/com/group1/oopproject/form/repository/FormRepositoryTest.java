@@ -28,7 +28,7 @@ public class FormRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        form = new Form("1", "John doe", "joedoe-uuid", "admin-uuid", "test", WorkflowStatus.APPROVED,
+        form = new Form("1", "John doe", "joedoe-uuid", "admin-uuid", "test", "hi", WorkflowStatus.APPROVED,
                 null, null);
     }
 
