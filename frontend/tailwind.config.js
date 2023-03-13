@@ -2,6 +2,7 @@
 module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
+    "./node_modules/flowbite/**/*.js"
   ],
   theme: {
     colors: {
@@ -19,7 +20,7 @@ module.exports = {
     extend: {},
   },
   
-  plugins: [require("@tailwindcss/typography"), require("daisyui"), require('@tailwindcss/aspect-ratio')],
+  plugins: [require("@tailwindcss/typography"), require("daisyui"), require('@tailwindcss/aspect-ratio'), require('flowbite/plugin')],
 
   daisyui: {
     themes: false

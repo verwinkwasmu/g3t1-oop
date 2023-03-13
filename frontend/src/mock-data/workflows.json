@@ -1,0 +1,18 @@
+[
+    {
+        "id": 101,
+        "name": "Default 1",
+        "forms": ["form1", "form2"]
+    },
+    {
+        "id": 102,
+        "name": "Default 2",
+        "forms": ["form3"]
+    },
+    {
+        "id": 103,
+        "name": "Default 3",
+        "forms": ["form4", "form5", "form6"]
+    }
+
+]

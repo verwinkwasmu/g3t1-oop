@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "form_code": 101,
+        "name": "Default 1",
+        "attached_account": 1,
+        "deadline": "22/04/23",
+        "forms": {
+            "initial_draft": ["workflow obj1", "workflow obj2"],
+            "submitted": ["workflow obj3"],
+            "returned": [],
+            "approved": []
+        }
+    },
+    {
+        "id": 2,
+        "form_code": 101,
+        "name": "Default 1",
+        "attached_account": 1,
+        "deadline": "22/04/23",
+        "forms": {
+            "initial_draft": ["workflow obj1", "workflow obj2"],
+            "submitted": ["workflow obj3"],
+            "returned": [],
+            "approved": []
+        }
+    },
+    {
+        "id": 3,
+        "form_code": 102,
+        "name": "Default 3",
+        "attached_account": 1,
+        "deadline": "22/04/23",
+        "forms": {
+            "initial_draft": ["workflow obj1", "workflow obj2"],
+            "submitted": ["workflow obj3"],
+            "returned": [],
+            "approved": []
+        }
+    }
+
+]

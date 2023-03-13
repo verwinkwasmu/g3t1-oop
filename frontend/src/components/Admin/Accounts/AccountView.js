@@ -1,14 +1,21 @@
 import { MdKeyboardArrowLeft } from 'react-icons/md';
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import FollowUpUser from './FollowUpAccount';
-import RemoveUser from './RemoveAccount';
+import RemoveAccount  from './RemoveAccount';
+import EditAccount from './EditAccount';
+import CreateAccount from './CreateAccount';
+
+import AssignWorkflowsToUser from '../AssignWorkflowsToUser';
 
 
 function UserView() {
 
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const account = location.state.account;
 
     const toAccountDash = () => {
         console.log("===== INSIDE TOACCOUNTDASH =====")
@@ -29,22 +36,37 @@ function UserView() {
                         <img className="rounded-full w-32 h-32" src="https://img.freepik.com/free-photo/headshot-charismatic-pleasant-friendly-european-woman-short-chestnut-haircut-smiling-positive-feeling-happy-upbeat-enjoying-lifes-casually-talking-friends-amused-cheerful-standing-white-background_176420-34680.jpg?w=2000" alt="image description"/>
                     </div>
                     <div className="flex-auto">
-                        <p className="font-thin mb-2">ID: 1</p>
-                        <h1 className="text-3xl font-semibold text-blue">Jane Smith</h1>
-                        <p className="mb-2">ABC Corporation</p>
-                        <p className="font-thin mb-2 italic">janesmith@abc.com</p>
+                        <p className="font-thin mb-2">ID: {account.id}</p>
+                        <h1 className="text-3xl font-semibold text-blue">{account.first_name} {account.last_name}</h1>
+                        <p className="mb-2">{account.company}</p>
+                        <p className="font-thin mb-2 italic">{account.email}</p>
 
                     </div>
-                    <div className="flex">
-                        <FollowUpUser></FollowUpUser>
-                        <RemoveUser></RemoveUser>                        
+                    <div className="flex grid grid-rows-2 justify-items-end">
+                        <div>
+                            <FollowUpUser></FollowUpUser>
+                            <RemoveAccount accounts={[account]}></RemoveAccount> 
+                        </div>
+                        <div>
+                            <EditAccount account={account}></EditAccount>
+                        </div>                      
                     </div>
                 </div>
                 <div>
-                    <div className="m-3">
+                    {/* <div className="flex m-3">
                         <h2 className="text-2xl font-semibold text-blue">Active Workflows</h2>
+                        <AssignWorkflowsToUser className="align-right"></AssignWorkflowsToUser>
+                    </div> */}
+
+                    <div className="flex flex-wrap m-3">
+                        <div className="flex flex-auto">
+                            <h2 className="text-2xl font-semibold text-blue">Active Workflows</h2>
+                        </div>
+                        <div className="flex grid justify-items-end">
+                            <AssignWorkflowsToUser></AssignWorkflowsToUser> 
+                        </div>
                     </div>
-                        <div className="flex justify-evenly">
+                    <div className="flex justify-evenly">
                         <div className="card w-80 bg-base-100 border border-light-blue m-3">
                             <div className="card-body text-left">
                                 <h2 className="card-title">Workflow 1</h2>

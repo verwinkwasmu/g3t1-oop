@@ -19,12 +19,15 @@ function App() {
       <Routes>
         <Route path="/" element={<MainDash />} />
         <Route path="/workflows" element={<WorkflowDash />} />
+
         <Route path="/forms" element={<FormDash />} />
 
         <Route path="/accounts" element={<AccountDash />} />
-        <Route path="/accounts/id" element={<AccountView />} />
+        {/* <Route path="/accounts/id" element={<AccountView />} /> */}
         <Route path="/workflows/id" element={<WorkflowView />} />
-        <Route path="/accounts/:accountid" element={<AccountView />} />
+        {/* <Route path="/accounts/:accountid" element={<AccountView />} /> */}
+        <Route path="/accounts/:id" element={<AccountView />} />
+
         {/* <Route path="/profile" element={<Profile />} /> */}
 
       </Routes>
