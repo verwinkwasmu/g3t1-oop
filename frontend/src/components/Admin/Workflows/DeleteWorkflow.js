@@ -1,10 +1,19 @@
+import React, { useState } from 'react';
 
 import { AiOutlineDelete } from "react-icons/ai";
 
-function DeleteWorkflow() {
+function DeleteWorkflow(props) {
+
+    const [workflowToRemove, setWorkflowToRemove] = useState(props.workflow);
+
+    const deleteWorkflow = (workflowObject) => {
+        console.log("INSIDE DELETE WORKFLOW");
+        console.log("NAME OF WORKFLOW TO BE DELETED: " + workflowObject.workflowName)
+    }
+
     return (
         <>
-            <label htmlFor="DeleteWorkflow" className="btn bg-red border-transparent outline-none rounded-full mr-2">
+            <label htmlFor="DeleteWorkflow" className="btn bg-red border-transparent rounded-full mr-2">
                 <AiOutlineDelete size={20} className="mr-3"></AiOutlineDelete>
                     Delete Workflow
                 </label>
@@ -22,7 +31,7 @@ function DeleteWorkflow() {
                     </label>
                 </div>
                 <div className="flex justify-center">
-                    <label htmlFor="DeleteWorkflow" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" type="button">
+                    <label htmlFor="DeleteWorkflow" onClick={() => deleteWorkflow(workflowToRemove)} className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" type="button">
                         Confirm Deletion
                     </label>
                 </div>
