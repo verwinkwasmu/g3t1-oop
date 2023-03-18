@@ -61,7 +61,7 @@
 
 7. Get forms based on workflowStatus (returns a list of forms)
 
-``[GET] /api/v1/form/workflowStatus/{workflowStatus}``
+``[GET] /api/v1/form/formStatus/{formStatus}``
 
 ---
 

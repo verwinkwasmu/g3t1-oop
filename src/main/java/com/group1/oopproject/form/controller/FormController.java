@@ -2,7 +2,7 @@ package com.group1.oopproject.form.controller;
 
 import java.util.List;
 
-import com.group1.oopproject.form.entity.WorkflowStatus;
+import com.group1.oopproject.form.entity.FormStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -101,10 +101,10 @@ public class FormController {
         }
     }
 
-    @GetMapping("/workflowStatus/{workflowStatus}")
-    public ResponseEntity<List<Form>> getSubmittedForms(@PathVariable String workflowStatus) {
+    @GetMapping("/formStatus/{formStatus}")
+    public ResponseEntity<List<Form>> getFormsByFormStatus(@PathVariable String formStatus) {
         try {
-            return ResponseEntity.ok(formService.getFormsByWorkflowStatus(WorkflowStatus.valueOf(workflowStatus)));
+            return ResponseEntity.ok(formService.getFormsByFormStatus(FormStatus.valueOf(formStatus)));
         } catch (FormNotFoundException e) {
             logger.error("FormNotFoundException: {}", e.getMessage());
             return ResponseEntity.notFound().build();

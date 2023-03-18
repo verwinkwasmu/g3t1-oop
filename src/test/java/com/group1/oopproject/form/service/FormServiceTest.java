@@ -1,5 +1,6 @@
 package com.group1.oopproject.form.service;
 
+import com.group1.oopproject.form.entity.FormStatus;
 import com.group1.oopproject.form.repository.FormRepository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -21,7 +22,6 @@ import org.springframework.data.mongodb.UncategorizedMongoDbException;
 import com.group1.oopproject.exception.DatabaseCommunicationException;
 import com.group1.oopproject.exception.FormNotFoundException;
 import com.group1.oopproject.form.entity.Form;
-import com.group1.oopproject.form.entity.WorkflowStatus;
 
 @ExtendWith(MockitoExtension.class)
 public class FormServiceTest {
@@ -148,8 +148,8 @@ public class FormServiceTest {
         // given
         List<Form> forms = new ArrayList<>();
         forms.add(new Form("1", "John doe", "joedoe-uuid", "admin-uuid", "test", "hi",
-                WorkflowStatus.APPROVED,
-                null, null));
+                FormStatus.APPROVED, null,
+                null, null, null));
 
         when(formRepository.findByAssignedTo("test-id")).thenReturn(forms);
 
@@ -233,12 +233,12 @@ public class FormServiceTest {
         // Arrange
         Form existingForm = new Form();
         existingForm.setId("test-id");
-        existingForm.setWorkflowStatus(WorkflowStatus.SUBMITTED);
+        existingForm.setFormStatus(FormStatus.SUBMITTED);
         when(formRepository.findById(existingForm.getId())).thenReturn(Optional.of(existingForm));
 
         Form updatedForm = new Form();
         updatedForm.setId("test-id");
-        updatedForm.setWorkflowStatus(WorkflowStatus.APPROVED);
+        updatedForm.setFormStatus(FormStatus.APPROVED);
         when(formRepository.save(updatedForm)).thenReturn(updatedForm);
 
         // Act
@@ -249,7 +249,7 @@ public class FormServiceTest {
         verify(formRepository).save(updatedForm);
         assertNotNull(result);
         assertEquals(result.getId(), existingForm.getId());
-        assertEquals(result.getWorkflowStatus(), updatedForm.getWorkflowStatus());
+        assertEquals(result.getFormStatus(), updatedForm.getFormStatus());
     }
 
     @Test
@@ -270,12 +270,12 @@ public class FormServiceTest {
         // Arrange
         Form existingForm = new Form();
         existingForm.setId("test-id");
-        existingForm.setWorkflowStatus(WorkflowStatus.SUBMITTED);
+        existingForm.setFormStatus(FormStatus.SUBMITTED);
         when(formRepository.findById(existingForm.getId())).thenReturn(Optional.of(existingForm));
 
         Form updatedForm = new Form();
         updatedForm.setId("test-id");
-        updatedForm.setWorkflowStatus(WorkflowStatus.APPROVED);
+        updatedForm.setFormStatus(FormStatus.APPROVED);
 
         when(formRepository.save(updatedForm)).thenThrow(UncategorizedMongoDbException.class);
 
@@ -291,13 +291,13 @@ public class FormServiceTest {
         // given
         List<Form> forms = new ArrayList<>();
         forms.add(new Form("1", "John doe", "joedoe-uuid", "admin-uuid", "test", "hi",
-                WorkflowStatus.SUBMITTED,
+                FormStatus.SUBMITTED, null, null,
                 null, null));
 
-        when(formRepository.findByWorkflowStatus(WorkflowStatus.SUBMITTED)).thenReturn(forms);
+        when(formRepository.findByFormStatus(FormStatus.SUBMITTED)).thenReturn(forms);
 
         // when
-        List<Form> result = formService.getFormsByWorkflowStatus(WorkflowStatus.SUBMITTED);
+        List<Form> result = formService.getFormsByFormStatus(FormStatus.SUBMITTED);
 
         // then
         assertEquals(result, forms);
@@ -307,15 +307,15 @@ public class FormServiceTest {
     public void testGetSubmittedFormsNoFormsFound() {
 
         // given
-        when(formRepository.findByWorkflowStatus(WorkflowStatus.SUBMITTED)).thenReturn(Collections.emptyList());
+        when(formRepository.findByFormStatus(FormStatus.SUBMITTED)).thenReturn(Collections.emptyList());
 
         // when
         try {
             //when
-            formService.getFormsByWorkflowStatus(WorkflowStatus.SUBMITTED);
+            formService.getFormsByFormStatus(FormStatus.SUBMITTED);
             fail("Expected FormNotFoundException to be thrown");
         } catch (FormNotFoundException e) {
-            assertEquals("No forms found in the database for approvalStatus of: " + WorkflowStatus.SUBMITTED , e.getMessage());
+            assertEquals("No forms found in the database for approvalStatus of: " + FormStatus.SUBMITTED , e.getMessage());
 
         }
 
@@ -325,9 +325,9 @@ public class FormServiceTest {
     public void testGetSubmittedFormsDatabaseError() {
 
         //given
-        when(formRepository.findByWorkflowStatus(WorkflowStatus.SUBMITTED)).thenThrow(new UncategorizedMongoDbException("Error communicating with database", null));
+        when(formRepository.findByFormStatus(FormStatus.SUBMITTED)).thenThrow(new UncategorizedMongoDbException("Error communicating with database", null));
 
         // when
-        assertThrows(DatabaseCommunicationException.class, () -> formService.getFormsByWorkflowStatus(WorkflowStatus.SUBMITTED));
+        assertThrows(DatabaseCommunicationException.class, () -> formService.getFormsByFormStatus(FormStatus.SUBMITTED));
     }
 }

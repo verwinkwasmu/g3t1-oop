@@ -24,8 +24,10 @@ public class Form {
     private String assignedBy;
     private String formType;
     private String email;
-    private WorkflowStatus workflowStatus;
+    private FormStatus formStatus;
     private Map<String, Object> fields;
+    private LocalDateTime submissionDate;
+    private String notes;
 
     @CreatedDate
     private LocalDateTime createdAt;

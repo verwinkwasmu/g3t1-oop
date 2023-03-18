@@ -10,7 +10,7 @@ import static org.mockito.Mockito.verify;
 import java.util.List;
 import java.util.Arrays;
 
-import com.group1.oopproject.form.entity.WorkflowStatus;
+import com.group1.oopproject.form.entity.FormStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -255,8 +255,8 @@ public class FormControllerTest {
         List<Form> expectedForms = Arrays.asList(form1);
 
         // When
-        when(formService.getFormsByWorkflowStatus(WorkflowStatus.SUBMITTED)).thenReturn(expectedForms);
-        ResponseEntity<List<Form>> actualResponse = formController.getSubmittedForms("SUBMITTED");
+        when(formService.getFormsByFormStatus(FormStatus.SUBMITTED)).thenReturn(expectedForms);
+        ResponseEntity<List<Form>> actualResponse = formController.getFormsByFormStatus("SUBMITTED");
 
         // Then
         assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
@@ -267,8 +267,8 @@ public class FormControllerTest {
     public void testGetFormsByWorkflowStatus_FormNotFoundException() {
 
         // When
-        when(formService.getFormsByWorkflowStatus(WorkflowStatus.SUBMITTED)).thenThrow(FormNotFoundException.class);
-        ResponseEntity<List<Form>> actualResponse = formController.getSubmittedForms("SUBMITTED");
+        when(formService.getFormsByFormStatus(FormStatus.SUBMITTED)).thenThrow(FormNotFoundException.class);
+        ResponseEntity<List<Form>> actualResponse = formController.getFormsByFormStatus("SUBMITTED");
 
         // Then
         assertEquals(HttpStatus.NOT_FOUND, actualResponse.getStatusCode());
@@ -279,8 +279,8 @@ public class FormControllerTest {
     public void testGetFormsByWorkflowStatus_DatabaseCommunicationException() {
 
         // When
-        when(formService.getFormsByWorkflowStatus(WorkflowStatus.SUBMITTED)).thenThrow(DatabaseCommunicationException.class);
-        ResponseEntity<List<Form>> actualResponse = formController.getSubmittedForms("SUBMITTED");
+        when(formService.getFormsByFormStatus(FormStatus.SUBMITTED)).thenThrow(DatabaseCommunicationException.class);
+        ResponseEntity<List<Form>> actualResponse = formController.getFormsByFormStatus("SUBMITTED");
 
         // Then
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, actualResponse.getStatusCode());

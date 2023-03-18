@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import com.group1.oopproject.form.entity.WorkflowStatus;
+import com.group1.oopproject.form.entity.FormStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.mongodb.UncategorizedMongoDbException;
@@ -91,9 +91,9 @@ public class FormService {
         }
     }
 
-    public List<Form> getFormsByWorkflowStatus(WorkflowStatus status) {
+    public List<Form> getFormsByFormStatus(FormStatus status) {
         try {
-            List<Form> forms = formRepository.findByWorkflowStatus(status);
+            List<Form> forms = formRepository.findByFormStatus(status);
             if (forms.isEmpty()) {
                 throw new FormNotFoundException("No forms found in the database for approvalStatus of: " + status);
             }
