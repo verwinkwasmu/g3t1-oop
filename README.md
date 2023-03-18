@@ -21,8 +21,8 @@ This guide will provide instructions on how to start our backend springboot mono
 ## Running Tests
 1. Open the terminal in Visual Studio Code
 2. Navigate to the project's root directory
-3. Run the command `mvn clean test` to run all tests
-4. Run the command `mvn clean test jacoco:report` to generate coverage report which can be found in the target/site/jacoco directory
+3. Run the command `mvn clean test` to run all tests and coverage check
+4. Run the command `mvn jacoco:report` to generate a coverage report which can be found in the target/site/jacoco directory (useful if you cant meet coverage requirements)
 
 ## Dependencies/Plugins used
 1. [Project Lombok](https://projectlombok.org/)
