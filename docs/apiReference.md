@@ -59,6 +59,10 @@
 
 ``[DELETE] /api/v1/form/delete/{id}``
 
+7. Get forms based on workflowStatus (returns a list of forms)
+
+``[GET] /api/v1/form/formStatus/{formStatus}``
+
 ---
 
 ### User 

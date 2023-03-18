@@ -1,6 +1,7 @@
 package com.group1.oopproject.form.entity;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -22,8 +23,11 @@ public class Form {
     private String assignedTo;
     private String assignedBy;
     private String formType;
-    private WorkflowStatus approvalStatus;
-    private Document fields;
+    private String email;
+    private FormStatus formStatus;
+    private Map<String, Object> fields;
+    private LocalDateTime submissionDate;
+    private String notes;
 
     @CreatedDate
     private LocalDateTime createdAt;

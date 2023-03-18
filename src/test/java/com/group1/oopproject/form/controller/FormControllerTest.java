@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verify;
 import java.util.List;
 import java.util.Arrays;
 
+import com.group1.oopproject.form.entity.FormStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -243,6 +244,45 @@ public class FormControllerTest {
         ResponseEntity<Form> actualResponse = formController.updateForm(form);
 
         // Assert
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, actualResponse.getStatusCode());
+        assertNull(actualResponse.getBody());
+    }
+
+    @Test
+    public void testGetFormsByWorkflowStatus_Success() {
+
+        Form form1 = new Form();
+        List<Form> expectedForms = Arrays.asList(form1);
+
+        // When
+        when(formService.getFormsByFormStatus(FormStatus.SUBMITTED)).thenReturn(expectedForms);
+        ResponseEntity<List<Form>> actualResponse = formController.getFormsByFormStatus("SUBMITTED");
+
+        // Then
+        assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
+        assertEquals(expectedForms, actualResponse.getBody());
+    }
+
+    @Test
+    public void testGetFormsByWorkflowStatus_FormNotFoundException() {
+
+        // When
+        when(formService.getFormsByFormStatus(FormStatus.SUBMITTED)).thenThrow(FormNotFoundException.class);
+        ResponseEntity<List<Form>> actualResponse = formController.getFormsByFormStatus("SUBMITTED");
+
+        // Then
+        assertEquals(HttpStatus.NOT_FOUND, actualResponse.getStatusCode());
+        assertNull(actualResponse.getBody());
+    }
+
+    @Test
+    public void testGetFormsByWorkflowStatus_DatabaseCommunicationException() {
+
+        // When
+        when(formService.getFormsByFormStatus(FormStatus.SUBMITTED)).thenThrow(DatabaseCommunicationException.class);
+        ResponseEntity<List<Form>> actualResponse = formController.getFormsByFormStatus("SUBMITTED");
+
+        // Then
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, actualResponse.getStatusCode());
         assertNull(actualResponse.getBody());
     }
