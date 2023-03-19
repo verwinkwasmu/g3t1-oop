@@ -59,7 +59,7 @@ public class WorkflowServiceTest {
             workflowService.findAllWorkflows();
             fail("Expected FormNotFoundException to be thrown");
         } catch (WorkflowNotFoundException e) {
-            assertEquals("No forms found in the database", e.getMessage());
+            assertEquals("No workflows found in the database", e.getMessage());
 
         }
        
