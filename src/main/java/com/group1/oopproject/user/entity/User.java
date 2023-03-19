@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.util.BsonUtils;
 
 @Document(collection = "users")
 @Data
@@ -21,7 +22,6 @@ public class User {
     private String name;
     private String email;
     private UserType userType;
-    
     @CreatedDate
     private LocalDateTime createdAt;
 
