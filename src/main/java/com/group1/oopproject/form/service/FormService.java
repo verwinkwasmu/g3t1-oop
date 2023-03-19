@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import com.group1.oopproject.form.entity.FormStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.mongodb.UncategorizedMongoDbException;
@@ -87,6 +88,21 @@ public class FormService {
             }
         } catch (UncategorizedMongoDbException e) {
             throw new DatabaseCommunicationException("Error communicating with database for method deleteById", e);
+        }
+    }
+
+    public List<Form> getFormsByFormStatus(FormStatus status) {
+        try {
+            List<Form> forms = formRepository.findByFormStatus(status);
+            if (forms.isEmpty()) {
+                throw new FormNotFoundException("No forms found in the database for approvalStatus of: " + status);
+            }
+            return forms;
+        } catch (FormNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new DatabaseCommunicationException("Error communicating with database for method getSubmittedForms",
+                    e);
         }
     }
 }
