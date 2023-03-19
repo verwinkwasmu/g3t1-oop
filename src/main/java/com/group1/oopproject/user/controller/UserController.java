@@ -36,6 +36,32 @@ public class UserController {
         }
     }
 
+    @GetMapping("/all/{userType}")
+    public ResponseEntity<List<User>> getAllUsersByType(@PathVariable String userType) {
+        try {
+            return ResponseEntity.ok(userService.getAllUsersByType(userType));
+        } catch (UserNotFoundException e) {
+            logger.error("UserNotFoundException: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
+        } catch (DatabaseCommunicationException e) {
+            logger.error("Error communicating with database: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/company/{companyName}")
+    public ResponseEntity<List<User>> getAllUsersByCompany(@PathVariable String companyName) {
+        try {
+            return ResponseEntity.ok(userService.getAllUsersByCompany(companyName));
+        } catch (UserNotFoundException e) {
+            logger.error("UserNotFoundException: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
+        } catch (DatabaseCommunicationException e) {
+            logger.error("Error communicating with database: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<User> findUserById(@PathVariable String id) {
         try {

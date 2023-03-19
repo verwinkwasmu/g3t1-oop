@@ -21,7 +21,9 @@ public class User {
     private String id;
     private String name;
     private String email;
+    private String password;
     private UserType userType;
+    private String companyName;
     @CreatedDate
     private LocalDateTime createdAt;
 
