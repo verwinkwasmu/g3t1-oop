@@ -3,32 +3,19 @@ import { MdRemoveRedEye, MdEdit } from 'react-icons/md';
 
 import { useNavigate, useLocation } from "react-router-dom";
 
-import CreateAccount from './CreateAccount';
-import RemoveAccount from './RemoveAccount';
-import EditAccount from './EditAccount';
+import CreateAccount from '../Admin/Accounts/CreateAccount';
+import RemoveAccount from '../Admin/Accounts/RemoveAccount';
+import EditAccount from '../Admin/Accounts/EditAccount';
 
-import { getAccounts } from '../../../apiCalls';
+import { getAccounts } from '../../apiCalls';
 
 
-function AccountDash() {
+function ApprovalDash() {
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        document.title = 'Accounts Dashboard'
-    
-        setAccountsData(getAccounts());
-        // getAccounts()
-        // .then(function(response){
-        //     console.log(response.data)
-        // //   if (response.data.length > 0) {
-        // //     setAccountsData(response.data)
-        // //   } else {
-        // //     setAccountsData([])
-        // //   }
-        // })
-    
-        // eslint-disable-next-line
+        document.title = 'Approval Dashboard'
       }, [])
       
 
@@ -57,7 +44,7 @@ function AccountDash() {
             <div className="rounded-t-3xl mx-10 mt-10 h-screen py-12 px-20 shadow-2xl">    
                     <div className="flex flex-wrap mb-5">
                         <div className="flex-auto">
-                            <h1 className="text-3xl font-semibold text-blue">Registered Accounts</h1>
+                            <h1 className="text-3xl font-semibold text-blue">Forms For Approval</h1>
                         </div>
                         <div className="flex ">
                             <CreateAccount></CreateAccount>
@@ -65,15 +52,13 @@ function AccountDash() {
                     </div>
                     </div>
                     <div className="flex flex-wrap text-left">
-                        <table className="flex-auto table-fixed">
+                        <table className="flex-auto table-fixed border border-1">
                             <thead>
                                 <tr>
-                                    <th className="p-2">[]</th>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Company</th>
-                                    <th>Status</th>
-                                    <th></th>
+                                    <th>Submission Date</th>
+                                    <th>Due Date</th>
+                                    <th>File</th>
+                                    <th>Flagged by</th>
                                     <th></th>
                                 </tr>           
                             </thead>
@@ -89,7 +74,6 @@ function AccountDash() {
                                 <td className="status">{(account.workflows.active.length == 0 ? "Inactive" : "Active")}</td>
                                 <td className="actions text-right">
                                     <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75" onClick={() => {toAccountView(account)}}><MdRemoveRedEye></MdRemoveRedEye></button>
-                                    <EditAccount account={account}></EditAccount>
                                 </td>
                                 </tr>)}
                             </tbody>
@@ -103,4 +87,4 @@ function AccountDash() {
     )
 }
 
-export default AccountDash;
+export default ApprovalDash;

@@ -7,6 +7,10 @@ import FormDash from './components/Admin/FormDash';
 import AccountDash from './components/Admin/Accounts/AccountDash';
 import AccountView from './components/Admin/Accounts/AccountView';
 
+import CreateForm from './components/Admin/CreateForm';
+
+import ApprovalDash from './components/Approver/ApprovalDash';
+
 import Profile from './components/Profile';
 
 
@@ -24,6 +28,10 @@ function App() {
 
         <Route path="/accounts" element={<AccountDash />} />
         <Route path="/accounts/:id" element={<AccountView />} />
+
+        <Route path="/forms/create-form" element={<CreateForm />}></Route>
+
+        <Route path="/approvals" element={<ApprovalDash />}></Route>
 
         {/* <Route path="/profile" element={<Profile />} /> */}
 
