@@ -72,6 +72,73 @@
 
 ### User 
 
+1. Get all users
+
+``[GET] /api/v1/users``
+
+2. Get all users based on user type
+- User Types `userType` include: `VENDOR`, `ADMIN`, `APPROVER`
+
+``[GET] /api/v1/users/all/{userType}``
+
+3. Get all users from 1 company
+
+``[GET] /api/v1/users/company/{companyName}``
+
+4. Get 1 user based on unique user id
+- Regardless of the user type  
+
+``[GET] /api/v1/users/{id}``
+
+5. Create a user
+
+``[POST] /api/v1/create``
+
+**Note**: if user is `ADMIN` or `APPROVER`, companyName should be left as `""`
+```
+[Example post request body for ADMIN/APPROVER]
+{
+    id: "admin1",
+    name: "Harry Styles",
+    email: "harrystyles@quantum.com",
+    password: "watermelonsugar",
+    userType: "ADMIN",
+    companyName: "",
+}
+
+[Example post request body for VENDOR]
+{
+    id: "vendor1",
+    name: "Liam Payne",
+    email: "liampayne@saltyaf.com",
+    password: "simoncreated1dforme",
+    userType: "VENDOR",
+    companyName: "Salty Train AF",
+}
+```
+6. Delete user by id
+
+``[DELETE] /api/v1/delete/{id}``
+
+7. Update user
+
+``[PUT] /api/v1/update``
+
+```
+[Example post request body for ADMIN/APPROVER]
+{
+    id: "admin1",
+    name: "Harry Styles",
+    email: "harrystyles@quantum.com",
+    password: "treatpeoplewithkindness",
+    userType: "ADMIN",
+    companyName: "",
+    createdAt: "2023-03-01"
+}
+
+```
+
+
 ---
 
 ### Workflow

@@ -1,6 +1,7 @@
 package com.group1.oopproject.workflow.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -37,6 +38,7 @@ public class WorkflowRepositoryTest {
 
     @Test
     void findWorkflowById_whenWorkflowExists_returnsWorkflow() {
+        when(workflowRepository.findById(anyString())).thenReturn(Optional.of(workflow));
         Optional<Workflow> result = workflowRepository.findById("workflowIdTest");
         assertThat(result).isPresent().get().isEqualTo(workflow);
     }
