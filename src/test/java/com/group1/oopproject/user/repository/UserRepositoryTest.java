@@ -27,7 +27,7 @@ public class UserRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        user = new User("1", "John Doe", "johndoe@email.com", UserType.ADMIN, null);
+        user = new User("1", "John Doe", "johndoe@email.com","johnny", UserType.ADMIN, "", null);
         when(userRepository.findById(anyString())).thenReturn(Optional.of(user));
 
     }

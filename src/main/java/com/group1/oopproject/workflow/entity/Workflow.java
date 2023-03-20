@@ -1,7 +1,6 @@
-package com.group1.oopproject.form.entity;
+package com.group1.oopproject.workflow.entity;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -11,24 +10,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Document(collection = "forms")
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+
+@Document(collection = "workflow")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Form {
+@Entity
+
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public class Workflow {
 
     @Id
     private String id;
-    private String name;
-    private String assignedTo;
-    private String assignedBy;
-    private String formType;
-    private String email;
-    private FormStatus formStatus;
-    private Map<String, Object> fields;
-    private LocalDateTime submissionDate;
-    private String notes;
-
+    private String workflowName;
+    private String[] workflowList;
+        
     @CreatedDate
     private LocalDateTime createdAt;
 

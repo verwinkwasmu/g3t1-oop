@@ -6,6 +6,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+
+import com.group1.oopproject.form.entity.FormStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,8 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-
-import com.group1.oopproject.form.entity.WorkflowStatus;
 import com.group1.oopproject.form.entity.Form;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,7 +28,7 @@ public class FormRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        form = new Form("1", "John doe", "joedoe-uuid", "admin-uuid", "test", WorkflowStatus.APPROVED,
+        form = new Form("1", "John doe", "joedoe-uuid", "admin-uuid", "test", "hi", FormStatus.APPROVED, null, null,
                 null, null);
     }
 
