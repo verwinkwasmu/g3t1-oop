@@ -24,7 +24,7 @@ import com.group1.oopproject.workflow.service.WorkflowService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@CrossOrigin
+@CrossOrigin(origins="*")
 @RestController
 @RequestMapping("/api/v1/workflow")
 public class WorkflowController {
@@ -34,6 +34,7 @@ public class WorkflowController {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
+    
     @GetMapping
     public ResponseEntity<List<Workflow>> findAllWorkflows() {
         try {
