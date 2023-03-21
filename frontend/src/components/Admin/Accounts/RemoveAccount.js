@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { MdDelete } from "react-icons/md";
 import { handler } from 'daisyui';
 
 function RemoveAccount(props) {
+    console.log("removeAccount –> props.accounts: ", props.accounts)
+    // even though props.accounts is accurate, it isnt updating in the modal fast enough
 
     const [accountsToRemove, setAccountsToRemove] = useState(props.accounts);
 

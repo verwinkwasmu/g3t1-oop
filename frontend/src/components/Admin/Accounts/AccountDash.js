@@ -7,7 +7,7 @@ import CreateAccount from './CreateAccount';
 import RemoveAccount from './RemoveAccount';
 import EditAccount from './EditAccount';
 
-import { getAccounts } from '../../../apiCalls';
+import { getUsers, getWorkflows } from '../../../apiCalls';
 
 
 function AccountDash() {
@@ -16,6 +16,7 @@ function AccountDash() {
 
     useEffect(() => {
         document.title = 'Accounts Dashboard'
+<<<<<<< HEAD
 
         setAccountsData(getAccounts());
         // getAccounts()
@@ -28,6 +29,31 @@ function AccountDash() {
         // //   }
         // })
 
+=======
+    
+        // setAccountsData(getUsers());
+
+        getUsers()
+        .then(function(response){
+            console.log(response.data)
+          if (response.data.length > 0) {
+            setAccountsData(response.data)
+          } else {
+            setAccountsData([])
+          }
+        })
+
+        getWorkflows()
+        .then(function(response){
+            console.log(response.data)
+        //   if (response.data.length > 0) {
+        //     setAccountsData(response.data)
+        //   } else {
+        //     setAccountsData([])
+        //   }
+        })
+    
+>>>>>>> c8a38b611fcf3bcfa1dc6baa4bbcc855a4d94c54
         // eslint-disable-next-line
     }, [])
 
@@ -36,16 +62,16 @@ function AccountDash() {
     const [selected, setSelected] = useState([]);
 
     const handleSelect = (account) => {
-        console.log("inside select")
-        console.log("selected: ", selected)
         if (!selected.includes(account)) {
-            console.log("INSIDE IF")
-            setSelected(selected.push(account))
+            var updatedAccounts = selected
+            updatedAccounts.push(account)
         } else {
-            console.log("INSIDE ELSE")
-            // console.log(selected.filter(id => id !== parseInt(account.id)))
-            // setSelected(selected.filter(id => id !== parseInt(account.id)));
+            var updatedAccounts = selected.filter(acc => acc.id !== parseInt(account.id));
         }
+        setSelected(updatedAccounts);
+        // console.log("selected: ", selected)
+
+
     }
 
     const toAccountView = (account) => {
@@ -81,6 +107,7 @@ function AccountDash() {
                                 </tr>
                             </thead>
                             <tbody>
+<<<<<<< HEAD
                                 {(accountsData).map(account =>
                                     <tr key={account.id}>
                                         <td className="p-2">
@@ -95,6 +122,23 @@ function AccountDash() {
                                             <EditAccount account={account}></EditAccount>
                                         </td>
                                     </tr>)}
+=======
+                            {(accountsData).map(account =>
+                                <tr key={account.id}>
+                                <td className="p-2">
+                                    <input id={account.id} type="checkbox" onChange={() => {handleSelect(account)}} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                                </td>
+                                <td className="id">{account.id}</td>
+                                <td className="name">{account.name}</td>
+                                <td className="company">{account.companyName}</td>
+                                <td className="status">Active</td>
+                                {/* <td className="status">{(account.workflows.active.length == 0 ? "Inactive" : "Active")}</td> */}
+                                <td className="actions text-right">
+                                    <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75" onClick={() => {toAccountView(account)}}><MdRemoveRedEye></MdRemoveRedEye></button>
+                                    <EditAccount account={account}></EditAccount>
+                                </td>
+                                </tr>)}
+>>>>>>> c8a38b611fcf3bcfa1dc6baa4bbcc855a4d94c54
                             </tbody>
                         </table>
 

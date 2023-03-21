@@ -7,6 +7,10 @@ import AccountDash from './components/Admin/Accounts/AccountDash';
 import AccountView from './components/Admin/Accounts/AccountView';
 import WorkflowView from './components/Admin/Workflows/WorkflowView';
 
+import CreateForm from './components/Admin/CreateForm';
+
+import ApprovalDash from './components/Approver/ApprovalDash';
+
 import Profile from './components/Profile';
 
 
@@ -27,6 +31,10 @@ function App() {
         <Route path="/workflows/id" element={<WorkflowView />} />
         {/* <Route path="/accounts/:accountid" element={<AccountView />} /> */}
         <Route path="/accounts/:id" element={<AccountView />} />
+
+        <Route path="/forms/create-form" element={<CreateForm />}></Route>
+
+        <Route path="/approvals" element={<ApprovalDash />}></Route>
 
         {/* <Route path="/profile" element={<Profile />} /> */}
 

@@ -1,9 +1,11 @@
 package com.group1.oopproject.user.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.group1.oopproject.user.entity.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.UncategorizedMongoDbException;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,59 @@ public class UserService {
         }
     }
 
+    public List<User> getAllUsersByType(String userType) {
+        try {
+            List<User> users = userRepository.findAll();
+            if (users.isEmpty()) {
+                throw new UserNotFoundException("No users found in the database");
+            }
+
+            List<User> userResult = new ArrayList<>();
+            for (User userItem : users){
+                if (userItem.getUserType() == UserType.valueOf(userType)){
+                    userResult.add(userItem);
+                }
+            }
+
+            if (userResult.isEmpty()) {
+                throw new UserNotFoundException("No "+ userType +"users found in the database");
+            }
+
+            return userResult;
+        } catch (UserNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new DatabaseCommunicationException("Error communicating with database", e);
+        }
+    }
+
+    public List<User> getAllUsersByCompany(String companyName) {
+        try {
+            List<User> users = userRepository.findAll();
+            if (users.isEmpty()) {
+                throw new UserNotFoundException("No users found in the database");
+            }
+
+            List<User> userResult = new ArrayList<>();
+            for (User userItem : users){
+                if (companyName.equals(userItem.getCompanyName())){
+                    userResult.add(userItem);
+                }
+            }
+
+            if (userResult.isEmpty()) {
+                throw new UserNotFoundException("No users from " + companyName + "found in the database");
+            }
+
+            return userResult;
+        } catch (UserNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+//            throw e;
+            throw new DatabaseCommunicationException("Error communicating with database", e);
+        }
+    }
+
     public User findUserById(String id) throws UserNotFoundException {
         try {
             Optional<User> user = userRepository.findById(id);
@@ -45,6 +100,9 @@ public class UserService {
     public User createUser(User user) throws DatabaseCommunicationException {
         try {
             user.setCreatedAt(LocalDateTime.now());
+            if (user.getUserType() == UserType.ADMIN || user.getUserType() == UserType.APPROVER){
+                user.setCompanyName("");
+            }
             return userRepository.save(user);
         } catch (Exception e) {
             throw new DatabaseCommunicationException("Error communicating with the database while creating the user",
