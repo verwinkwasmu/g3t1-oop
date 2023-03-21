@@ -70,7 +70,7 @@ public class UserService {
 
             List<User> userResult = new ArrayList<>();
             for (User userItem : users){
-                if (userItem.getCompanyName().equals(companyName)){
+                if (companyName.equals(userItem.getCompanyName())){
                     userResult.add(userItem);
                 }
             }
@@ -83,7 +83,8 @@ public class UserService {
         } catch (UserNotFoundException e) {
             throw e;
         } catch (Exception e) {
-            throw new DatabaseCommunicationException("Error communicating with database", e);
+            throw e;
+//            throw new DatabaseCommunicationException("Error communicating with database", e);
         }
     }
 
