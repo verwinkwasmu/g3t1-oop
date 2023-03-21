@@ -4,13 +4,12 @@ import { MdEdit } from "react-icons/md";
 
 function EditAccount(props) {
 
-    const [firstName, setFirstName] = useState(props.account.first_name);
-    const [lastName, setLastName] = useState(props.account.last_name);
-    const [company, setCompany] = useState(props.account.company);
+    const [name, setName] = useState(props.account.name);
+    const [company, setCompany] = useState(props.account.companyName);
     const [email, setEmail] = useState(props.account.email);
 
     const validateForm = () => {
-        if (firstName.length == 0 || lastName.length == 0 || company.length == 0 || email.length == 0) {
+        if (name.length == 0 || company.length == 0 || email.length == 0) {
             return false;
         }
 
@@ -32,16 +31,16 @@ function EditAccount(props) {
                 <form>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="firstname">
-                        First Name
+                        Name
                     </label>
-                    <input defaultValue={firstName} onChange={e => setFirstName(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="firstname" type="text"/>
+                    <input defaultValue={name} onChange={e => setName(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="firstname" type="text"/>
                 </div>
-                <div className="mb-4">
+                {/* <div className="mb-4">
                     <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="lastname">
                         Last Name
                     </label>
                     <input defaultValue={lastName} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="lastname" type="text"/>
-                </div>
+                </div> */}
                 <div className="mb-4">
                     <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="company">
                         Company

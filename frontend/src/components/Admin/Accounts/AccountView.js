@@ -1,5 +1,6 @@
 import { MdKeyboardArrowLeft } from 'react-icons/md';
 
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 
 import FollowUpUser from './FollowUpAccount';
@@ -9,6 +10,7 @@ import CreateAccount from './CreateAccount';
 
 import AssignWorkflowsToUser from '../AssignWorkflowsToUser';
 
+import { getWorkflowsByVendor } from '../../../apiCalls';
 
 function UserView() {
 
@@ -16,11 +18,31 @@ function UserView() {
     const location = useLocation();
 
     const account = location.state.account;
+    console.log("account: ", account)
 
     const toAccountDash = () => {
         console.log("===== INSIDE TOACCOUNTDASH =====")
         navigate(`/accounts`);
     }
+
+    useEffect(() => {
+        document.title = 'Accounts Dashboard'
+    
+        // setAccountsData(getUsers());
+
+        getWorkflowsByVendor(account.id)
+        .then(function(response){
+            console.log(response.data)
+          if (response.data.length > 0) {
+            setAssignedWorkflows(response.data)
+          } else {
+            setAssignedWorkflows([])
+          }
+        })
+
+      }, [])
+
+      const [assignedWorkflows, setAssignedWorkflows] = useState([]);
 
     return (
         <>
@@ -37,8 +59,8 @@ function UserView() {
                     </div>
                     <div className="flex-auto">
                         <p className="font-thin mb-2">ID: {account.id}</p>
-                        <h1 className="text-3xl font-semibold text-blue">{account.first_name} {account.last_name}</h1>
-                        <p className="mb-2">{account.company}</p>
+                        <h1 className="text-3xl font-semibold text-blue">{account.name}</h1>
+                        <p className="mb-2">{account.companyName}</p>
                         <p className="font-thin mb-2 italic">{account.email}</p>
 
                     </div>
@@ -63,109 +85,29 @@ function UserView() {
                             <h2 className="text-2xl font-semibold text-blue">Active Workflows</h2>
                         </div>
                         <div className="flex grid justify-items-end">
-                            <AssignWorkflowsToUser></AssignWorkflowsToUser> 
+                            {/* <AssignWorkflowsToUser></AssignWorkflowsToUser>  */}
                         </div>
                     </div>
                     <div className="flex justify-evenly">
-                        <div className="card w-80 bg-base-100 border border-light-blue m-3">
+                        {(assignedWorkflows).map(workflow =>
+                            <div className="card w-80 bg-base-100 border border-light-blue m-3">
                             <div className="card-body text-left">
-                                <h2 className="card-title">Workflow 1</h2>
+                                <h2 className="card-title">{workflow.workflowName}</h2>
                                 <table>
                                     <tbody>
-                                        <tr>
+                                        {(workflow.workflowList).map(questionnaire =>
+                                            <tr>
                                             <td className="w-2/5">
                                                 <div className="badge w-24 badge-success font-semibold text-xs">APPROVED</div>
                                             </td>
-                                            <td>Form 1</td>
+                                            <td>{questionnaire}</td>
                                         </tr>
-                                        <tr>
-                                            <td className="w-2/5">
-                                                <div className="badge w-24 badge-warning font-semibold text-xs">RETURNED</div>
-                                            </td>
-                                            <td>Form 1</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="w-2/5">
-                                                <div className="badge w-24 badge-info font-semibold text-xs">SUBMITTED</div>
-                                            </td>
-                                            <td>Form 1</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="w-2/5">
-                                                <div className="badge w-24 font-semibold text-xs">PENDING</div>
-                                            </td>
-                                            <td>Form 1</td>
-                                        </tr>
+                                            )}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div className="card w-80 bg-base-100 border border-light-blue m-3">
-                            <div className="card-body text-left">
-                                <h2 className="card-title">Workflow 1</h2>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td className="w-2/5">
-                                                <div className="badge w-24 badge-success font-semibold text-xs">APPROVED</div>
-                                            </td>
-                                            <td>Form 1</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="w-2/5">
-                                                <div className="badge w-24 badge-warning font-semibold text-xs">RETURNED</div>
-                                            </td>
-                                            <td>Form 1</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="w-2/5">
-                                                <div className="badge w-24 badge-info font-semibold text-xs">SUBMITTED</div>
-                                            </td>
-                                            <td>Form 1</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="w-2/5">
-                                                <div className="badge w-24 font-semibold text-xs">PENDING</div>
-                                            </td>
-                                            <td>Form 1</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div className="card w-80 bg-base-100 border border-light-blue m-3">
-                        <div className="card-body text-left">
-                            <h2 className="card-title">Workflow 1</h2>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td className="w-2/5">
-                                            <div className="badge w-24 badge-success font-semibold text-xs">APPROVED</div>
-                                        </td>
-                                        <td>Form 1</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="w-2/5">
-                                            <div className="badge w-24 badge-warning font-semibold text-xs">RETURNED</div>
-                                        </td>
-                                        <td>Form 1</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="w-2/5">
-                                            <div className="badge w-24 badge-info font-semibold text-xs">SUBMITTED</div>
-                                        </td>
-                                        <td>Form 1</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="w-2/5">
-                                            <div className="badge w-24 font-semibold text-xs">PENDING</div>
-                                        </td>
-                                        <td>Form 1</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                            )}
                     </div>
                 </div>
                 <div>
