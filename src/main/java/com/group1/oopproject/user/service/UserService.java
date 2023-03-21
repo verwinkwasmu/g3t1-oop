@@ -83,8 +83,8 @@ public class UserService {
         } catch (UserNotFoundException e) {
             throw e;
         } catch (Exception e) {
-            throw e;
-//            throw new DatabaseCommunicationException("Error communicating with database", e);
+//            throw e;
+            throw new DatabaseCommunicationException("Error communicating with database", e);
         }
     }
 
