@@ -92,7 +92,7 @@
 
 5. Create a user
 
-``[POST] /api/v1/create``
+``[POST] /api/v1/users/create``
 
 **Note**: if user is `ADMIN` or `APPROVER`, companyName should be left as `""`
 ```
@@ -118,11 +118,11 @@
 ```
 6. Delete user by id
 
-``[DELETE] /api/v1/delete/{id}``
+``[DELETE] /api/v1/users/delete/{id}``
 
 7. Update user
 
-``[PUT] /api/v1/update``
+``[PUT] /api/v1/users/update``
 
 ```
 [Example post request body for ADMIN/APPROVER]
@@ -133,7 +133,7 @@
     password: "treatpeoplewithkindness",
     userType: "ADMIN",
     companyName: "",
-    createdAt: "2023-03-01"
+    createdAt: "2023-03-21T11:09:36.533"
 }
 
 ```
