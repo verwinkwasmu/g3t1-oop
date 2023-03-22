@@ -28,5 +28,6 @@ public class Vendor extends User {
    private String bizNature;
    private String contactNum;
    private String GSTnumber;
+   private String country;
 
 }
