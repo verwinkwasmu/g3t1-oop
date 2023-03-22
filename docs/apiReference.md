@@ -72,29 +72,34 @@
 
 ### User 
 
-1. Get all users
+1. Get all users and vendors
 
 ``[GET] /api/v1/users``
 
+``[GET] /api/v1/users/vendors``
+
 2. Get all users based on user type
-- User Types `userType` include: `VENDOR`, `ADMIN`, `APPROVER`
+- User Types `userType` include: `ADMIN`, `APPROVER`
 
-``[GET] /api/v1/users/all/{userType}``
+**NOTE:** this is only to get admin and approver
 
-3. Get all users from 1 company
+``[GET] /api/v1/users/{userType}``
 
-``[GET] /api/v1/users/company/{companyName}``
+3. Get all vendors from 1 company
+
+``[GET] /api/v1/users/vendors/{companyName}``
 
 4. Get 1 user based on unique user id
 - Regardless of the user type  
 
 ``[GET] /api/v1/users/{id}``
 
-5. Create a user
+``[GET] /api/v1/users/vendors/{id}``
+
+5. Create a user and vendor
 
 ``[POST] /api/v1/users/create``
 
-**Note**: if user is `ADMIN` or `APPROVER`, companyName should be left as `""`
 ```
 [Example post request body for ADMIN/APPROVER]
 {
@@ -103,24 +108,32 @@
     email: "harrystyles@quantum.com",
     password: "watermelonsugar",
     userType: "ADMIN",
-    companyName: "",
-}
-
-[Example post request body for VENDOR]
-{
-    id: "vendor1",
-    name: "Liam Payne",
-    email: "liampayne@saltyaf.com",
-    password: "simoncreated1dforme",
-    userType: "VENDOR",
-    companyName: "Salty Train AF",
 }
 ```
-6. Delete user by id
+``[POST] /api/v1/users/vendors/create``
+
+```
+[Example post request body for VENDOR]
+{
+    "id":"vendor1",
+    "name": "Harry Styles",
+    "email": "harrystyles@lovetour.com",
+    "password": "watermelonsugar",
+    "userType": "VENDOR",
+    "companyName": "Love",
+    "regNumber": "4567",
+    "bizNature": "Love",
+    "contactNum": "91234567",
+    "gstnumber": "GST456"
+}
+```
+6. Delete user and vendor by id
 
 ``[DELETE] /api/v1/users/delete/{id}``
 
-7. Update user
+``[DELETE] /api/v1/users/vendors/delete/{id}``
+
+7. Update user and vendor
 
 ``[PUT] /api/v1/users/update``
 
@@ -132,8 +145,26 @@
     email: "harrystyles@quantum.com",
     password: "treatpeoplewithkindness",
     userType: "ADMIN",
-    companyName: "",
     createdAt: "2023-03-21T11:09:36.533"
+}
+```
+
+``[PUT] /api/v1/users/vendors/update``
+
+```
+[Example post request body for VENDOR]
+
+{
+    "id":"vendor1",
+    "name": "Harry Styles",
+    "email": "harrystyles@lovetour.com",
+    "password": "watermelonsugar",
+    "userType": "VENDOR",
+    "companyName": "Love",
+    "regNumber": "4567",
+    "bizNature": "Love",
+    "contactNum": "91234567",
+    "gstnumber": "GST456"
 }
 
 ```
