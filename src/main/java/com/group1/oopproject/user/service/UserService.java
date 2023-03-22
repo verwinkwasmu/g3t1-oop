@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.group1.oopproject.user.entity.UserType;
+import com.group1.oopproject.user.entity.Vendor;
+import com.group1.oopproject.user.repository.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.UncategorizedMongoDbException;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+
+    private VendorRepository vendorRepository;
 
     public List<User> getAllUsers() {
         try {
@@ -32,6 +37,21 @@ public class UserService {
             throw e;
         } catch (Exception e) {
             throw new DatabaseCommunicationException("Error communicating with database", e);
+        }
+    }
+
+    public List<Vendor> getAllVendors() {
+        try {
+            List<Vendor> vendors = vendorRepository.findAll();
+            if (vendors.isEmpty()) {
+                throw new UserNotFoundException("No vendors found in the database");
+            }
+            return vendors;
+        } catch (UserNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw e;
+//            throw new DatabaseCommunicationException("Error communicating with database", e);
         }
     }
 
@@ -50,41 +70,42 @@ public class UserService {
             }
 
             if (userResult.isEmpty()) {
-                throw new UserNotFoundException("No "+ userType +"users found in the database");
+                throw new UserNotFoundException("No "+ userType +" users found in the database");
             }
 
             return userResult;
         } catch (UserNotFoundException e) {
             throw e;
         } catch (Exception e) {
-            throw new DatabaseCommunicationException("Error communicating with database", e);
+            throw e;
+//            throw new DatabaseCommunicationException("Error communicating with database", e);
         }
     }
 
-    public List<User> getAllUsersByCompany(String companyName) {
+    public List<Vendor> getAllVendorsByCompany(String companyName) {
         try {
-            List<User> users = userRepository.findAll();
-            if (users.isEmpty()) {
-                throw new UserNotFoundException("No users found in the database");
+            List<Vendor> vendors = vendorRepository.findAll();
+            if (vendors.isEmpty()) {
+                throw new UserNotFoundException("No vendors found in the database");
             }
 
-            List<User> userResult = new ArrayList<>();
-            for (User userItem : users){
-                if (companyName.equals(userItem.getCompanyName())){
-                    userResult.add(userItem);
+            List<Vendor> vendorResult = new ArrayList<>();
+            for (Vendor vendorItem : vendors){
+                if (companyName.equals(vendorItem.getCompanyName())){
+                    vendorResult.add(vendorItem);
                 }
             }
 
-            if (userResult.isEmpty()) {
-                throw new UserNotFoundException("No users from " + companyName + "found in the database");
+            if (vendorResult.isEmpty()) {
+                throw new UserNotFoundException("No vendor from " + companyName + " found in the database");
             }
 
-            return userResult;
+            return vendorResult;
         } catch (UserNotFoundException e) {
             throw e;
         } catch (Exception e) {
-//            throw e;
-            throw new DatabaseCommunicationException("Error communicating with database", e);
+            throw e;
+//            throw new DatabaseCommunicationException("Error communicating with database", e);
         }
     }
 
@@ -97,16 +118,34 @@ public class UserService {
         }
     }
 
+    public Vendor findVendorById(String id) throws UserNotFoundException {
+        try {
+            Optional<Vendor> vendor = vendorRepository.findById(id);
+            return vendor.orElseThrow(() -> new UserNotFoundException("Vendor not found with id: " + id));
+        } catch (UncategorizedMongoDbException e) {
+            throw e;
+//            throw new DatabaseCommunicationException("Error communicating with database", e);
+        }
+    }
+
     public User createUser(User user) throws DatabaseCommunicationException {
         try {
             user.setCreatedAt(LocalDateTime.now());
-            if (user.getUserType() == UserType.ADMIN || user.getUserType() == UserType.APPROVER){
-                user.setCompanyName("");
-            }
             return userRepository.save(user);
         } catch (Exception e) {
             throw new DatabaseCommunicationException("Error communicating with the database while creating the user",
                     e);
+        }
+    }
+
+    public Vendor createVendor(Vendor vendor) throws DatabaseCommunicationException {
+        try {
+            vendor.setCreatedAt(LocalDateTime.now());
+            return vendorRepository.save(vendor);
+        } catch (Exception e) {
+            throw e;
+//            throw new DatabaseCommunicationException("Error communicating with the database while creating the user",
+//                    e);
         }
     }
 
@@ -120,6 +159,16 @@ public class UserService {
         }
     }
 
+    public void deleteVendor(String id) {
+        try {
+            Vendor vendor = vendorRepository.findById(id)
+                    .orElseThrow(() -> new UserNotFoundException("No vendors found in the database for vendor with id: " + id));
+            vendorRepository.deleteById(vendor.getId());
+        } catch (UncategorizedMongoDbException e) {
+            throw new DatabaseCommunicationException("Error communicating with database for method deleteById", e);
+        }
+    }
+
     public User updateUser(User user) {
         try {
             // Check if user exists
@@ -128,6 +177,20 @@ public class UserService {
                 return userRepository.save(user);
             } else {
                 throw new UserNotFoundException("No users found in the database for user with id: " + user.getId());
+            }
+        } catch (UncategorizedMongoDbException e) {
+            throw new DatabaseCommunicationException("Error communicating with database for method deleteById", e);
+        }
+    }
+
+    public Vendor updateVendor(Vendor vendor) {
+        try {
+            // Check if user exists
+            if (vendorRepository.findById(vendor.getId()).isPresent()){
+                // UPDATE
+                return vendorRepository.save(vendor);
+            } else {
+                throw new UserNotFoundException("No vendors found in the database for vendor with id: " + vendor.getId());
             }
         } catch (UncategorizedMongoDbException e) {
             throw new DatabaseCommunicationException("Error communicating with database for method deleteById", e);

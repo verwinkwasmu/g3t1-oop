@@ -11,10 +11,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.util.BsonUtils;
 
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+
 @Document(collection = "users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class User {
 
     @Id
@@ -23,7 +30,6 @@ public class User {
     private String email;
     private String password;
     private UserType userType;
-    private String companyName;
     @CreatedDate
     private LocalDateTime createdAt;
 
