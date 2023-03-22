@@ -1,72 +1,75 @@
 ## API Reference Documentation
-1. [Form](#Form)
+1. [Questionnaire](#Questionnaire)
 2. [User](#User)
 3. [Workflow](#Workflow)
 
 ---
 
-### Form
+### Questionnaire
 
-1. Get all forms (returns a list of forms)
+1. Get all questionnaires (returns a list of questionnaires)
 
-``[GET] /api/v1/form``
+``[GET] /api/v1/questionnaire``
 
-2. Get form by id (returns one form)
+2. Get questionnaire by id (returns one questionnaire)
 
-``[GET] /api/v1/form/{id}``
+``[GET] /api/v1/questionnaire/{id}``
 
-3. Get form by assignedTo (returns a list of forms)
+3. Get form by assignedVendor (returns a list of forms assigned to Vendor)
 
-``[GET] /api/v1/form/user/{id}``
+``[GET] /api/v1/questionnaire/vendor/{id}``
 
-4. Create form (returns one form)
+4. Get form by assignedAdmin (returns a list of forms assigned to Admin)
 
-``[POST] /api/v1/form/create``
+``[GET] /api/v1/questionnaire/admin/{id}``
+
+5. Create questionnaire (returns one questionnaire)
+
+``[POST] /api/v1/questionnaire/create``
 ```
 [Example Request Body, MUST STRICTLY FOLLOW THIS FORMAT]
-{ 
-    name: "test-form",
-    assignedTo: "user-id",
-    assignedBy: "admin-id",
-    formType: "one of the type",
-    email: "jeremy@kewlies.com"
-    formStatus: "INITIAL_DRAFT", (it has to be these values or error: INITIAL_DRAFT, SUBMITTED, APPROVED, REJECTED)
-    fields: {
-            ... (any json)
-        },
-    submissionDate: null,
-    notes: "salted sauteen spoons"
+{
+    "title" : "1st questionnaire",
+    "assignedVendor": "jack-1",
+    "assignedAdmin": "not-jack-1",
+    "status": "SUBMITTED", (status must be: NOT_STARTED, SUBMITTED, ADMIN_APPROVED, RETURNED, APPROVER_APPROVED)
+    "questionsAndAnswers": {
+        "something": {
+            "first thing" : "hello",
+            "second thibg": "omma"
+        }
+    }
 }
 ```
 
-5. Update form by id (returns one form) (WHENEVER U NEED TO UPDATE ANY FIELD JUST USE THIS METHOD)
+6. Update questionnaire (returns one questionnaire) (WHENEVER U NEED TO UPDATE ANY FIELD JUST USE THIS METHOD)
 
-``[PUT] /api/v1/form/update``
+``[PUT] /api/v1/questionnaire/update``
 ```
 [Example Request Body]
-{ 
-    name: "test-form",
-    assignedTo: "user-id",
-    assignedBy: "admin-id",
-    formType: "one of the type",
-    email: "jeremy@kewlies.com"
-    formStatus: "INITIAL_DRAFT", (it has to be these values or error: INITIAL_DRAFT, SUBMITTED, APPROVED, REJECTED)
-    fields: {
-            ... (any json)
-        },
-    submissionDate: null,
-    notes: "salted sauteen spoons",
-    created_at: "2022-10-20"    
+{
+    "id": "641a56ec5ad139669ecbce70",
+    "title" : "1st questionnaireeeeeeeee",
+    "assignedVendor": "jack-1",
+    "assignedAdmin": "not-jack-1",
+    "status": "SUBMITTED",
+    "questionsAndAnswers": {
+        "something": {
+            "first thing" : "hello",
+            "second thibg": "omma"
+        }
+    },
+    "createdAt": "2023-03-22T09:16:28.866"
 }
 ```
 
-6. Delete form by id
+7. Delete questionnaire by id
 
-``[DELETE] /api/v1/form/delete/{id}``
+``[DELETE] /api/v1/questionnaire/delete/{id}``
 
-7. Get forms based on workflowStatus (returns a list of forms)
+8. Get questionnaires based on status (returns a list of questionnaires)
 
-``[GET] /api/v1/form/formStatus/{formStatus}``
+``[GET] /api/v1/questionnaires/status/{formStatus}``
 
 ---
 
