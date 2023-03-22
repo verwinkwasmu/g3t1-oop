@@ -127,7 +127,8 @@
     "regNumber": "4567",
     "bizNature": "Love",
     "contactNum": "91234567",
-    "gstnumber": "GST456"
+    "gstnumber": "GST456",
+    "country": "Singapore"
 }
 ```
 6. Delete user and vendor by id
@@ -167,7 +168,8 @@
     "regNumber": "4567",
     "bizNature": "Love",
     "contactNum": "91234567",
-    "gstnumber": "GST456"
+    "gstnumber": "GST456",
+    "country": "Singapore"
 }
 
 ```
