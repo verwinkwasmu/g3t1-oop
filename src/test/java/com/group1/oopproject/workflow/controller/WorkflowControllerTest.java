@@ -57,7 +57,6 @@ public class WorkflowControllerTest {
         Workflow expectedWorkflow = new Workflow();
         expectedWorkflow.setId("1");
         expectedWorkflow.setWorkflowName("Test Workflow");
-        expectedWorkflow.setWorkflowList(null);
         when(workflowService.findById("1")).thenReturn(expectedWorkflow);
 
         // Act

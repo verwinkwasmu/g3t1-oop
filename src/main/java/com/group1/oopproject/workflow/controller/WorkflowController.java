@@ -87,18 +87,18 @@ public class WorkflowController {
         }
     }
 
-    @GetMapping("/assigned/admin/{id}")
-    public ResponseEntity <List<AssignedWorkflow>> findAssignedByAdminId(@PathVariable String id) {
-        try {
-            return ResponseEntity.ok(workflowService.findAssignedByAdminId(id));
-        } catch (WorkflowNotFoundException e) {
-            logger.error("WorkflowNotFoundException: {}", e.getMessage());
-            return ResponseEntity.notFound().build();
-        } catch (DatabaseCommunicationException e) {
-            logger.error("Error communicating with database: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+    // @GetMapping("/assigned/admin/{id}")
+    // public ResponseEntity <List<AssignedWorkflow>> findAssignedByAdminId(@PathVariable String id) {
+    //     try {
+    //         return ResponseEntity.ok(workflowService.findAssignedByAdminId(id));
+    //     } catch (WorkflowNotFoundException e) {
+    //         logger.error("WorkflowNotFoundException: {}", e.getMessage());
+    //         return ResponseEntity.notFound().build();
+    //     } catch (DatabaseCommunicationException e) {
+    //         logger.error("Error communicating with database: {}", e.getMessage());
+    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    //     }
+    // }
 
     @GetMapping("/assigned/vendor/{id}")
     public ResponseEntity <List<AssignedWorkflow>> findAssignedByVendorId(@PathVariable String id) {

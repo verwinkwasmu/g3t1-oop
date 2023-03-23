@@ -26,7 +26,7 @@ public class Workflow {
     @Id
     private String id;
     private String workflowName;
-    private String[] workflowList;
+    private String questionnaireJSONString;
         
     @CreatedDate
     private LocalDateTime createdAt;

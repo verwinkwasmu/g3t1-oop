@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 
 @Document(collection = "assignedWorkflow")
@@ -18,9 +20,9 @@ import javax.persistence.Entity;
 @Entity
 public class AssignedWorkflow extends Workflow {
 
-    private String generatedFormId;
-    private String assignedAdminId;
     private String assignedVendorId; 
+    private LocalDateTime submissionDeadline; 
+    private LocalDateTime approvedAt; 
     private WorkflowStatus workflowStatus;
     
 }
