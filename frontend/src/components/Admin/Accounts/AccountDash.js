@@ -4,10 +4,12 @@ import { MdRemoveRedEye, MdEdit } from 'react-icons/md';
 import { useNavigate, useLocation } from "react-router-dom";
 
 import CreateAccount from './CreateAccount';
+import CreateUserAccount from './CreateUserAccount';
 import RemoveAccount from './RemoveAccount';
 import EditAccount from './EditAccount';
+import EditUserAccount from './EditUserAccount';
 
-import { getUsers, getWorkflows } from '../../../apiCalls';
+import { getUsers, getVendors, getWorkflows } from '../../../apiCalls';
 
 
 function AccountDash() {
@@ -18,6 +20,16 @@ function AccountDash() {
         document.title = 'Accounts Dashboard'
     
         // setAccountsData(getUsers());
+
+        // getUsers()
+        // .then(function(response){
+        //     console.log(response.data)
+        //   if (response.data.length > 0) {
+        //     setAccountsData(response.data)
+        //   } else {
+        //     setAccountsData([])
+        //   }
+        // })
 
         getUsers()
         .then(function(response){
@@ -46,7 +58,7 @@ function AccountDash() {
     const [accountsData, setAccountsData] = useState([]);
     const [selected, setSelected] = useState([]);
 
-    const handleSelect = (account) => {
+    const handleSelect = (account) =>  {
         if (!selected.includes(account)) {
             var updatedAccounts = selected
             updatedAccounts.push(account)
@@ -72,7 +84,8 @@ function AccountDash() {
                         </div>
                         <div className="flex ">
                             <CreateAccount></CreateAccount>
-                            <RemoveAccount accounts={selected}></RemoveAccount>  
+                            <CreateUserAccount></CreateUserAccount>
+                            {/* <RemoveAccount accounts={selected}></RemoveAccount>   */}
                     </div>
                     </div>
                     <div className="flex flex-wrap text-left">
@@ -101,7 +114,8 @@ function AccountDash() {
                                 {/* <td className="status">{(account.workflows.active.length == 0 ? "Inactive" : "Active")}</td> */}
                                 <td className="actions text-right">
                                     <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75" onClick={() => {toAccountView(account)}}><MdRemoveRedEye></MdRemoveRedEye></button>
-                                    <EditAccount account={account}></EditAccount>
+                                    {/* <EditAccount account={account}></EditAccount> */}
+                                    <EditUserAccount account={account}></EditUserAccount>
                                 </td>
                                 </tr>)}
                             </tbody>
