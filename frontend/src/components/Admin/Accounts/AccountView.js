@@ -5,8 +5,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import FollowUpUser from './FollowUpAccount';
 import RemoveAccount  from './RemoveAccount';
-import EditAccount from './EditAccount';
-import CreateAccount from './CreateAccount';
+import EditVendorAccount from './EditVendorAccount';
+import CreateAccount from './CreateVendorAccount';
 
 import AssignWorkflowsToUser from '../AssignWorkflowsToUser';
 
@@ -70,7 +70,7 @@ function UserView() {
                             <RemoveAccount accounts={[account]}></RemoveAccount> 
                         </div>
                         <div>
-                            {/* <EditAccount account={account}></EditAccount> */}
+                            {/* <EditVendorAccount account={account}></EditVendorAccount> */}
                         </div>                      
                     </div>
                 </div>

@@ -3,9 +3,9 @@ import { MdRemoveRedEye, MdEdit } from 'react-icons/md';
 
 import { useNavigate, useLocation } from "react-router-dom";
 
-import CreateAccount from '../Admin/Accounts/CreateAccount';
+import CreateAccount from '../Admin/Accounts/CreateVendorAccount';
 import RemoveAccount from '../Admin/Accounts/RemoveAccount';
-import EditAccount from '../Admin/Accounts/EditAccount';
+import EditVendorAccount from '../Admin/Accounts/EditVendorAccount';
 
 import { getAccounts } from '../../apiCalls';
 
