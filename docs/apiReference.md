@@ -33,6 +33,8 @@
     "assignedVendor": "jack-1",
     "assignedAdmin": "not-jack-1",
     "status": "SUBMITTED", (status must be: NOT_STARTED, SUBMITTED, ADMIN_APPROVED, RETURNED, APPROVER_APPROVED)
+    "submissionDate": "2023-03-22T09:16:28.866",
+    "submissionDateline": "2023-03-22T09:16:28.866",
     "questionsAndAnswers": {
         "something": {
             "first thing" : "hello",
@@ -53,6 +55,8 @@
     "assignedVendor": "jack-1",
     "assignedAdmin": "not-jack-1",
     "status": "SUBMITTED",
+    "submissionDate": "2023-03-22T09:16:28.866",
+    "submissionDateline": "2023-03-22T09:16:28.866",
     "questionsAndAnswers": {
         "something": {
             "first thing" : "hello",
