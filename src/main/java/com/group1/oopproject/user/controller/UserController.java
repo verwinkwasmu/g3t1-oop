@@ -2,6 +2,7 @@ package com.group1.oopproject.user.controller;
 
 import java.util.List;
 
+import com.group1.oopproject.user.entity.Vendor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/all/{userType}")
+    @GetMapping("/{userType}")
     public ResponseEntity<List<User>> getAllUsersByType(@PathVariable String userType) {
         try {
             return ResponseEntity.ok(userService.getAllUsersByType(userType));
@@ -58,10 +59,23 @@ public class UserController {
         }
     }
 
-    @GetMapping("/company/{companyName}")
-    public ResponseEntity<List<User>> getAllUsersByCompany(@PathVariable String companyName) {
+    @GetMapping("/vendors")
+    public ResponseEntity<List<Vendor>> getAllVendors() {
         try {
-            return ResponseEntity.ok(userService.getAllUsersByCompany(companyName));
+            return ResponseEntity.ok(userService.getAllVendors());
+        } catch (UserNotFoundException e) {
+            logger.error("UserNotFoundException: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
+        } catch (DatabaseCommunicationException e) {
+            logger.error("Error communicating with database: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/vendors/{companyName}")
+    public ResponseEntity<List<Vendor>> getAllVendorsByCompany(@PathVariable String companyName) {
+        try {
+            return ResponseEntity.ok(userService.getAllVendorsByCompany(companyName));
         } catch (UserNotFoundException e) {
             logger.error("UserNotFoundException: {}", e.getMessage());
             return ResponseEntity.notFound().build();
@@ -84,10 +98,33 @@ public class UserController {
         }
     }
 
+    @GetMapping("/vendors/{id}")
+    public ResponseEntity<User> findVendorById(@PathVariable String id) {
+        try {
+            return ResponseEntity.ok(userService.findVendorById(id));
+        } catch (UserNotFoundException e) {
+            logger.error("UserNotFoundException: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
+        } catch (DatabaseCommunicationException e) {
+            logger.error("Error communicating with database: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @PostMapping("/create")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         try {
             return ResponseEntity.ok(userService.createUser(user));
+        } catch (DatabaseCommunicationException e) {
+            logger.error("Error communicating with database: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/vendors/create")
+    public ResponseEntity<Vendor> createVendor(@RequestBody Vendor vendor) {
+        try {
+            return ResponseEntity.ok(userService.createVendor(vendor));
         } catch (DatabaseCommunicationException e) {
             logger.error("Error communicating with database: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -108,10 +145,37 @@ public class UserController {
         }
     }
 
+    @DeleteMapping("/vendors/delete/{id}")
+    public ResponseEntity<Void> deleteVendor(@PathVariable String id) {
+        try {
+            userService.deleteVendor(id);
+            return ResponseEntity.noContent().build();
+        } catch (UserNotFoundException e) {
+            logger.error("UserNotFoundException: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
+        } catch (DatabaseCommunicationException e) {
+            logger.error("DatabaseCommunicationException: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @PutMapping("/update")
     public ResponseEntity<User> updateUser(@RequestBody User updatedUser){
         try {
             return ResponseEntity.ok(userService.updateUser(updatedUser));
+        } catch (UserNotFoundException e){
+            logger.error("UserNotFoundException: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
+        } catch (DatabaseCommunicationException e){
+            logger.error("DatabaseCommunicationException: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PutMapping("/vendors/update")
+    public ResponseEntity<Vendor> updateVendor(@RequestBody Vendor updatedVendor){
+        try {
+            return ResponseEntity.ok(userService.updateVendor(updatedVendor));
         } catch (UserNotFoundException e){
             logger.error("UserNotFoundException: {}", e.getMessage());
             return ResponseEntity.notFound().build();

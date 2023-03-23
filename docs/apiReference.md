@@ -1,100 +1,108 @@
 ## API Reference Documentation
-1. [Form](#Form)
+1. [Questionnaire](#Questionnaire)
 2. [User](#User)
 3. [Workflow](#Workflow)
 
 ---
 
-### Form
+### Questionnaire
 
-1. Get all forms (returns a list of forms)
+1. Get all questionnaires (returns a list of questionnaires)
 
-``[GET] /api/v1/form``
+``[GET] /api/v1/questionnaire``
 
-2. Get form by id (returns one form)
+2. Get questionnaire by id (returns one questionnaire)
 
-``[GET] /api/v1/form/{id}``
+``[GET] /api/v1/questionnaire/{id}``
 
-3. Get form by assignedTo (returns a list of forms)
+3. Get form by assignedVendor (returns a list of forms assigned to Vendor)
 
-``[GET] /api/v1/form/user/{id}``
+``[GET] /api/v1/questionnaire/vendor/{id}``
 
-4. Create form (returns one form)
+4. Get form by assignedAdmin (returns a list of forms assigned to Admin)
 
-``[POST] /api/v1/form/create``
+``[GET] /api/v1/questionnaire/admin/{id}``
+
+5. Create questionnaire (returns one questionnaire)
+
+``[POST] /api/v1/questionnaire/create``
 ```
 [Example Request Body, MUST STRICTLY FOLLOW THIS FORMAT]
-{ 
-    name: "test-form",
-    assignedTo: "user-id",
-    assignedBy: "admin-id",
-    formType: "one of the type",
-    email: "jeremy@kewlies.com"
-    formStatus: "INITIAL_DRAFT", (it has to be these values or error: INITIAL_DRAFT, SUBMITTED, APPROVED, REJECTED)
-    fields: {
-            ... (any json)
-        },
-    submissionDate: null,
-    notes: "salted sauteen spoons"
+{
+    "title" : "1st questionnaire",
+    "assignedVendor": "jack-1",
+    "assignedAdmin": "not-jack-1",
+    "status": "SUBMITTED", (status must be: NOT_STARTED, SUBMITTED, ADMIN_APPROVED, RETURNED, APPROVER_APPROVED)
+    "questionsAndAnswers": {
+        "something": {
+            "first thing" : "hello",
+            "second thibg": "omma"
+        }
+    }
 }
 ```
 
-5. Update form by id (returns one form) (WHENEVER U NEED TO UPDATE ANY FIELD JUST USE THIS METHOD)
+6. Update questionnaire (returns one questionnaire) (WHENEVER U NEED TO UPDATE ANY FIELD JUST USE THIS METHOD)
 
-``[PUT] /api/v1/form/update``
+``[PUT] /api/v1/questionnaire/update``
 ```
 [Example Request Body]
-{ 
-    name: "test-form",
-    assignedTo: "user-id",
-    assignedBy: "admin-id",
-    formType: "one of the type",
-    email: "jeremy@kewlies.com"
-    formStatus: "INITIAL_DRAFT", (it has to be these values or error: INITIAL_DRAFT, SUBMITTED, APPROVED, REJECTED)
-    fields: {
-            ... (any json)
-        },
-    submissionDate: null,
-    notes: "salted sauteen spoons",
-    created_at: "2022-10-20"    
+{
+    "id": "641a56ec5ad139669ecbce70",
+    "title" : "1st questionnaireeeeeeeee",
+    "assignedVendor": "jack-1",
+    "assignedAdmin": "not-jack-1",
+    "status": "SUBMITTED",
+    "questionsAndAnswers": {
+        "something": {
+            "first thing" : "hello",
+            "second thibg": "omma"
+        }
+    },
+    "createdAt": "2023-03-22T09:16:28.866"
 }
 ```
 
-6. Delete form by id
+7. Delete questionnaire by id
 
-``[DELETE] /api/v1/form/delete/{id}``
+``[DELETE] /api/v1/questionnaire/delete/{id}``
 
-7. Get forms based on workflowStatus (returns a list of forms)
+8. Get questionnaires based on status (returns a list of questionnaires)
 
-``[GET] /api/v1/form/formStatus/{formStatus}``
+``[GET] /api/v1/questionnaires/status/{formStatus}``
 
 ---
 
 ### User 
 
-1. Get all users
+1. Get all users and vendors
 
 ``[GET] /api/v1/users``
 
+``[GET] /api/v1/users/vendors``
+
 2. Get all users based on user type
-- User Types `userType` include: `VENDOR`, `ADMIN`, `APPROVER`
+- User Types `userType` include: `ADMIN`, `APPROVER`
 
-``[GET] /api/v1/users/all/{userType}``
+**NOTE:** this is only to get admin and approver
 
-3. Get all users from 1 company
+``[GET] /api/v1/users/{userType}``
 
-``[GET] /api/v1/users/company/{companyName}``
+3. Get all vendors from 1 company
+
+``[GET] /api/v1/users/vendors/{companyName}``
 
 4. Get 1 user based on unique user id
 - Regardless of the user type  
 
 ``[GET] /api/v1/users/{id}``
 
-5. Create a user
+``[GET] /api/v1/users/vendors/{id}``
+
+5. Create a user and vendor
 
 ``[POST] /api/v1/users/create``
 
-**Note**: if user is `ADMIN` or `APPROVER`, companyName should be left as `""`
 ```
 [Example post request body for ADMIN/APPROVER]
 {
@@ -103,24 +111,33 @@
     email: "harrystyles@quantum.com",
     password: "watermelonsugar",
     userType: "ADMIN",
-    companyName: "",
-}
-
-[Example post request body for VENDOR]
-{
-    id: "vendor1",
-    name: "Liam Payne",
-    email: "liampayne@saltyaf.com",
-    password: "simoncreated1dforme",
-    userType: "VENDOR",
-    companyName: "Salty Train AF",
 }
 ```
-6. Delete user by id
+``[POST] /api/v1/users/vendors/create``
+
+```
+[Example post request body for VENDOR]
+{
+    "id":"vendor1",
+    "name": "Harry Styles",
+    "email": "harrystyles@lovetour.com",
+    "password": "watermelonsugar",
+    "userType": "VENDOR",
+    "companyName": "Love",
+    "regNumber": "4567",
+    "bizNature": "Love",
+    "contactNum": "91234567",
+    "gstnumber": "GST456",
+    "country": "Singapore"
+}
+```
+6. Delete user and vendor by id
 
 ``[DELETE] /api/v1/users/delete/{id}``
 
-7. Update user
+``[DELETE] /api/v1/users/vendors/delete/{id}``
+
+7. Update user and vendor
 
 ``[PUT] /api/v1/users/update``
 
@@ -132,8 +149,27 @@
     email: "harrystyles@quantum.com",
     password: "treatpeoplewithkindness",
     userType: "ADMIN",
-    companyName: "",
     createdAt: "2023-03-21T11:09:36.533"
+}
+```
+
+``[PUT] /api/v1/users/vendors/update``
+
+```
+[Example post request body for VENDOR]
+
+{
+    "id":"vendor1",
+    "name": "Harry Styles",
+    "email": "harrystyles@lovetour.com",
+    "password": "watermelonsugar",
+    "userType": "VENDOR",
+    "companyName": "Love",
+    "regNumber": "4567",
+    "bizNature": "Love",
+    "contactNum": "91234567",
+    "gstnumber": "GST456",
+    "country": "Singapore"
 }
 
 ```
