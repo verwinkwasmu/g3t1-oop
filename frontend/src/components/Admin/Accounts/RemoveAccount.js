@@ -1,16 +1,47 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { MdDelete } from "react-icons/md";
-import { handler } from 'daisyui';
+
+import { useNavigate } from 'react-router-dom';
+
+import { deleteUser } from '../../../apiCalls';
+import { deleteVendor } from '../../../apiCalls';
 
 function RemoveAccount(props) {
+
+    const navigate = useNavigate();
+
     console.log("removeAccount –> props.accounts: ", props.accounts)
     // even though props.accounts is accurate, it isnt updating in the modal fast enough
 
+    const [id] = useState(props.accounts[0].id)
+    const [userType] = useState(props.accounts[0].userType)
+    const [name] = useState(props.accounts[0].name)
+    const [companyName] = useState(props.accounts[0].companyName)
     const [accountsToRemove, setAccountsToRemove] = useState(props.accounts);
 
     const handleDelete = () => {
         console.log("INSIDE HANDLE DELETE");
+        console.log(id);
+
+        if (userType == "VENDOR") {
+            deleteVendor(id)
+                .then(function(response){
+                    navigate("/accounts")
+                    
+                })
+                .catch(function(error){
+                    console.log("DELETE ERROR")})
+        } else {
+            deleteUser(id)
+                .then(function(response){
+                    navigate("/accounts")
+                    
+                })
+                .catch(function(error){
+                    console.log("DELETE ERROR")})
+        }
+
     }
 
     return (
@@ -25,8 +56,8 @@ function RemoveAccount(props) {
             <div className="modal-box max-w-2xl relative py-12 px-20">
                 <label htmlFor="RemoveAccount" className="btn btn-sm btn-circle bg-red border-transparent absolute right-20 top-12">✕</label>
                 <div className="mb-3">
-                    <h1 className="text-3xl font-semibold text-blue">Remove Account(s)</h1>
-                    <p className="font-thin italic">All forms and workflows will be deleted. This cannot be undone.</p>
+                    <h1 className="text-3xl font-semibold text-blue">Remove Account</h1>
+                    <p className="font-thin italic">This cannot be undone.</p>
                 </div>
                 <div className="flex flex-wrap text-left mb-6">
                 <table className="flex-auto table-fixed">
@@ -34,15 +65,17 @@ function RemoveAccount(props) {
                                 <tr>
                                     <th className="p-2">ID</th>
                                     <th>Name</th>
-                                    <th>Company</th>
+                                    <th hidden={(userType.includes("VENDOR")) ? false : true}>Company</th>
+                                    <th>User Type</th>
                                 </tr>           
                             </thead>
                             <tbody>
                             {(accountsToRemove).map(account => 
-                                <tr key={account.id}>
-                                    <td className="p-2">{account.id}</td>
-                                    <td>{account.first_name} {account.last_name}</td>
-                                    <td>{account.company}</td>
+                                <tr key={id}>
+                                    <td className="p-2">{id}</td>
+                                    <td>{name}</td>
+                                    <td hidden={(userType.includes("VENDOR")) ? false : true}>{companyName}</td>
+                                    <td>{userType}</td>
                                 </tr>
                                 )}
                                 

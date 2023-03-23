@@ -70,7 +70,7 @@ function UserView() {
                             <RemoveAccount accounts={[account]}></RemoveAccount> 
                         </div>
                         <div>
-                            <EditAccount account={account}></EditAccount>
+                            {/* <EditAccount account={account}></EditAccount> */}
                         </div>                      
                     </div>
                 </div>

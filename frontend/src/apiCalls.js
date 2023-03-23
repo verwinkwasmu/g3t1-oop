@@ -39,29 +39,50 @@ export function getUsers() {
   return axiosClient.get("/api/v1/users");  
 }
 
-export function getUsersByType(userType) { // VENDOR, ADMIN, APPROVER
-  return axiosClient.get(`/api/v1/users/all/${userType}`);  
+export function getVendors() {
+  return axiosClient.get("/api/v1/users/vendors");  
 }
 
-export function getUsersByCompany(companyName) { // {companyName}
-  return axiosClient.get(`/api/v1/users/company/${companyName}`);  
+export function getUsersByType(userType) { // ADMIN, APPROVER
+  return axiosClient.get(`/api/v1/users/${userType}`);  
+}
+
+export function getVendorsByCompany(companyName) { // {companyName}
+  return axiosClient.get(`/api/v1/users/vendors/${companyName}`);  
 }
 
 export function getUserById(id) { // unique ID
   return axiosClient.get(`/api/v1/users/${id}`);  
 }
 
+export function getVendorById(id) { // unique ID
+  return axiosClient.get(`/api/v1/users/vendors/${id}`);  
+}
+
 export function createUser(data) { 
-  return axiosClient.post("/api/v1/users/create/", JSON.stringify(data));  
+  return axiosClient.post("/api/v1/users/create", JSON.stringify(data));  
+}
+
+export function createVendor(data) { 
+  return axiosClient.post("/api/v1/users/vendors/create", JSON.stringify(data));  
 }
 
 export function deleteUser(id) { // unique ID
   return axiosClient.delete(`/api/v1/users/delete/${id}`);  
 }
 
-export function updateUser(data) {
-  return axiosClient.put("/api/v1/users/update/", JSON.stringify(data));  
+export function deleteVendor(id) { // unique ID
+  return axiosClient.delete(`/api/v1/users/vendors/delete/${id}`);  
 }
+
+export function updateUser(data) {
+  return axiosClient.put("/api/v1/users/update", JSON.stringify(data));  
+}
+
+export function updateVendor(data) {
+  return axiosClient.put("/api/v1/users/vendors/update", JSON.stringify(data));  
+}
+
 
 export function getWorkflows() {
   return axiosClient.get("/api/v1/workflow");  
