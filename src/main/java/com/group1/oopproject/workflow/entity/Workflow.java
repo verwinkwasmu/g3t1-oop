@@ -1,18 +1,22 @@
 package com.group1.oopproject.workflow.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.group1.oopproject.questionnaire.entity.Questionnaire;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 
 @Document(collection = "workflow")
 @Data
@@ -26,8 +30,9 @@ public class Workflow {
     @Id
     private String id;
     private String workflowName;
-    private String questionnaireJSONString;
-        
+
+    private List<Questionnaire> questionnaires = new ArrayList<Questionnaire>();  
+    
     @CreatedDate
     private LocalDateTime createdAt;
 

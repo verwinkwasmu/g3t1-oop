@@ -27,7 +27,7 @@ public class WorkflowRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        workflow = new Workflow("workflowIdTest", "workflowNameTest", "workflowJSON", null);
+        workflow = new Workflow("workflowIdTest", "workflowNameTest", null, null);
     
     }
 

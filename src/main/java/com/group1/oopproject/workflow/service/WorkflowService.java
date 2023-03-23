@@ -114,7 +114,7 @@ public class WorkflowService {
         try{
             Workflow workflowToUpdate = workflowRepository.findById(workflow.getId()).get();
             workflowToUpdate.setWorkflowName(workflow.getWorkflowName());
-            workflowToUpdate.setQuestionnaireJSONString(workflow.getQuestionnaireJSONString());
+            workflowToUpdate.setQuestionnaires(workflow.getQuestionnaires());
             return workflowRepository.save(workflowToUpdate);
         } catch (WorkflowNotFoundException e) {
             throw e;
@@ -127,7 +127,7 @@ public class WorkflowService {
         try{
             AssignedWorkflow workflowToUpdate = assignedWorkflowRepository.findById(assignedWorkflow.getId()).get();
             workflowToUpdate.setWorkflowName(assignedWorkflow.getWorkflowName());
-            workflowToUpdate.setQuestionnaireJSONString(assignedWorkflow.getQuestionnaireJSONString());
+            workflowToUpdate.setQuestionnaires(assignedWorkflow.getQuestionnaires());
             workflowToUpdate.setAssignedVendorId(assignedWorkflow.getAssignedVendorId());
             workflowToUpdate.setWorkflowStatus(assignedWorkflow.getWorkflowStatus());
             workflowToUpdate.setSubmissionDeadline(assignedWorkflow.getSubmissionDeadline());
