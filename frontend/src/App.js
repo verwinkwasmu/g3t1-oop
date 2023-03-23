@@ -28,7 +28,7 @@ function App() {
 
         <Route path="/accounts" element={<AccountDash />} />
         {/* <Route path="/accounts/id" element={<AccountView />} /> */}
-        <Route path="/workflows/id" element={<WorkflowView />} />
+        <Route path="/workflows/:id" element={<WorkflowView />} />
         {/* <Route path="/accounts/:accountid" element={<AccountView />} /> */}
         <Route path="/accounts/:id" element={<AccountView />} />
 

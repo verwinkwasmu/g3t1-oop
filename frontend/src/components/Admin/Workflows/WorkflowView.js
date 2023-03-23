@@ -23,7 +23,7 @@ function WorkflowView() {
                             <IoGitPullRequestOutline size={70} color="3278AE" />
                         </div>
                         <div className="flex-auto">
-                            <p className="font-thin mt-1">ID: 1</p>
+                            <p className="font-thin mt-1">ID: {workflow.id}</p>
                             <h2 className="text-3xl font-semibold text-blue">{workflow.workflowName}</h2>
                         </div>
                         <div className="flex mt-5">
@@ -34,7 +34,7 @@ function WorkflowView() {
                     </div>
                     <div className="grid grid-rows-1 grid-cols-4 gap-x-2 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
                         {(workflow.workflowList).map(form =>
-                            <div className="card w-44 bg-base-100 border border-light-blue m-3 drop-shadow-xl">
+                            <div className="card w-44 bg-base-100 border border-light-blue m-3 drop-shadow-xl" key={workflow.id}>
                                 <div className="card-body text-center">
                                     <h2 className="card-title">{form}</h2>
                                 </div>
@@ -52,13 +52,8 @@ function WorkflowView() {
                                         <table>
                                             <tbody>
                                                 {(workflow.workflowList).map(form =>
-                                                    <div>
-                                                        <tr className="card-title">{form}</tr>
-                                                        <tr className='mb-2'>
-                                                            <td>
-                                                                Lorem Ipsum
-                                                            </td>
-                                                        </tr>
+                                                    <div key={workflow.id}>
+                                                        <tr className="card-title mb-2">{form}</tr>
                                                     </div>
                                                 )}
                                             </tbody>

@@ -1,14 +1,50 @@
-import React, { useState } from 'react';
+import { React, useState, useEffect } from 'react';
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { AiOutlineDelete } from "react-icons/ai";
 
+import { deleteWorkflow } from '../../../apiCalls';
+
 function DeleteWorkflow(props) {
 
-    const [workflowToRemove, setWorkflowToRemove] = useState(props.workflow);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const workflowsData = location.state.workflow;
+    console.log(workflowsData)
+
+    // useEffect(() => {
+    //     document.title = 'Delete Workflow'
+
+    //     deleteWorkflow(workflowsData.id)
+    //         .then(function (response) {
+    //             console.log(response.data)
+    //             // if (response.data.length > 0) {
+    //             //     setWorkflowsData(response.data)
+    //             // } else {
+    //             //     setWorkflowsData([])
+    //             // }
+    //         })
+
+    //     // eslint-disable-next-line
+    // }, [])
+
+    // console.log("WORKFLOWSDATA")
+    // console.log(workflowsData)
+
+    // const [workflowToRemove, setWorkflowToRemove] = useState(props.workflow);
 
     const deleteWorkflow = (workflowObject) => {
         console.log("INSIDE DELETE WORKFLOW");
-        console.log("NAME OF WORKFLOW TO BE DELETED: " + workflowObject.workflowName)
+
+        document.title = 'Delete Workflow'
+
+        deleteWorkflow(workflowsData.id)
+            .then(function (response) {
+                console.log(response.data)
+            })
+
+            // eslint-disable-next-line
     }
 
     return (
@@ -31,7 +67,7 @@ function DeleteWorkflow(props) {
                     </label>
                 </div>
                 <div className="flex justify-center">
-                    <label htmlFor="DeleteWorkflow" onClick={() => deleteWorkflow(workflowToRemove)} className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" type="button">
+                    <label htmlFor="DeleteWorkflow" onClick={() => deleteWorkflow(workflowsData)} className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" type="button">
                         Confirm Deletion
                     </label>
                 </div>

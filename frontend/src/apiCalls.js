@@ -70,3 +70,7 @@ export function getWorkflows() {
 export function getWorkflowsByVendor(id) {
   return axiosClient.get(`/api/v1/workflow/assigned/vendor/${id}`);  
 }
+
+export function deleteWorkflow(id) { // unique ID
+  return axiosClient.delete(`/api/v1/workflow/${id}`);  
+}
