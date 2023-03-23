@@ -1,10 +1,12 @@
 import { IoGitPullRequestOutline } from 'react-icons/io5';
 
+import { React, useState, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 
 import DeleteWorkflow from './DeleteWorkflow';
 import AssignNewUser from './AssignNewUser';
 import UpdateWorkflow from './UpdateWorkflow';
+import { getIndividualAssignedWorkflow } from '../../../apiCalls';
 
 function WorkflowView() {
 
@@ -12,6 +14,21 @@ function WorkflowView() {
     const location = useLocation();
 
     const workflow = location.state.workflow;
+    const [workflowAssignedUsers, setWorkflowAssignedUsers] = useState([]);
+
+    // useEffect(() => {
+    //     getIndividualAssignedWorkflow(workflow.id)
+    //         .then(function (response) {
+    //             // console.log(response.data)
+    //             if (response.data.length > 0) {
+    //                 setWorkflowAssignedUsers(response.data)
+    //             } else {
+    //                 setWorkflowAssignedUsers([])
+    //             }
+    //         })
+
+    //     // eslint-disable-next-line
+    // }, [])
 
     return (
         <>
@@ -71,9 +88,9 @@ function WorkflowView() {
                                     <div className="card-body text-left text-blue">
                                         <table>
                                             <tbody>
-                                                <tr className="card-title mb-2">User 1</tr>
-                                                <tr className="card-title mb-2">User 2</tr>
-                                                <tr className="card-title mb-2">User 3</tr>
+                                                <tr className="card-title mb-2">{workflowAssignedUsers.assignedAdminId}</tr>
+                                                <tr className="card-title mb-2">{workflowAssignedUsers.assignedVendorId}</tr>
+                                                {/* <tr className="card-title mb-2">User 3</tr> */}
                                             </tbody>
                                         </table>
                                     </div>

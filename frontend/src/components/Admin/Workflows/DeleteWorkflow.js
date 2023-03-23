@@ -13,38 +13,16 @@ function DeleteWorkflow(props) {
     const workflowsData = location.state.workflow;
     console.log(workflowsData)
 
-    // useEffect(() => {
-    //     document.title = 'Delete Workflow'
-
-    //     deleteWorkflow(workflowsData.id)
-    //         .then(function (response) {
-    //             console.log(response.data)
-    //             // if (response.data.length > 0) {
-    //             //     setWorkflowsData(response.data)
-    //             // } else {
-    //             //     setWorkflowsData([])
-    //             // }
-    //         })
-
-    //     // eslint-disable-next-line
-    // }, [])
-
-    // console.log("WORKFLOWSDATA")
-    // console.log(workflowsData)
-
-    // const [workflowToRemove, setWorkflowToRemove] = useState(props.workflow);
-
-    const deleteWorkflow = (workflowObject) => {
+    const handleDelete = () => {
         console.log("INSIDE DELETE WORKFLOW");
-
-        document.title = 'Delete Workflow'
-
         deleteWorkflow(workflowsData.id)
-            .then(function (response) {
-                console.log(response.data)
+            .then(function(response){
+                navigate("/workflows")
+                
             })
-
-            // eslint-disable-next-line
+            .catch(function(error){
+                console.log("ERROR DELETING WORKFLOW")
+            })
     }
 
     return (
@@ -67,7 +45,7 @@ function DeleteWorkflow(props) {
                     </label>
                 </div>
                 <div className="flex justify-center">
-                    <label htmlFor="DeleteWorkflow" onClick={() => deleteWorkflow(workflowsData)} className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" type="button">
+                    <label htmlFor="DeleteWorkflow" onClick={() => handleDelete()} className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" type="button">
                         Confirm Deletion
                     </label>
                 </div>

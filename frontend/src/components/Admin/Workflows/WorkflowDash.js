@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 
 import CreateWorkflow from "./CreateWorkflow"
-import { getWorkflows } from '../../../apiCalls';
+import { getWorkflows, getAssignedWorkflows } from '../../../apiCalls';
 
 function WorkflowDash() {
 
@@ -29,6 +29,32 @@ function WorkflowDash() {
     console.log("WORKFLOWSDATA")
     console.log(workflowsData)
 
+    const renderTemplates = () => {
+        console.log("RENDER TEMPLATES")
+        getWorkflows()
+            .then(function (response) {
+                // console.log(response.data)
+                if (response.data.length > 0) {
+                    setWorkflowsData(response.data)
+                } else {
+                    setWorkflowsData([])
+                }
+            })
+    }
+
+    const renderAssigned = () => {
+        console.log("RENDER ASSIGNED")
+        getAssignedWorkflows()
+            .then(function (response) {
+                // console.log(response.data)
+                if (response.data.length > 0) {
+                    setWorkflowsData(response.data)
+                } else {
+                    setWorkflowsData([])
+                }
+            })
+    }
+
     const toWorkflowView = (workflow) => {
         console.log("===== INSIDE toWorkflowView =====")
         navigate(`/workflows/${workflow.id}`, { state: { workflow: workflow } });
@@ -41,7 +67,9 @@ function WorkflowDash() {
 
                     <div className="flex flex-wrap mb-5">
                         <div className="flex-auto">
-                            <h1 className="text-3xl font-semibold text-blue">Workflows</h1>
+                            <p className="text-3xl font-semibold text-blue">Workflows</p>
+                            <div onClick={renderTemplates}>Templates </div>
+                            <div onClick={renderAssigned}>Assigned</div>
                         </div>
                         <div className="flex ">
                             <CreateWorkflow></CreateWorkflow>

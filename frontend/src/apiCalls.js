@@ -88,8 +88,20 @@ export function getWorkflows() {
   return axiosClient.get("/api/v1/workflow");  
 }
 
+export function getAssignedWorkflows() {
+  return axiosClient.get("/api/v1/workflow/assigned");  
+}
+
 export function getWorkflowsByVendor(id) {
   return axiosClient.get(`/api/v1/workflow/assigned/vendor/${id}`);  
+}
+
+export function getIndividualAssignedWorkflow(id) {
+  return axiosClient.get(`/api/v1/workflow/assigned/${id}`);  
+}
+
+export function createWorkflowTemplate(data) { 
+  return axiosClient.post("/api/v1/workflow", JSON.stringify(data));  
 }
 
 export function deleteWorkflow(id) { // unique ID
