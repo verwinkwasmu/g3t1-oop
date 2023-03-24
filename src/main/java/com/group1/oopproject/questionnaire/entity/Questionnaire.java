@@ -24,7 +24,7 @@ public class Questionnaire {
     private String assignedAdmin;
     private QuestionnaireStatus status;
     private LocalDateTime submissionDate;
-    private LocalDateTime submissionDateline;
+    private LocalDateTime submissionDeadline;
     private Map<String, Object> questionsAndAnswers;
 
     @CreatedDate
