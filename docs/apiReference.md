@@ -34,6 +34,8 @@
     "assignedAdmin": "not-jack-1",
     "status": "SUBMITTED", (status must be: NOT_STARTED, SUBMITTED, ADMIN_APPROVED, RETURNED, APPROVER_APPROVED)
     "submissionDeadline": "2023-03-22T09:16:28.866",
+    "vendorEmail": "verwinkwa@gmail.com",
+    "vendorName": "Alex",
     "questionsAndAnswers": {
         "something": {
             "first thing" : "hello",
@@ -56,6 +58,8 @@
     "status": "SUBMITTED",
     "submissionDate": "2023-03-22T09:16:28.866",
     "submissionDeadline": "2023-03-22T09:16:28.866",
+    "vendorEmail": "verwinkwa@gmail.com",
+    "vendorName": "Alex",
     "questionsAndAnswers": {
         "something": {
             "first thing" : "hello",

@@ -25,6 +25,8 @@ public class Questionnaire {
     private QuestionnaireStatus status;
     private LocalDateTime submissionDate;
     private LocalDateTime submissionDeadline;
+    private String vendorEmail;
+    private String vendorName;
     private Map<String, Object> questionsAndAnswers;
 
     @CreatedDate
