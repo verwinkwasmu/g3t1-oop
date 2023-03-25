@@ -11,9 +11,9 @@ public interface QuestionnaireRepository extends MongoRepository<Questionnaire, 
 
     Optional<Questionnaire> findById(String id);
 
-    List<Questionnaire> findByAssignedVendor(String assignedVendor);
+    List<Questionnaire> findByAssignedVendorId(String assignedVendorId);
 
-    List<Questionnaire> findByAssignedAdmin(String assignedAdmin);
+    List<Questionnaire> findByAssignedAdminId(String assignedAdminId);
 
     List<Questionnaire> findByStatus(QuestionnaireStatus status);
 
