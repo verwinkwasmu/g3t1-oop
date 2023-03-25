@@ -30,9 +30,10 @@
 [Example Request Body, MUST STRICTLY FOLLOW THIS FORMAT]
 {
     "title" : "1st questionnaire",
-    "assignedVendor": "jack-1",
-    "assignedAdmin": "not-jack-1",
-    "status": "SUBMITTED", (status must be: NOT_STARTED, SUBMITTED, ADMIN_APPROVED, RETURNED, APPROVER_APPROVED)
+    "assignedVendorId": "jack-1",
+    "assignedAdminId": "not-jack-1",
+    "status": "SUBMITTED", (status must be: INITIAL_DRAFT, SUBMITTED, ADMIN_APPROVED, RETURNED, APPROVER_APPROVED)
+    "submissionDeadline": "2023-03-22T09:16:28.866",
     "questionsAndAnswers": {
         "something": {
             "first thing" : "hello",
@@ -50,9 +51,11 @@
 {
     "id": "641a56ec5ad139669ecbce70",
     "title" : "1st questionnaireeeeeeeee",
-    "assignedVendor": "jack-1",
-    "assignedAdmin": "not-jack-1",
+    "assignedVendorId": "jack-1",
+    "assignedAdminId": "not-jack-1",
     "status": "SUBMITTED",
+    "submissionDate": "2023-03-22T09:16:28.866",
+    "submissionDeadline": "2023-03-22T09:16:28.866",
     "questionsAndAnswers": {
         "something": {
             "first thing" : "hello",

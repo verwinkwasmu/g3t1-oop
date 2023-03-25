@@ -46,7 +46,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/{userType}")
+    @GetMapping("/type/{userType}")
     public ResponseEntity<List<User>> getAllUsersByType(@PathVariable String userType) {
         try {
             return ResponseEntity.ok(userService.getAllUsersByType(userType));
@@ -72,7 +72,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/vendors/{companyName}")
+    @GetMapping("/vendors/company/{companyName}")
     public ResponseEntity<List<Vendor>> getAllVendorsByCompany(@PathVariable String companyName) {
         try {
             return ResponseEntity.ok(userService.getAllVendorsByCompany(companyName));
@@ -99,7 +99,7 @@ public class UserController {
     }
 
     @GetMapping("/vendors/{id}")
-    public ResponseEntity<User> findVendorById(@PathVariable String id) {
+    public ResponseEntity<Vendor> findVendorById(@PathVariable String id) {
         try {
             return ResponseEntity.ok(userService.findVendorById(id));
         } catch (UserNotFoundException e) {
