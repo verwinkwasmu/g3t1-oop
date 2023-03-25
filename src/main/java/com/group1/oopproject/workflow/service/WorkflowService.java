@@ -69,28 +69,6 @@ public class WorkflowService {
         }
     }
 
-    public List<AssignedWorkflow> findAssignedByAdminId(String id) throws WorkflowNotFoundException {
-        try {
-            List<AssignedWorkflow> assignedWorkflows = assignedWorkflowRepository.findAll();
-            if (assignedWorkflows.isEmpty()) {
-                throw new WorkflowNotFoundException("No workflows found in the database");
-            }
-            List<AssignedWorkflow> returned = new ArrayList<AssignedWorkflow>();
-
-            for (AssignedWorkflow assignedWorkflow : assignedWorkflows){
-                if(assignedWorkflow.getAssignedAdminId().equals(id)){
-                    returned.add(assignedWorkflow);
-                }
-            }
-            if (returned.isEmpty()){
-                throw new WorkflowNotFoundException("No workflows found under Admin Id " + id);
-            }
-            return returned;
-        } catch (UncategorizedMongoDbException e) {
-            throw new DatabaseCommunicationException("Error communicating with database for method findById", e);
-        }
-    }
-
     public List<AssignedWorkflow> findAssignedByVendorId(String id) throws WorkflowNotFoundException {
         try {
             List<AssignedWorkflow> assignedWorkflows = assignedWorkflowRepository.findAll();
@@ -136,7 +114,7 @@ public class WorkflowService {
         try{
             Workflow workflowToUpdate = workflowRepository.findById(workflow.getId()).get();
             workflowToUpdate.setWorkflowName(workflow.getWorkflowName());
-            workflowToUpdate.setWorkflowList(workflow.getWorkflowList());
+            workflowToUpdate.setQuestionnaires(workflow.getQuestionnaires());
             return workflowRepository.save(workflowToUpdate);
         } catch (WorkflowNotFoundException e) {
             throw e;
@@ -149,11 +127,15 @@ public class WorkflowService {
         try{
             AssignedWorkflow workflowToUpdate = assignedWorkflowRepository.findById(assignedWorkflow.getId()).get();
             workflowToUpdate.setWorkflowName(assignedWorkflow.getWorkflowName());
-            workflowToUpdate.setWorkflowList(assignedWorkflow.getWorkflowList());
-            workflowToUpdate.setGeneratedFormId(assignedWorkflow.getGeneratedFormId());
-            workflowToUpdate.setAssignedAdminId(assignedWorkflow.getAssignedAdminId());
+            workflowToUpdate.setQuestionnaires(assignedWorkflow.getQuestionnaires());
             workflowToUpdate.setAssignedVendorId(assignedWorkflow.getAssignedVendorId());
             workflowToUpdate.setWorkflowStatus(assignedWorkflow.getWorkflowStatus());
+            workflowToUpdate.setSubmissionDeadline(assignedWorkflow.getSubmissionDeadline());
+
+            if (assignedWorkflow.getWorkflowStatus().equals("APPROVED")){
+                workflowToUpdate.setApprovedAt(LocalDateTime.now());
+            }
+            
             return workflowRepository.save(workflowToUpdate);
         } catch (WorkflowNotFoundException e) {
             throw e;
