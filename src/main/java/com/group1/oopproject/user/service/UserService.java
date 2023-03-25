@@ -50,8 +50,8 @@ public class UserService {
         } catch (UserNotFoundException e) {
             throw e;
         } catch (Exception e) {
-            throw e;
-//            throw new DatabaseCommunicationException("Error communicating with database", e);
+//            throw e;
+            throw new DatabaseCommunicationException("Error communicating with database", e);
         }
     }
 
@@ -77,8 +77,8 @@ public class UserService {
         } catch (UserNotFoundException e) {
             throw e;
         } catch (Exception e) {
-            throw e;
-//            throw new DatabaseCommunicationException("Error communicating with database", e);
+//            throw e;
+            throw new DatabaseCommunicationException("Error communicating with database", e);
         }
     }
 
@@ -104,8 +104,8 @@ public class UserService {
         } catch (UserNotFoundException e) {
             throw e;
         } catch (Exception e) {
-            throw e;
-//            throw new DatabaseCommunicationException("Error communicating with database", e);
+//            throw e;
+            throw new DatabaseCommunicationException("Error communicating with database", e);
         }
     }
 
@@ -123,8 +123,8 @@ public class UserService {
             Optional<Vendor> vendor = vendorRepository.findById(id);
             return vendor.orElseThrow(() -> new UserNotFoundException("Vendor not found with id: " + id));
         } catch (UncategorizedMongoDbException e) {
-            throw e;
-//            throw new DatabaseCommunicationException("Error communicating with database", e);
+//            throw e;
+            throw new DatabaseCommunicationException("Error communicating with database", e);
         }
     }
 
@@ -143,9 +143,9 @@ public class UserService {
             vendor.setCreatedAt(LocalDateTime.now());
             return vendorRepository.save(vendor);
         } catch (Exception e) {
-            throw e;
-//            throw new DatabaseCommunicationException("Error communicating with the database while creating the user",
-//                    e);
+//            throw e;
+            throw new DatabaseCommunicationException("Error communicating with the database while creating the user",
+                    e);
         }
     }
 
