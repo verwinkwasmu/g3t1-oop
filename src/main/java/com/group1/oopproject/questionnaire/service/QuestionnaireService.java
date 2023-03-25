@@ -54,7 +54,7 @@ public class QuestionnaireService {
 
     public List<Questionnaire> findByAssignedVendor(String assignedVendor) {
         try {
-            List<Questionnaire> questionnaires = questionnaireRepository.findByAssignedVendor(assignedVendor);
+            List<Questionnaire> questionnaires = questionnaireRepository.findByAssignedVendorId(assignedVendor);
             if (questionnaires.isEmpty()) {
                 throw new QuestionnaireNotFoundException("No questionnaires found in the database for vendor with id: " + assignedVendor);
             }
@@ -69,7 +69,7 @@ public class QuestionnaireService {
 
     public List<Questionnaire> findByAssignedAdmin(String assignedAdmin) {
         try {
-            List<Questionnaire> questionnaires = questionnaireRepository.findByAssignedAdmin(assignedAdmin);
+            List<Questionnaire> questionnaires = questionnaireRepository.findByAssignedAdminId(assignedAdmin);
             if (questionnaires.isEmpty()) {
                 throw new QuestionnaireNotFoundException("No questionnaires found in the database for admin with id: " + assignedAdmin);
             }
