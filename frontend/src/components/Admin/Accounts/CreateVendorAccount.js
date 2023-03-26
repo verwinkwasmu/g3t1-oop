@@ -36,8 +36,7 @@ function CreateVendorAccount() {
         console.log("INSIDE HANDLE SAVE");
         createVendor({id: id, name: name, email: email, password: password, userType: "VENDOR", companyName: companyName, country: country, regNumber: regNumber, bizNature: bizNature, contactNum: contactNum, gstnumber: gstNumber})
             .then(function(response){
-                navigate('/accounts');
-                // navigate(`/accounts/${id}`, {state: {account: {id: id, name: name, email: email, password: password, userType: "VENDOR", companyName: company, regNumber: "4567", bizNature: "Love", contactNum: "12345678", gstnumber: "GST456"}}});
+                window.location.reload();
             })
             .catch(function(error){
                 console.log("CREATEACCOUNT ERROR")

@@ -41,7 +41,6 @@ function Login({ setToken }) {
     }
 
     const handleLogin = () => {
-        console.log("INSIDE HANDLE SAVE");
         getVendorById(id)
             .then(function(response){
                 checkPassword(response.data);
@@ -52,7 +51,6 @@ function Login({ setToken }) {
                         checkPassword(response.data);
                     })
                 .catch(function(error) {
-                    console.log("this user does not exist");
                     setIdStatus(false)
                 })
             })

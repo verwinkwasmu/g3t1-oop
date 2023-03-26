@@ -76,19 +76,22 @@ function AccountDash() {
     return (
         <>
             <div className="rounded-t-3xl mx-10 mt-10 h-screen py-12 px-20 shadow-2xl">    
-                    <div className="flex flex-wrap mb-5">
-                        <div className="flex-auto">
-                            <h1 className="text-3xl font-semibold text-blue">Registered Accounts</h1>
-                            <div className="inline-flex">
-                                <button onClick={() => toggleView("VENDOR")} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 text-gray-800 font-bold py-2 px-4 rounded-l">
-                                    VENDORS
+                    <div className="flex justify-between mb-5">
+                        <div className="flex">
+                            <h1 className="text-3xl font-semibold text-blue mr-5">Registered Accounts
+                                <span hidden={currentView == "VENDOR" ? false : true}>: Vendors</span>
+                                <span hidden={currentView != "VENDOR" ? false : true}>: Staff</span>
+                            </h1>
+                            <div className="pb-2 inline-flex">
+                                <button onClick={() => toggleView("VENDOR")} hidden={currentView == "VENDOR" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
+                                    Go to Vendors
                                 </button>
-                                <button onClick={() => toggleView("USER")} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 text-gray-800 font-bold py-2 px-4 rounded-r">
-                                    STAFF
+                                <button onClick={() => toggleView("USER")} hidden={currentView != "VENDOR" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
+                                    Go to Staff
                                 </button>
                             </div>
                         </div>
-                        <div className="flex ">
+                        <div className="flex">
                             <div hidden={currentView == "VENDOR" ? false : true}>
                                 <CreateVendorAccount></CreateVendorAccount>
                             </div>
@@ -96,7 +99,7 @@ function AccountDash() {
                                 <CreateUserAccount></CreateUserAccount>
                             </div>
                             {/* <RemoveAccount accounts={selected}></RemoveAccount>   */}
-                    </div>
+                        </div>
                     </div>
                     <div className="flex flex-wrap text-left">
                         <table className="flex-auto table-fixed divide-y-2 divide-slate-700" hidden={currentView == "VENDOR" ? false : true}>
