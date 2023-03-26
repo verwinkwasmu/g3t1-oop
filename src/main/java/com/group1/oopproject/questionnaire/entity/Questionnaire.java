@@ -27,7 +27,7 @@ public class Questionnaire {
     private LocalDateTime submissionDate;
     private LocalDateTime submissionDeadline;
     private Map<String, Object> questionsAndAnswers;
-
+    
     @CreatedDate
     private LocalDateTime createdAt;
 
