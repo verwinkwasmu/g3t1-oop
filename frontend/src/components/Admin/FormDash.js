@@ -1,6 +1,16 @@
+import { Link } from "react-router-dom";
+
+
+
 function FormDash() {
     return (
-        <h1>FormDash</h1>
+        <div>
+            <h1>FormDash</h1>
+            <Link to="/forms/create-questionnaire">Create Form</Link>
+            <Link to="/forms/view-all-questionnaires">View Form</Link>
+            {/* <Link to="/forms/edit-questionnaire">Edit Form</Link> */}
+        </div>
+        
     )
 }
 

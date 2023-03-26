@@ -8,9 +8,13 @@ import AccountView from './components/Admin/Accounts/AccountView';
 import WorkflowTemplateView from './components/Admin/Workflows/WorkflowTemplateView';
 import WorkflowAssignedView from './components/Admin/Workflows/WorkflowAssignedView';
 
-import CreateForm from './components/Admin/CreateForm';
 
 import ApprovalDash from './components/Approver/ApprovalDash';
+
+import CreateQuestionnaire from './components/Admin/Forms/CreateQuestionnaire';
+import ViewAllQuestionnaires from './components/Admin/Forms/ViewAllQuestionnaires';
+import EditQuestionnaire from './components/Admin/Forms/EditQuestionnaire';
+import ViewIndivQuestionnaire from './components/Admin/Forms/ViewIndivQuestionnaire';
 
 import Profile from './components/Profile';
 
@@ -34,11 +38,14 @@ function App() {
         {/* <Route path="/accounts/:accountid" element={<AccountView />} /> */}
         <Route path="/accounts/:id" element={<AccountView />} />
 
-        <Route path="/forms/create-form" element={<CreateForm />}></Route>
-
         <Route path="/approvals" element={<ApprovalDash />}></Route>
 
         {/* <Route path="/profile" element={<Profile />} /> */}
+
+        <Route path="/forms/create-questionnaire" element={<CreateQuestionnaire/>}/>
+        <Route path="/forms/view-all-questionnaires" element={<ViewAllQuestionnaires/>}/>
+        <Route path="/forms/edit-questionnaire/:id" element={<EditQuestionnaire/>}/>
+        <Route path="/forms/view-indiv-questionnaire/:id" element={<ViewIndivQuestionnaire/>}/>
 
       </Routes>
 
