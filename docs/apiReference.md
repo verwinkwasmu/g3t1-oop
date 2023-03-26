@@ -15,13 +15,13 @@
 
 ``[GET] /api/v1/questionnaire/{id}``
 
-3. Get form by assignedVendor (returns a list of forms assigned to Vendor)
+3. Get form by assignedVendorId (returns a list of forms assigned to Vendor)
 
-``[GET] /api/v1/questionnaire/vendor/{id}``
+``[GET] /api/v1/questionnaire/vendor/{assignedVendorId}``
 
-4. Get form by assignedAdmin (returns a list of forms assigned to Admin)
+4. Get form by assignedAdminId (returns a list of forms assigned to Admin)
 
-``[GET] /api/v1/questionnaire/admin/{id}``
+``[GET] /api/v1/questionnaire/admin/{assignedAdminId}``
 
 5. Create questionnaire (returns one questionnaire)
 
