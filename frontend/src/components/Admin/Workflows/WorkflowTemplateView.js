@@ -6,7 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import DeleteWorkflow from './DeleteWorkflow';
 import AssignNewUser from './AssignNewUser';
 import UpdateWorkflow from './UpdateWorkflow';
-import { getIndividualAssignedWorkflow } from '../../../apiCalls';
+import { getIndividualQuestionnaire } from '../../../apiCalls';
 
 function WorkflowView() {
 
@@ -14,21 +14,33 @@ function WorkflowView() {
     const location = useLocation();
 
     const workflow = location.state.workflow;
-    const [workflowAssignedUsers, setWorkflowAssignedUsers] = useState([]);
+    const questionnaireTitles = [];
 
-    // useEffect(() => {
-    //     getIndividualAssignedWorkflow(workflow.id)
-    //         .then(function (response) {
-    //             // console.log(response.data)
-    //             if (response.data.length > 0) {
-    //                 setWorkflowAssignedUsers(response.data)
-    //             } else {
-    //                 setWorkflowAssignedUsers([])
-    //             }
-    //         })
+    const questionnaireInfo = (workflow) => {
+        console.log("INSIDE QUESTIONNAIRE INFO");
+        // console.log(id);
+        console.log("=========");
+        console.log(workflow.workflowList);
 
-    //     // eslint-disable-next-line
-    // }, [])
+        for (const element of workflow.workflowList) {
+            getIndividualQuestionnaire(element)
+            .then(function (response) {
+                console.log(response.data);
+                if (response.data.length > 0) {
+                    questionnaireTitles.push(response.data.title);
+                } else {
+                    questionnaireTitles = [];
+                }
+            })
+            .catch(function (error) {
+                console.log("ERROR");
+            })
+        } 
+
+        console.log("INFORMATION");
+        console.log(questionnaireTitles);
+
+    }
 
     return (
         <>

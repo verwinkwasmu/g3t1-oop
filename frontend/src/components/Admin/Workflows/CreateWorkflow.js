@@ -22,14 +22,6 @@ function CreateWorkflow() {
 
     // const selectedOptions = [];
     const handleSelect = (data) => {
-        // console.log(data.values);
-        // for (const element of data) {
-        //     console.log("----------");
-        //     console.log(element.value);
-        //     selectedOptions.push(element.value);
-        // }
-        // console.log("=========");
-        // console.log(selectedOptions);
         setSelectedQuestionnaires(data);
     }
 
