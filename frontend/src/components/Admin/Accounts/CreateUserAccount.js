@@ -39,7 +39,7 @@ function CreateUserAccount() {
 
     return (
         <>
-            <label htmlFor="CreateUserAccount" className="btn bg-cyan border-transparent outline-none rounded-full mr-2">
+            <label htmlFor="CreateUserAccount" className="btn bg-cyan border-transparent outline-none rounded-full mr-2" >
                 <MdAdd className="mr-3"></MdAdd>
                 Add New User</label>
             

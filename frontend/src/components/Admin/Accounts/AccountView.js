@@ -22,7 +22,7 @@ function UserView() {
 
     const toAccountDash = () => {
         console.log("===== INSIDE TOACCOUNTDASH =====")
-        navigate(`/accounts`);
+        navigate(`/accounts/#`);
     }
 
     useEffect(() => {

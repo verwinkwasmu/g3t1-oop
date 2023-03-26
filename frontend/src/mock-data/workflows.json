@@ -1,18 +1,17 @@
 [
     {
-        "id": 101,
-        "name": "Default 1",
-        "forms": ["form1", "form2"]
+        "workflowName": "Business Process Re-Engineering", 
+        "attachedUserId": "user id 1234", 
+        "workflowList": ["form id 1", "form id 2", "form id 3"]
     },
     {
-        "id": 102,
-        "name": "Default 2",
-        "forms": ["form3"]
+        "workflowName": "name 2", 
+        "attachedUserId": "user id 1235", 
+        "workflowList": ["form id 2", "form id 3"]
     },
     {
-        "id": 103,
-        "name": "Default 3",
-        "forms": ["form4", "form5", "form6"]
+        "workflowName": "name", 
+        "attachedUserId": "user id 1236", 
+        "workflowList": ["form id 2", "form id 4", "form id 5"]
     }
-
 ]
