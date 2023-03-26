@@ -111,3 +111,7 @@ export function deleteWorkflow(id) { // unique ID
 export function getQuestionnaires() {
   return axiosClient.get("/api/v1/questionnaire");  
 }
+
+export function getIndividualQuestionnaire(id) {
+  return axiosClient.get(`/api/v1/questionnaire/${id}`);  
+}
