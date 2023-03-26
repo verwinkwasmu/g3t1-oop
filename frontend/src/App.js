@@ -5,7 +5,8 @@ import WorkflowDash from './components/Admin/Workflows/WorkflowDash';
 import FormDash from './components/Admin/FormDash';
 import AccountDash from './components/Admin/Accounts/AccountDash';
 import AccountView from './components/Admin/Accounts/AccountView';
-import WorkflowView from './components/Admin/Workflows/WorkflowView';
+import WorkflowTemplateView from './components/Admin/Workflows/WorkflowTemplateView';
+import WorkflowAssignedView from './components/Admin/Workflows/WorkflowAssignedView';
 
 import CreateForm from './components/Admin/CreateForm';
 
@@ -28,7 +29,8 @@ function App() {
 
         <Route path="/accounts" element={<AccountDash />} />
         {/* <Route path="/accounts/id" element={<AccountView />} /> */}
-        <Route path="/workflows/:id" element={<WorkflowView />} />
+        <Route path="/workflow-templates/:id" element={<WorkflowTemplateView />} />
+        <Route path="/workflow-assigned/:id" element={<WorkflowAssignedView />} />
         {/* <Route path="/accounts/:accountid" element={<AccountView />} /> */}
         <Route path="/accounts/:id" element={<AccountView />} />
 
