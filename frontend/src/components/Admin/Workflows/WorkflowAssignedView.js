@@ -7,6 +7,7 @@ import DeleteWorkflow from './DeleteWorkflow';
 import AssignNewUser from './AssignNewUser';
 import UpdateWorkflow from './UpdateWorkflow';
 import { getIndividualAssignedWorkflow } from '../../../apiCalls';
+import ViewWorkflowQuestionnaire from './ViewWorkflowQuestionnaire';
 
 function WorkflowView() {
 

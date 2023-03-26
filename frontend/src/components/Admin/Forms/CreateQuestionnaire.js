@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import axios from 'axios';
-import { Modal } from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
 import { Button } from 'react-bulma-components';
 import jsPDF from 'jspdf';

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import CreateWorkflow from "./CreateWorkflow"
 import { getWorkflows, getAssignedWorkflows } from '../../../apiCalls';
+import { Link } from "react-router-dom";
 
 function WorkflowDash() {
 
@@ -97,6 +98,10 @@ function WorkflowDash() {
                                 <div className="card-body m-1.5">
                                     <h2 className="card-title">{workflow.workflowName}</h2>
                                     <p className="text-base">Lorem Ipsum</p>
+                                    {/* here must change to workflow assigned...? */}
+                                    <Link to={`/Workflows/ViewWorkflowQuestionnaire/${workflow.id}`}>
+                                    <p>TEMMP</p>
+                                    </Link> 
                                     <div className="card-actions justify-end">
                                         <button className="btn bg-blue hover:bg-cyan border-transparent hover:border-transparent" onClick={() => { toWorkflowView(workflow) }}>See Workflow</button>
                                     </div>

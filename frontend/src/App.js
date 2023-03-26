@@ -20,6 +20,7 @@ import Profile from './components/Profile';
 
 
 import { Route, Routes } from "react-router-dom";
+import ViewWorkflowQuestionnaire from './components/Admin/Workflows/ViewWorkflowQuestionnaire';
 
 function App() {
   return (
@@ -46,6 +47,8 @@ function App() {
         <Route path="/forms/view-all-questionnaires" element={<ViewAllQuestionnaires/>}/>
         <Route path="/forms/edit-questionnaire/:id" element={<EditQuestionnaire/>}/>
         <Route path="/forms/view-indiv-questionnaire/:id" element={<ViewIndivQuestionnaire/>}/>
+
+        <Route path="/Workflows/ViewWorkflowQuestionnaire/:id" element={<ViewWorkflowQuestionnaire/>}/>
 
       </Routes>
 

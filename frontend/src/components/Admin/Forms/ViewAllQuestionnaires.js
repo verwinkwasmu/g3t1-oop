@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import DeleteQuestionnaire from './DeleteQuestionnaire';
+
 
 const baseURL = "http://localhost:8080/api/v1/questionnaire";
 
@@ -30,6 +32,7 @@ export default function ViewQuestionnaire() {
                 <Link to={`/forms/edit-questionnaire/${p.id}`}>
                 <p>edit</p>
                 </Link> 
+                <DeleteQuestionnaire questionnaireId={p.id} />
             </div>
             ))}
         </div>
