@@ -17,7 +17,7 @@ import com.group1.oopproject.workflow.entity.AssignedWorkflow;
 import com.group1.oopproject.workflow.repository.AssignedWorkflowRepository;
 import com.group1.oopproject.questionnaire.entity.Questionnaire;
 
-@Service
+@Service 
 public class WorkflowService {
 
     @Autowired
@@ -57,8 +57,21 @@ public class WorkflowService {
 
     public Workflow findById(String id) throws WorkflowNotFoundException {
         try {
-            Optional<Workflow> workflow = workflowRepository.findById(id);
-            return workflow.orElseThrow(() -> new WorkflowNotFoundException("Workflow not found with id: " + id));
+            Optional<Workflow> optionalWorkflow = workflowRepository.findById(id);
+            if(optionalWorkflow == null){
+                new WorkflowNotFoundException("Workflow not found with id: " + id);
+            }
+
+            Workflow workflow = optionalWorkflow.get();
+            List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
+            for (String questionnaireId : workflow.getQuestionnaireList()) {
+                Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+                Questionnaire questionnaire = optionalQuestionnaire.get();
+                questionnaireList.add(questionnaire);
+                workflow.setQuestionnaires(questionnaireList);
+            }
+
+            return workflow;
         } catch (UncategorizedMongoDbException e) {
             throw new DatabaseCommunicationException("Error communicating with database for method findById", e);
         }
@@ -131,7 +144,7 @@ public class WorkflowService {
         try{
             Workflow workflowToUpdate = workflowRepository.findById(workflow.getId()).get();
             workflowToUpdate.setWorkflowName(workflow.getWorkflowName());
-            workflowToUpdate.setQuestionnaires(workflow.getQuestionnaires());
+            workflowToUpdate.setQuestionnaireList(workflow.getQuestionnaireList());
             return workflowRepository.save(workflowToUpdate);
         } catch (WorkflowNotFoundException e) {
             throw e;
