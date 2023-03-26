@@ -107,3 +107,7 @@ export function createWorkflowTemplate(data) {
 export function deleteWorkflow(id) { // unique ID
   return axiosClient.delete(`/api/v1/workflow/${id}`);  
 }
+
+export function getQuestionnaires() {
+  return axiosClient.get("/api/v1/questionnaire");  
+}
