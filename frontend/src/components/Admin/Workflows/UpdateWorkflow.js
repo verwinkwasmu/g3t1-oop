@@ -6,7 +6,7 @@ function UpateWorkflow(props) {
 
     const [attachedUserId, setattachedUserId] = useState(props.workflow.attachedUserId);
     const [workflowName, setworkflowName] = useState(props.workflow.workflowName);
-    const [workflowList, setworkflowList] = useState(props.workflow.workflowList);
+    const [questionnaireList, setworkflowList] = useState(props.workflow.questionnaireList);
 
     return (
         <>
@@ -40,7 +40,7 @@ function UpateWorkflow(props) {
                             <label className="block text-gray-700 text-xs font-thin mb-2" htmlFor="description">
                                 Separate forms with a comma (,)
                             </label>
-                            <input className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="forms" type="text" defaultValue={workflowList.join(", ")} />
+                            <input className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="forms" type="text" defaultValue={questionnaireList.join(", ")} />
                         </div>
                         <div className="flex justify-center">
                             <label htmlFor="UpateWorkflow" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" type="button">

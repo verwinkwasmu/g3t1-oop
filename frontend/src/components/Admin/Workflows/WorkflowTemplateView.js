@@ -1,7 +1,7 @@
 import { IoGitPullRequestOutline } from 'react-icons/io5';
 
 import { React, useState, useEffect } from 'react';
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 
 import DeleteWorkflow from './DeleteWorkflow';
 import AssignNewUser from './AssignNewUser';
@@ -9,7 +9,7 @@ import UpdateWorkflow from './UpdateWorkflow';
 import { getIndividualQuestionnaire } from '../../../apiCalls';
 
 function WorkflowView() {
-
+    console.log("G+HI BItch")
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -62,7 +62,7 @@ function WorkflowView() {
                         </div>
                     </div>
                     <div className="grid grid-rows-1 grid-cols-4 gap-x-2 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-                        {(workflow.workflowList).map(form =>
+                        {(workflow.questionnaireList).map(form =>
                             <div className="card w-44 bg-base-100 border border-light-blue m-3 drop-shadow-xl" key={workflow.id}>
                                 <div className="card-body text-center">
                                     <h2 className="card-title">{form}</h2>
@@ -80,9 +80,10 @@ function WorkflowView() {
                                     <div className="card-body text-left">
                                         <table>
                                             <tbody>
-                                                {(workflow.workflowList).map(form =>
+                                                {(workflow.questionnaireList).map(form =>
                                                     <div key={workflow.id}>
                                                         <tr className="card-title mb-2">{form}</tr>
+                                                        <Link to={`/Workflows/ViewWorkflowQuestionnaire/${workflow.id}`}>View Form</Link>
                                                     </div>
                                                 )}
                                             </tbody>
