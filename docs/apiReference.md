@@ -68,7 +68,7 @@
 
 7. Delete questionnaire by id
 
-``[DELETE] /api/v1/questionnaire/delete/{id}``
+``[DELETE] /api/v1/questionnaire/delete/{id}/{userId}``
 
 8. Get questionnaires based on status (returns a list of questionnaires)
 
@@ -180,6 +180,13 @@
 
 ---
 
-### Workflow
+### Archive
+1. Get all archive document based on its collection (returns a list of archive document)
+
+``[GET] /api/v1/archive/collection/{collection}``
+
+2. restore archive document into its original collection
+
+``[POST] /api/v1/restoreDocument/{id}``
 
 ---
