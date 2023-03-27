@@ -15,13 +15,13 @@
 
 ``[GET] /api/v1/questionnaire/{id}``
 
-3. Get form by assignedVendor (returns a list of forms assigned to Vendor)
+3. Get form by assignedVendorId (returns a list of forms assigned to Vendor)
 
-``[GET] /api/v1/questionnaire/vendor/{id}``
+``[GET] /api/v1/questionnaire/vendor/{assignedVendorId}``
 
-4. Get form by assignedAdmin (returns a list of forms assigned to Admin)
+4. Get form by assignedAdminId (returns a list of forms assigned to Admin)
 
-``[GET] /api/v1/questionnaire/admin/{id}``
+``[GET] /api/v1/questionnaire/admin/{assignedAdminId}``
 
 5. Create questionnaire (returns one questionnaire)
 
@@ -30,9 +30,10 @@
 [Example Request Body, MUST STRICTLY FOLLOW THIS FORMAT]
 {
     "title" : "1st questionnaire",
-    "assignedVendor": "jack-1",
-    "assignedAdmin": "not-jack-1",
-    "status": "SUBMITTED", (status must be: NOT_STARTED, SUBMITTED, ADMIN_APPROVED, RETURNED, APPROVER_APPROVED)
+    "assignedVendorId": "jack-1",
+    "assignedAdminId": "not-jack-1",
+    "status": "SUBMITTED", (status must be: INITIAL_DRAFT, SUBMITTED, ADMIN_APPROVED, RETURNED, APPROVER_APPROVED)
+    "submissionDeadline": "2023-03-22T09:16:28.866",
     "questionsAndAnswers": {
         "something": {
             "first thing" : "hello",
@@ -50,9 +51,11 @@
 {
     "id": "641a56ec5ad139669ecbce70",
     "title" : "1st questionnaireeeeeeeee",
-    "assignedVendor": "jack-1",
-    "assignedAdmin": "not-jack-1",
+    "assignedVendorId": "jack-1",
+    "assignedAdminId": "not-jack-1",
     "status": "SUBMITTED",
+    "submissionDate": "2023-03-22T09:16:28.866",
+    "submissionDeadline": "2023-03-22T09:16:28.866",
     "questionsAndAnswers": {
         "something": {
             "first thing" : "hello",
@@ -65,7 +68,7 @@
 
 7. Delete questionnaire by id
 
-``[DELETE] /api/v1/questionnaire/delete/{id}``
+``[DELETE] /api/v1/questionnaire/delete/{id}/{userId}``
 
 8. Get questionnaires based on status (returns a list of questionnaires)
 
@@ -177,6 +180,13 @@
 
 ---
 
-### Workflow
+### Archive
+1. Get all archive document based on its collection (returns a list of archive document)
+
+``[GET] /api/v1/archive/collection/{collection}``
+
+2. restore archive document into its original collection
+
+``[POST] /api/v1/restoreDocument/{id}``
 
 ---

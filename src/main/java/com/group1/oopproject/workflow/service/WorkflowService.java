@@ -10,18 +10,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.mongodb.UncategorizedMongoDbException;
 import com.group1.oopproject.exception.DatabaseCommunicationException;
 import com.group1.oopproject.exception.WorkflowNotFoundException;
+import com.group1.oopproject.questionnaire.repository.QuestionnaireRepository;
 import com.group1.oopproject.workflow.entity.Workflow;
 import com.group1.oopproject.workflow.repository.WorkflowRepository;
 import com.group1.oopproject.workflow.entity.AssignedWorkflow;
 import com.group1.oopproject.workflow.repository.AssignedWorkflowRepository;
+import com.group1.oopproject.questionnaire.entity.Questionnaire;
 
-@Service
+@Service 
 public class WorkflowService {
 
     @Autowired
     private WorkflowRepository workflowRepository;
     @Autowired
     private AssignedWorkflowRepository assignedWorkflowRepository;
+    @Autowired
+    private QuestionnaireRepository questionnaireRepository;
 
     public List<Workflow> findAllWorkflows() {
         try {
@@ -53,8 +57,21 @@ public class WorkflowService {
 
     public Workflow findById(String id) throws WorkflowNotFoundException {
         try {
-            Optional<Workflow> workflow = workflowRepository.findById(id);
-            return workflow.orElseThrow(() -> new WorkflowNotFoundException("Workflow not found with id: " + id));
+            Optional<Workflow> optionalWorkflow = workflowRepository.findById(id);
+            if(optionalWorkflow == null){
+                new WorkflowNotFoundException("Workflow not found with id: " + id);
+            }
+
+            Workflow workflow = optionalWorkflow.get();
+            List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
+            for (String questionnaireId : workflow.getQuestionnaireList()) {
+                Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+                Questionnaire questionnaire = optionalQuestionnaire.get();
+                questionnaireList.add(questionnaire);
+                workflow.setQuestionnaires(questionnaireList);
+            }
+
+            return workflow;
         } catch (UncategorizedMongoDbException e) {
             throw new DatabaseCommunicationException("Error communicating with database for method findById", e);
         }
@@ -62,30 +79,21 @@ public class WorkflowService {
 
     public AssignedWorkflow findAssignedById(String id) throws WorkflowNotFoundException {
         try {
-            Optional<AssignedWorkflow> assignedWorkflow = assignedWorkflowRepository.findById(id);
-            return assignedWorkflow.orElseThrow(() -> new WorkflowNotFoundException("Workflow not found with id: " + id));
-        } catch (UncategorizedMongoDbException e) {
-            throw new DatabaseCommunicationException("Error communicating with database for method findById", e);
-        }
-    }
+            Optional<AssignedWorkflow> optionalAssignedWorkflow = assignedWorkflowRepository.findById(id);
+            if(optionalAssignedWorkflow == null){
+                throw new WorkflowNotFoundException("Workflow not found with id: " + id);
+            }
+            AssignedWorkflow assignedWorkflow = optionalAssignedWorkflow.get();
+            List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
+            for (String questionnaireId : assignedWorkflow.getQuestionnaireList()) {
+                Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+                Questionnaire questionnaire = optionalQuestionnaire.get();
+                questionnaireList.add(questionnaire);
+                assignedWorkflow.setQuestionnaires(questionnaireList);
+            }
 
-    public List<AssignedWorkflow> findAssignedByAdminId(String id) throws WorkflowNotFoundException {
-        try {
-            List<AssignedWorkflow> assignedWorkflows = assignedWorkflowRepository.findAll();
-            if (assignedWorkflows.isEmpty()) {
-                throw new WorkflowNotFoundException("No workflows found in the database");
-            }
-            List<AssignedWorkflow> returned = new ArrayList<AssignedWorkflow>();
-
-            for (AssignedWorkflow assignedWorkflow : assignedWorkflows){
-                if(assignedWorkflow.getAssignedAdminId().equals(id)){
-                    returned.add(assignedWorkflow);
-                }
-            }
-            if (returned.isEmpty()){
-                throw new WorkflowNotFoundException("No workflows found under Admin Id " + id);
-            }
-            return returned;
+            return assignedWorkflow;
+            
         } catch (UncategorizedMongoDbException e) {
             throw new DatabaseCommunicationException("Error communicating with database for method findById", e);
         }
@@ -136,7 +144,7 @@ public class WorkflowService {
         try{
             Workflow workflowToUpdate = workflowRepository.findById(workflow.getId()).get();
             workflowToUpdate.setWorkflowName(workflow.getWorkflowName());
-            workflowToUpdate.setWorkflowList(workflow.getWorkflowList());
+            workflowToUpdate.setQuestionnaireList(workflow.getQuestionnaireList());
             return workflowRepository.save(workflowToUpdate);
         } catch (WorkflowNotFoundException e) {
             throw e;
@@ -149,11 +157,15 @@ public class WorkflowService {
         try{
             AssignedWorkflow workflowToUpdate = assignedWorkflowRepository.findById(assignedWorkflow.getId()).get();
             workflowToUpdate.setWorkflowName(assignedWorkflow.getWorkflowName());
-            workflowToUpdate.setWorkflowList(assignedWorkflow.getWorkflowList());
-            workflowToUpdate.setGeneratedFormId(assignedWorkflow.getGeneratedFormId());
-            workflowToUpdate.setAssignedAdminId(assignedWorkflow.getAssignedAdminId());
+            workflowToUpdate.setQuestionnaireList(assignedWorkflow.getQuestionnaireList());
             workflowToUpdate.setAssignedVendorId(assignedWorkflow.getAssignedVendorId());
-            workflowToUpdate.setWorkflowStatus(assignedWorkflow.getWorkflowStatus());
+            workflowToUpdate.setApproverReviewStatus(assignedWorkflow.getApproverReviewStatus());
+            workflowToUpdate.setApprovalRequestDate(assignedWorkflow.getApprovalRequestDate());
+
+            if (assignedWorkflow.getApproverReviewStatus().equals("APPROVED")){
+                workflowToUpdate.setApprovedAt(LocalDateTime.now());
+            }
+            
             return workflowRepository.save(workflowToUpdate);
         } catch (WorkflowNotFoundException e) {
             throw e;

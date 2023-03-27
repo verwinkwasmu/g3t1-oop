@@ -87,10 +87,10 @@ public class QuestionnaireController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable String id) {
+    @DeleteMapping("/delete/{id}/{userId}")
+    public ResponseEntity<Void> deleteById(@PathVariable("id") String id, @PathVariable("userId") String userId) {
         try {
-            questionnaireService.deleteById(id);
+            questionnaireService.deleteById(id, userId);
             return ResponseEntity.noContent().build();
         } catch (QuestionnaireNotFoundException e) {
             logger.error("QuestionnaireNotFoundException: {}", e.getMessage());
