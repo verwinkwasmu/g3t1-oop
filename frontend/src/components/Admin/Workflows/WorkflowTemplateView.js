@@ -14,11 +14,9 @@ function WorkflowView() {
     const location = useLocation();
 
     const workflow = location.state.workflow;
-    console.log(workflow);
+    console.log(workflow.questionnaires);
     const questionnaireTitles = [];
 
-
-    console.log(workflow.questionnaires)
 
     const questionnaireInfo = (workflow) => {
         console.log("INSIDE QUESTIONNAIRE INFO");
