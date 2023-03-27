@@ -9,6 +9,7 @@ import UpdateWorkflow from './UpdateWorkflow';
 import { getIndividualAssignedWorkflow } from '../../../apiCalls';
 
 function WorkflowView() {
+    console.log("HI BITCH")
 
     const navigate = useNavigate();
     const location = useLocation();
