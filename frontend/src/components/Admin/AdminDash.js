@@ -39,7 +39,8 @@ function AdminDash() {
 
     const getWorkflowCompletion = (questionnaires) => {
         var complete = 0; 
-        var total = questionnaires.length;
+
+        var total = questionnaires != null ? questionnaires.length : 0;
 
         for (var qnnaire in questionnaires) {
             if (!(qnnaire.status in ["INITIAL DRAFT", "RETURNED"])) { 
