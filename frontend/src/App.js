@@ -1,5 +1,12 @@
+import WithoutNav from './components/WithoutNav';
+import WithNav from './components/WithNav';
+
 import NavBar from './components/NavBar';
 
+import Login from './components/Login';
+import HomeDash from './components/HomeDash';
+
+import WorkflowDash from './components/Admin/Workflows/WorkflowDash';
 import MainDash from './components/Admin/MainDash';
 import WorkflowDash from './components/Admin/Workflows/WorkflowDash';
 import FormDash from './components/Admin/FormDash';
@@ -18,19 +25,38 @@ import ViewIndivQuestionnaire from './components/Admin/Forms/ViewIndivQuestionna
 
 import Profile from './components/Profile';
 
+import useToken from './useToken';
 
 import { Route, Routes } from "react-router-dom";
 import ViewWorkflowQuestionnaire from './components/Admin/Workflows/ViewWorkflowQuestionnaire';
 
 function App() {
+  const { token, setToken } = useToken();
+
+  console.log(token)
+
+  if (!token) {
+    console.log("token not found")
+    return <Login setToken={setToken}/>
+  }
+
   return (
     <div>
-      <NavBar></NavBar>
       <Routes>
+        <Route element={<WithNav />}/>
+
         <Route path="/" element={<MainDash />} />
         <Route path="/workflows" element={<WorkflowDash />} />
+        <Route path="/" element={<HomeDash />} />
+
 
         <Route path="/forms" element={<FormDash />} />
+
+        <Route path="/accounts" element={<AccountDash />} />
+        {/* <Route path="/accounts/id" element={<AccountView />} /> */}
+        <Route path="/workflows/:id" element={<WorkflowView />} />
+        {/* <Route path="/accounts/:accountid" element={<AccountView />} /> */}
+        <Route path="/accounts/:id" element={<AccountView />} />
 
         <Route path="/accounts" element={<AccountDash />} />
         {/* <Route path="/accounts/id" element={<AccountView />} /> */}

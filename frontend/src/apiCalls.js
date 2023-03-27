@@ -92,6 +92,10 @@ export function getAssignedWorkflows() {
   return axiosClient.get("/api/v1/workflow/assigned");  
 }
 
+export function getAssignedWorkflows() {
+  return axiosClient.get("/api/v1/workflow/assigned");  
+}
+
 export function getWorkflowsByVendor(id) {
   return axiosClient.get(`/api/v1/workflow/assigned/vendor/${id}`);  
 }

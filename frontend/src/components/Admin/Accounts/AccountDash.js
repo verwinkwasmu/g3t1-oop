@@ -3,10 +3,10 @@ import { MdRemoveRedEye, MdEdit } from 'react-icons/md';
 
 import { useNavigate, useLocation } from "react-router-dom";
 
-import CreateAccount from './CreateAccount';
+import CreateVendorAccount from './CreateVendorAccount';
 import CreateUserAccount from './CreateUserAccount';
 import RemoveAccount from './RemoveAccount';
-import EditAccount from './EditAccount';
+import EditVendorAccount from './EditVendorAccount';
 import EditUserAccount from './EditUserAccount';
 
 import { getUsers, getVendors, getWorkflows } from '../../../apiCalls';
@@ -21,42 +21,40 @@ function AccountDash() {
     
         // setAccountsData(getUsers());
 
-        // getUsers()
-        // .then(function(response){
-        //     console.log(response.data)
-        //   if (response.data.length > 0) {
-        //     setAccountsData(response.data)
-        //   } else {
-        //     setAccountsData([])
-        //   }
-        // })
+        getVendors()
+        .then(function(response){
+            console.log(response.data)
+          if (response.data.length > 0) {
+            setVendorsData(response.data)
+          } else {
+            setVendorsData([])
+          }
+        })
 
         getUsers()
         .then(function(response){
             console.log(response.data)
           if (response.data.length > 0) {
-            setAccountsData(response.data)
+            setUsersData(response.data)
           } else {
-            setAccountsData([])
+            setUsersData([])
           }
-        })
-
-        getWorkflows()
-        .then(function(response){
-            console.log(response.data)
-        //   if (response.data.length > 0) {
-        //     setAccountsData(response.data)
-        //   } else {
-        //     setAccountsData([])
-        //   }
         })
     
         // eslint-disable-next-line
     }, [])
 
 
-    const [accountsData, setAccountsData] = useState([]);
+    const [vendorsData, setVendorsData] = useState([]);
+    const [usersData, setUsersData] = useState([]);
+    const [currentView, setCurrentView] = useState("VENDOR");
     const [selected, setSelected] = useState([]);
+
+    const toggleView = (userGroup) => {
+        console.log("inside toggle view!");
+        setCurrentView(userGroup);
+        console.log("new current view ", currentView)
+    }
 
     const handleSelect = (account) =>  {
         if (!selected.includes(account)) {
@@ -78,29 +76,37 @@ function AccountDash() {
     return (
         <>
             <div className="rounded-t-3xl mx-10 mt-10 h-screen py-12 px-20 shadow-2xl">    
-                    <div className="flex flex-wrap mb-5">
-                        <div className="flex-auto">
-                            <h1 className="text-3xl font-semibold text-blue">Registered Accounts</h1>
+                    <div className="flex justify-between mb-5">
+                        <div className="flex">
+                            <h1 className="text-3xl font-semibold text-blue mr-5">Registered Accounts
+                                <span hidden={currentView == "VENDOR" ? false : true}>: Vendors</span>
+                                <span hidden={currentView != "VENDOR" ? false : true}>: Staff</span>
+                            </h1>
+                            <div className="pb-2 inline-flex">
+                                <button onClick={() => toggleView("VENDOR")} hidden={currentView == "VENDOR" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
+                                    Go to Vendors
+                                </button>
+                                <button onClick={() => toggleView("USER")} hidden={currentView != "VENDOR" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
+                                    Go to Staff
+                                </button>
+                            </div>
                         </div>
-                        <div className="flex ">
-                            <CreateAccount></CreateAccount>
-                            <CreateUserAccount></CreateUserAccount>
+                        <div className="flex">
+                            <div hidden={currentView == "VENDOR" ? false : true}>
+                                <CreateVendorAccount></CreateVendorAccount>
+                            </div>
+                            <div hidden={currentView == "USER" ? false : true}>
+                                <CreateUserAccount></CreateUserAccount>
+                            </div>
                             {/* <RemoveAccount accounts={selected}></RemoveAccount>   */}
+                        </div>
                     </div>
-                    <div className="flex ">
-                        <CreateAccount></CreateAccount>
-                        <RemoveAccount accounts={selected}></RemoveAccount>
-                    </div>
-                    {/* <div className="flex ">
-                        <CreateUser></CreateUser>
-                        <RemoveUser></RemoveUser>
-                    </div> */}
                     <div className="flex flex-wrap text-left">
-                        <table className="flex-auto table-fixed">
+                        <table className="flex-auto table-fixed divide-y-2 divide-slate-700" hidden={currentView == "VENDOR" ? false : true}>
                             <thead>
                                 <tr>
-                                    <th className="p-2">[]</th>
-                                    <th>ID</th>
+                                    {/* <th className="p-2">[]</th> */}
+                                    <th className="p-2">ID</th>
                                     <th>Name</th>
                                     <th>Company</th>
                                     <th>Status</th>
@@ -108,29 +114,56 @@ function AccountDash() {
                                     <th></th>
                                 </tr>
                             </thead>
-                            <tbody>
-                            {(accountsData).map(account =>
+                            <tbody className="divide-y divide-slate-700">
+                            {(vendorsData).map(account =>
                                 <tr key={account.id}>
-                                <td className="p-2">
+                                {/* <td className="p-2">
                                     <input id={account.id} type="checkbox" onChange={() => {handleSelect(account)}} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                                </td>
-                                <td className="id">{account.id}</td>
+                                </td> */}
+                                <td className="id p-2">{account.id}</td>
                                 <td className="name">{account.name}</td>
                                 <td className="company">{account.companyName}</td>
                                 <td className="status">Active</td>
                                 {/* <td className="status">{(account.workflows.active.length == 0 ? "Inactive" : "Active")}</td> */}
                                 <td className="actions text-right">
                                     <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75" onClick={() => {toAccountView(account)}}><MdRemoveRedEye></MdRemoveRedEye></button>
-                                    {/* <EditAccount account={account}></EditAccount> */}
+                                    <EditVendorAccount account={account}></EditVendorAccount>
+                                </td>
+                                </tr>)}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className="flex flex-wrap text-left">
+                    <table className="flex-auto table-fixed divide-y-2 divide-slate-700" hidden={currentView == "USER" ? false : true}>
+                            <thead>
+                                <tr>
+                                    {/* <th className="p-2">[]</th> */}
+                                    <th className="p-2">ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>User Type</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-700">
+                            {(usersData).map(account =>
+                                <tr key={account.id}>
+                                {/* <td className="p-2">
+                                    <input id={account.id} type="checkbox" onChange={() => {handleSelect(account)}} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                                </td> */}
+                                <td className="id p-2">{account.id}</td>
+                                <td className="name">{account.name}</td>
+                                <td className="company">{account.email}</td>
+                                <td className="status">{account.userType == "ADMIN" ? "Admin" : "Approver"}</td>
+                                <td className="actions text-right">
+                                    <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75" onClick={() => {toAccountView(account)}}><MdRemoveRedEye></MdRemoveRedEye></button>
                                     <EditUserAccount account={account}></EditUserAccount>
                                 </td>
                                 </tr>)}
                             </tbody>
                         </table>
-
                     </div>
-
-                </div>
             </div>
         </>
 

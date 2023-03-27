@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { createVendor } from "../../../apiCalls";
 
-function CreateUser() {
+function CreateVendorAccount() {
 
     const navigate = useNavigate();
 
@@ -36,8 +36,7 @@ function CreateUser() {
         console.log("INSIDE HANDLE SAVE");
         createVendor({id: id, name: name, email: email, password: password, userType: "VENDOR", companyName: companyName, country: country, regNumber: regNumber, bizNature: bizNature, contactNum: contactNum, gstnumber: gstNumber})
             .then(function(response){
-                navigate('/accounts');
-                // navigate(`/accounts/${id}`, {state: {account: {id: id, name: name, email: email, password: password, userType: "VENDOR", companyName: company, regNumber: "4567", bizNature: "Love", contactNum: "12345678", gstnumber: "GST456"}}});
+                window.location.reload();
             })
             .catch(function(error){
                 console.log("CREATEACCOUNT ERROR")
@@ -46,14 +45,14 @@ function CreateUser() {
 
     return (
         <>
-            <label htmlFor="CreateUser" className="btn bg-cyan border-transparent outline-none rounded-full mr-2">
+            <label htmlFor="CreateVendorAccount" className="btn bg-cyan border-transparent outline-none rounded-full mr-2">
                 <MdAdd className="mr-3"></MdAdd>
                 Add New Vendor</label>
             
-            <input type="checkbox" id="CreateUser" className="modal-toggle" />
+            <input type="checkbox" id="CreateVendorAccount" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box max-w-5xl relative py-12 px-20">
-                <label htmlFor="CreateUser" className="btn btn-sm btn-circle bg-red border-transparent absolute right-20 top-12">✕</label>
+                <label htmlFor="CreateVendorAccount" className="btn btn-sm btn-circle bg-red border-transparent absolute right-20 top-12">✕</label>
                     <h1 className="text-3xl mb-3 font-semibold text-blue">Add New Account</h1>
                     <form>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -130,7 +129,7 @@ function CreateUser() {
                     </div>                    
                     <div className="flex justify-center">
                         {validateForm()}
-                        <label onClick={() => {handleSave()}} htmlFor="CreateUser" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full" type="button" disabled={(validateForm() !== true) ? true : false}>
+                        <label onClick={() => {handleSave()}} htmlFor="CreateVendorAccount" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full" type="button" disabled={(validateForm() !== true) ? true : false}>
                             Add New Vendor
                         </label>
                     </div>
@@ -142,4 +141,4 @@ function CreateUser() {
     )
 }
 
-export default CreateUser;
+export default CreateVendorAccount;

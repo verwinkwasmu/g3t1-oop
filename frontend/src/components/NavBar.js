@@ -1,11 +1,18 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdHomeFilled, MdChecklist, MdDescription, MdGroup } from "react-icons/md";
-
 import Logo from "../assets/QL-Logo-Full.png";
 
-export default function Navbar({ fixed }) {
+function logOut() {
+  console.log("logged out");
+  localStorage.removeItem('token');
+  window.location.reload();
+
+}
+export default function Navbar({ fixed }) {  
+
   const [navbarOpen, setNavbarOpen] = React.useState(false);
+  
   return (
     <>
     <div className="navbar bg-base-100">
@@ -45,7 +52,7 @@ export default function Navbar({ fixed }) {
             className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-blue hover:opacity-75"
             to="/forms"
         >
-            <MdDescription /><span>Forms</span>
+            <MdDescription /><span>Questionnaires</span>
         </Link>
     </li>
     <li className="nav-item">
@@ -71,7 +78,7 @@ export default function Navbar({ fixed }) {
           </a>
         </li>
         <li><a>Settings</a></li>
-        <li><a>Logout</a></li>
+        <li><a onClick={logOut}>Logout</a></li>
       </ul>
     </div>
   </div>

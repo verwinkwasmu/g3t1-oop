@@ -29,7 +29,7 @@ function CreateUserAccount() {
         console.log("INSIDE HANDLE SAVE");
         createUser({id: id, name: name, email: email, userType: userType, password: password})
             .then(function(response){
-                navigate('/accounts');
+                window.location.reload();
                 // navigate(`/accounts/${id}`, {state: {account: {id: id, name: name, email: email, password: password, userType: "VENDOR", companyName: company, regNumber: "4567", bizNature: "Love", contactNum: "12345678", gstnumber: "GST456"}}});
             })
             .catch(function(error){
@@ -39,7 +39,7 @@ function CreateUserAccount() {
 
     return (
         <>
-            <label htmlFor="CreateUserAccount" className="btn bg-cyan border-transparent outline-none rounded-full mr-2">
+            <label htmlFor="CreateUserAccount" className="btn bg-cyan border-transparent outline-none rounded-full mr-2" >
                 <MdAdd className="mr-3"></MdAdd>
                 Add New User</label>
             
