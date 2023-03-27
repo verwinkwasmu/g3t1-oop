@@ -1,7 +1,9 @@
 import { React, useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 
-import { getWorkflows, getAssignedWorkflows } from '../../apiCalls';
+import { MdRemoveRedEye, MdEdit } from 'react-icons/md';
+
+import { getWorkflows, getAssignedWorkflows, getQuestionnaires } from '../../apiCalls';
 
 function VendorDash() {
 
@@ -20,16 +22,44 @@ function VendorDash() {
                 }
             })
 
+        getQuestionnaires()
+            .then(function (response) {
+                // console.log(response.data)
+                if (response.data.length > 0) {
+                    setCurrentQuestionnairesView("ACTIVE")
+                    setCurrentQuestionnairesData(response.data.filter(qnnaire => qnnaire.status == "NOT_STARTED" || qnnaire.status == "RETURNED"))
+                    setQuestionnairesData(response.data)
+                } else {
+                    setQuestionnairesData([])
+                }
+            })
+
         // eslint-disable-next-line
     }, [])
 
     const [workflowsData, setWorkflowsData] = useState([]);
-    const [currentView, setCurrentView] = useState("VENDOR");
+    const [questionnairesData, setQuestionnairesData] = useState([]);
+    const [currentWorkflowsData, setCurrentWorkflowsData] = useState([]);
+    const [currentQuestionnairesData, setCurrentQuestionnairesData] = useState([]);
+    const [currentWorkflowsView, setCurrentWorkflowsView] = useState("ACTIVE");
+    const [currentQuestionnairesView, setCurrentQuestionnairesView] = useState("ACTIVE");
+    
 
-    const toggleView = (userGroup) => {
-        console.log("inside toggle view!");
-        setCurrentView(userGroup);
-        console.log("new current view ", currentView)
+    console.log(questionnairesData)
+
+    const toggleWorkflowsView = (status) => {
+        setCurrentWorkflowsView(status);
+    }
+
+    const toggleQuestionnairesView = (status) => {
+        if (status == "ACTIVE") {
+            console.log('inside ACTIVE toggle')
+            setCurrentQuestionnairesData(questionnairesData.filter(qnnaire => qnnaire.status == "NOT_STARTED" || qnnaire.status == "RETURNED"))
+        } else if (status == "PENDING") {
+            setCurrentQuestionnairesData(questionnairesData.filter(qnnaire => qnnaire.status == "SUBMITTED"))
+        }
+        console.log(currentQuestionnairesData);
+        setCurrentQuestionnairesView(status);
     }
 
     const toWorkflowView = (workflow) => {
@@ -39,7 +69,7 @@ function VendorDash() {
 
     const getWorkflowCompletion = (questionnaires) => {
         var complete = 0; 
-        var total = questionnaires.length;
+        var total = questionnaires != null ? questionnaires.length : 0;
 
         for (var qnnaire in questionnaires) {
             if (!(qnnaire.status in ["INITIAL DRAFT", "RETURNED"])) { 
@@ -51,23 +81,23 @@ function VendorDash() {
 
     return (
         <>
-        <div className="mx-10 mt-10 pt-8 px-20">
+        <div className="mx-10 my-10 pt-8 px-20">
 
-        <h1 className="text-3xl font-semibold text-blue mr-5">Welcome, User</h1>
+        <h1 className="text-3xl font-semibold text-blue mr-5">Welcome, Vendor</h1>
 
         <div className="mt-10">
             <div className="flex justify-between mb-5">
                 <div className="flex">
                     <h1 className="text-xl font-semibold text-blue mr-5">Assigned Workflows
-                        <span hidden={currentView == "VENDOR" ? false : true}>: Active</span>
-                        <span hidden={currentView != "VENDOR" ? false : true}>: Pending Approval</span>
+                        <span hidden={currentWorkflowsView == "ACTIVE" ? false : true}>: Active</span>
+                        <span hidden={currentWorkflowsView != "ACTIVE" ? false : true}>: Pending Approval</span>
                     </h1>
                 </div>
                 <div className="pb-2 inline-flex">
-                        <button onClick={() => toggleView("VENDOR")} hidden={currentView == "VENDOR" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
+                        <button onClick={() => toggleWorkflowsView("ACTIVE")} hidden={currentWorkflowsView == "ACTIVE" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
                             Go to Current Active Workflows
                         </button>
-                        <button onClick={() => toggleView("USER")} hidden={currentView != "VENDOR" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
+                        <button onClick={() => toggleWorkflowsView("PENDING")} hidden={currentWorkflowsView != "ACTIVE" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
                             Go to Workflows Pending Approval
                         </button>
                     </div>
@@ -98,43 +128,54 @@ function VendorDash() {
         <div className="mt-10">
             <div className="flex justify-between mb-5">
                 <div className="flex">
-                    <h1 className="text-xl font-semibold text-blue mr-5">Assigned Questionnaires</h1>
+                    <h1 className="text-xl font-semibold text-blue mr-5">Assigned Questionnaires
+                        <span hidden={currentQuestionnairesView == "ACTIVE" ? false : true}>: Active</span>
+                        <span hidden={currentQuestionnairesView != "ACTIVE" ? false : true}>: Pending Approval</span>
+                    </h1>
                 </div>
                 <div className="pb-2 inline-flex">
-                        <button onClick={() => toggleView("VENDOR")} hidden={currentView == "VENDOR" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
-                            Go to Current Active Workflows
-                        </button>
-                        <button onClick={() => toggleView("USER")} hidden={currentView != "VENDOR" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
-                            Go to Workflows Pending Approval
-                        </button>
-                    </div>
+                    <button onClick={() => toggleQuestionnairesView("ACTIVE")} hidden={currentQuestionnairesView == "ACTIVE" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
+                        Go to Current Active Questionnaires
+                    </button>
+                    <button onClick={() => toggleQuestionnairesView("PENDING")} hidden={currentQuestionnairesView != "ACTIVE" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
+                        Go to Questionnaires Pending Approval
+                    </button>
+                </div>
             </div>
             <div className="rounded-3xl py-8 px-20 shadow-2xl">
                 <div className="flex flex-wrap text-left">
-                    <table className="flex-auto table-fixed divide-y-2 divide-slate-700" hidden={currentView == "VENDOR" ? false : true}>
+                    <table className="flex-auto table-fixed divide-y-2 divide-slate-700">
                         <thead>
                             <tr>
-                                <th className="p-2">Name</th>
+                                <th className="p-2">Deadline</th>
+                                <th>Title</th>
                                 <th>Workflow</th>
-                                <th>Vendor</th>
                                 <th>Status</th>
                                 <th></th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-700">
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                            {(currentQuestionnairesData).map(qnnaire =>
+                                <tr key={qnnaire.id}>
+                                    <td className="p-2">[DEADLINE]</td>
+                                    <td className="name">{qnnaire.title}</td>
+                                    <td className="workflow">[WORKFLOW]</td>
+                                    <td className="status">{qnnaire.status}</td>
+                                    <td></td>
+                                    <td>
+                                        <span hidden={currentQuestionnairesView == "ACTIVE" ? false : true}>
+                                            <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75"><MdEdit></MdEdit></button>
+                                        </span>
+                                        <span hidden={currentQuestionnairesView == "PENDING" ? false : true}>
+                                            <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75"><MdRemoveRedEye></MdRemoveRedEye></button>
+                                        </span>
+                                    </td>
+                                </tr>)}
                         </tbody>
                     </table>
                 </div>
-                <h2 className="text-center mt-5 text-gray-300 text-base font-semibold italic text-blue mr-5">No pending questionnaires.</h2>
+                <h2 hidden={questionnairesData.length == 0 ? false : true} className="text-center mt-5 text-gray-300 text-base font-semibold italic text-blue mr-5">No pending questionnaires.</h2>
             </div>
         </div>
         </div>

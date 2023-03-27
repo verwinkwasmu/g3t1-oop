@@ -101,18 +101,10 @@ function AdminDash() {
                 <div className="flex">
                     <h1 className="text-xl font-semibold text-blue mr-5">Assigned Questionnaires</h1>
                 </div>
-                <div className="pb-2 inline-flex">
-                        <button onClick={() => toggleView("VENDOR")} hidden={currentView == "VENDOR" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
-                            Go to Current Active Workflows
-                        </button>
-                        <button onClick={() => toggleView("USER")} hidden={currentView != "VENDOR" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
-                            Go to Workflows Pending Approval
-                        </button>
-                    </div>
             </div>
             <div className="rounded-3xl py-8 px-20 shadow-2xl">
                 <div className="flex flex-wrap text-left">
-                    <table className="flex-auto table-fixed divide-y-2 divide-slate-700" hidden={currentView == "VENDOR" ? false : true}>
+                    <table className="flex-auto table-fixed divide-y-2 divide-slate-700">
                         <thead>
                             <tr>
                                 <th className="p-2">Name</th>
