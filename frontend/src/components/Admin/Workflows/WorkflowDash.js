@@ -65,10 +65,10 @@ function WorkflowDash() {
         console.log("===== INSIDE toWorkflowView =====")
 
         if (render=="Templates") {
-            navigate(`/workflow-templates/${workflow.id}`, { state: { workflow: workflow } });
+            navigate(`/workflow-templates/${workflow.id}`, { state: { workflowId: workflow.id } });
         }
         else {
-            navigate(`/workflow-assigned/${workflow.id}`, { state: { workflow: workflow } });
+            navigate(`/workflow-assigned/${workflow.id}`, { state: { workflowId: workflow.id } });
         }
     }
 

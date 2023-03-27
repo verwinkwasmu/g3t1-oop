@@ -6,42 +6,34 @@ import { useNavigate, useLocation } from "react-router-dom";
 import DeleteWorkflow from './DeleteWorkflow';
 import AssignNewUser from './AssignNewUser';
 import UpdateWorkflow from './UpdateWorkflow';
-import { getIndividualQuestionnaire } from '../../../apiCalls';
+import { getIndividualTemplateWorkflow } from '../../../apiCalls';
 
 function WorkflowView() {
 
     const navigate = useNavigate();
     const location = useLocation();
 
-    const workflow = location.state.workflow;
-    console.log(workflow);
-    const questionnaireTitles = [];
+    const workflowId = location.state.workflowId;
+    const [workflowsData, setWorkflowsData] = useState([]);
+    const [questionnaireTitles, setQuestionnaireTitles] = useState([]);
+    console.log(workflowId);
 
-    const questionnaireInfo = (workflow) => {
-        console.log("INSIDE QUESTIONNAIRE INFO");
-        // console.log(id);
-        console.log("=========");
-        console.log(workflow.workflowList);
+    useEffect(() => {
+        document.title = 'Workflow Template Voew'
 
-        for (const element of workflow.workflowList) {
-            getIndividualQuestionnaire(element)
+        getIndividualTemplateWorkflow(workflowId)
             .then(function (response) {
-                console.log(response.data);
-                if (response.data.length > 0) {
-                    questionnaireTitles.push(response.data.title);
-                } else {
-                    questionnaireTitles = [];
+                // console.log(response.data)
+                setWorkflowsData(response.data)
+
+                const temp = [];
+                for (const index in response.data.questionnaires) {
+                    temp.push([response.data.questionnaires[index].id, response.data.questionnaires[index].title]);
                 }
+                setQuestionnaireTitles(temp);
             })
-            .catch(function (error) {
-                console.log("ERROR");
-            })
-        } 
-
-        console.log("INFORMATION");
-        console.log(questionnaireTitles);
-
-    }
+        // eslint-disable-next-line
+    }, [])
 
     return (
         <>
@@ -53,20 +45,20 @@ function WorkflowView() {
                             <IoGitPullRequestOutline size={70} color="3278AE" />
                         </div>
                         <div className="flex-auto">
-                            <p className="font-thin mt-1">ID: {workflow.id}</p>
-                            <h2 className="text-3xl font-semibold text-blue">{workflow.workflowName}</h2>
+                            <p className="font-thin mt-1">ID: {workflowId}</p>
+                            <h2 className="text-3xl font-semibold text-blue">{workflowsData.workflowName}</h2>
                         </div>
                         <div className="flex mt-5">
                             <AssignNewUser></AssignNewUser>
-                            <UpdateWorkflow workflow={workflow}></UpdateWorkflow>
-                            <DeleteWorkflow workflow={workflow}></DeleteWorkflow>
+                            <UpdateWorkflow workflow={workflowsData}></UpdateWorkflow>
+                            <DeleteWorkflow workflow={workflowsData}></DeleteWorkflow>
                         </div>
                     </div>
                     <div className="grid grid-rows-1 grid-cols-4 gap-x-2 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-                        {(workflow.questionnaireList).map(questionnaire =>
-                            <div className="card w-44 bg-base-100 border border-light-blue m-3 drop-shadow-xl" key={workflow.id}>
+                    {(questionnaireTitles).map(questionnaireTitle =>
+                            <div className="card w-50 bg-base-100 border border-light-blue m-3 drop-shadow-xl" key={questionnaireTitle[0]}>
                                 <div className="card-body text-center">
-                                    <h2 className="card-title">{questionnaire}</h2>
+                                    <h2 className="card-title">{questionnaireTitle[1]}</h2>
                                 </div>
                             </div>
                         )}
@@ -81,9 +73,9 @@ function WorkflowView() {
                                     <div className="card-body text-left">
                                         <table>
                                             <tbody>
-                                                {(workflow.questionnaireList).map(questionnaire =>
-                                                    <div key={workflow.id}>
-                                                        <tr className="card-title mb-2">{questionnaire}</tr>
+                                                {(questionnaireTitles).map(questionnaireTitle =>
+                                                    <div key={questionnaireTitle[0]}>
+                                                        <tr className="card-title mb-2">{questionnaireTitle[1]}</tr>
                                                     </div>
                                                 )}
                                             </tbody>
@@ -102,8 +94,6 @@ function WorkflowView() {
                                         <table>
                                             <tbody>
                                                 <tr className="card-title mb-2">Click on 'Assign User' to make an assigned workflow with this template.</tr>
-                                                {/* <tr className="card-title mb-2">{workflowAssignedUsers.assignedVendorId}</tr> */}
-                                                {/* <tr className="card-title mb-2">User 3</tr> */}
                                             </tbody>
                                         </table>
                                     </div>

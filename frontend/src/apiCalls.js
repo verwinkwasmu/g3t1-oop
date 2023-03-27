@@ -83,9 +83,16 @@ export function updateVendor(data) {
   return axiosClient.put("/api/v1/users/vendors/update", JSON.stringify(data));  
 }
 
-
 export function getWorkflows() {
   return axiosClient.get("/api/v1/workflow");  
+}
+
+export function getIndividualTemplateWorkflow(id) {
+  return axiosClient.get(`/api/v1/workflow/${id}`);  
+}
+
+export function updateIndividualTemplateWorkflow(data) {
+  return axiosClient.put("/api/v1/workflow", JSON.stringify(data));  
 }
 
 export function getAssignedWorkflows() {

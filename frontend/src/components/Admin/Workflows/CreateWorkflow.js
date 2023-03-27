@@ -86,7 +86,7 @@ function CreateWorkflow() {
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-md font-thin" htmlFor="forms">
-                                Forms
+                                Questionnaires
                             </label>
                             <Select
                                 options={questionnaireOptions}
