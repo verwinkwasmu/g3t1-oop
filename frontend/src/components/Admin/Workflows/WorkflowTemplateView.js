@@ -18,7 +18,7 @@ function WorkflowView() {
     const questionnaireTitles = [];
 
 
-    console.log(workflow)
+    console.log(workflow.questionnaires)
 
     const questionnaireInfo = (workflow) => {
         console.log("INSIDE QUESTIONNAIRE INFO");
@@ -87,6 +87,7 @@ function WorkflowView() {
                                                 {(workflow.questionnaireList).map(questionnaire =>
                                                     <div key={workflow.id}>
                                                         <tr className="card-title mb-2">{questionnaire}</tr>
+                                                        {console.log("HELLOHELLO DIBO")}
                                                         {/* <Link to={`/Workflows/ViewWorkflowQuestionnaire/${workflow.id}`}>View Form</Link> */}
                                                     </div>
                                                 )}
