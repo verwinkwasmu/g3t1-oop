@@ -14,6 +14,7 @@ function WorkflowView() {
     const location = useLocation();
 
     const workflow = location.state.workflow;
+    console.log(workflow);
     const questionnaireTitles = [];
 
 
@@ -65,10 +66,10 @@ function WorkflowView() {
                         </div>
                     </div>
                     <div className="grid grid-rows-1 grid-cols-4 gap-x-2 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-                        {(workflow.questionnaireList).map(form =>
+                        {(workflow.questionnaireList).map(questionnaire =>
                             <div className="card w-44 bg-base-100 border border-light-blue m-3 drop-shadow-xl" key={workflow.id}>
                                 <div className="card-body text-center">
-                                    <h2 className="card-title">{form}</h2>
+                                    <h2 className="card-title">{questionnaire}</h2>
                                 </div>
                             </div>
                         )}
@@ -83,9 +84,9 @@ function WorkflowView() {
                                     <div className="card-body text-left">
                                         <table>
                                             <tbody>
-                                                {(workflow.questionnaires).map(form =>
+                                                {(workflow.questionnaireList).map(questionnaire =>
                                                     <div key={workflow.id}>
-                                                        <tr className="card-title mb-2">{form}</tr>
+                                                        <tr className="card-title mb-2">{questionnaire}</tr>
                                                         {/* <Link to={`/Workflows/ViewWorkflowQuestionnaire/${workflow.id}`}>View Form</Link> */}
                                                     </div>
                                                 )}

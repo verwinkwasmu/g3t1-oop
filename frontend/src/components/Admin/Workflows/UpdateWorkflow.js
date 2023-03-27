@@ -6,7 +6,7 @@ function UpateWorkflow(props) {
 
     const [attachedUserId, setattachedUserId] = useState(props.workflow.attachedUserId);
     const [workflowName, setworkflowName] = useState(props.workflow.workflowName);
-    const [questionnaireList, setworkflowList] = useState(props.workflow.questionnaireList);
+    const [questionnaireList, setQuestionnaireList] = useState(props.workflow.questionnaireList);
 
     return (
         <>
