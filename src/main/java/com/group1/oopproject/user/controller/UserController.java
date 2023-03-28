@@ -131,10 +131,10 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String id) {
+    @DeleteMapping("/delete/{id}/{deleterId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") String id,@PathVariable("deleterId") String deleterId) {
         try {
-            userService.deleteUser(id);
+            userService.deleteUser(id, deleterId);
             return ResponseEntity.noContent().build();
         } catch (UserNotFoundException e) {
             logger.error("UserNotFoundException: {}", e.getMessage());
@@ -145,10 +145,10 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/vendors/delete/{id}")
-    public ResponseEntity<Void> deleteVendor(@PathVariable String id) {
+    @DeleteMapping("/vendors/delete/{id}/{deleterId}")
+    public ResponseEntity<Void> deleteVendor(@PathVariable("id") String id,@PathVariable("deleterId") String deleterId) {
         try {
-            userService.deleteVendor(id);
+            userService.deleteVendor(id, deleterId);
             return ResponseEntity.noContent().build();
         } catch (UserNotFoundException e) {
             logger.error("UserNotFoundException: {}", e.getMessage());

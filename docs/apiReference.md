@@ -136,9 +136,9 @@
 ```
 6. Delete user and vendor by id
 
-``[DELETE] /api/v1/users/delete/{id}``
+``[DELETE] /api/v1/users/delete/{id}/{deleterId}``
 
-``[DELETE] /api/v1/users/vendors/delete/{id}``
+``[DELETE] /api/v1/users/vendors/delete/{id}/{deleterId}``
 
 7. Update user and vendor
 
