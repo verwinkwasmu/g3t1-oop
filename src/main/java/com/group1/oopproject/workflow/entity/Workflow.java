@@ -30,10 +30,13 @@ public class Workflow {
     @Id
     private String id;
     private String workflowName;
+    private List<String> questionnaireList = new ArrayList<String>();
 
-    private List<Questionnaire> questionnaires = new ArrayList<Questionnaire>();  
-    
+    private List<Questionnaire> questionnaires;
+        
     @CreatedDate
     private LocalDateTime createdAt;
-
 }
+
+
+

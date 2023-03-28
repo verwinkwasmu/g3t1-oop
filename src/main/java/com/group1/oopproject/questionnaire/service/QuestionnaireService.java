@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import com.group1.oopproject.archive.entity.ArchiveDocument;
+import com.group1.oopproject.archive.service.ArchiveService;
 import com.group1.oopproject.exception.QuestionnaireNotFoundException;
 import com.group1.oopproject.questionnaire.entity.Questionnaire;
 import com.group1.oopproject.questionnaire.entity.QuestionnaireStatus;
@@ -18,6 +20,9 @@ public class QuestionnaireService {
 
     @Autowired
     private QuestionnaireRepository questionnaireRepository;
+
+    @Autowired
+    private ArchiveService archiveService;
 
     public List<Questionnaire> findAllQuestionnaire() {
         try {
@@ -82,13 +87,17 @@ public class QuestionnaireService {
         }
     }
 
-    public void deleteById(String id) {
+    public void deleteById(String id, String userId) {
         try {
             Questionnaire questionnaire = questionnaireRepository.findById(id)
                     .orElseThrow(() -> new QuestionnaireNotFoundException("No questionnaire found in the database with id: " + id));
             questionnaireRepository.deleteById(questionnaire.getId());
-        } catch (UncategorizedMongoDbException e) {
-            throw new DatabaseCommunicationException("Error communicating with database for method deleteById", e);
+
+            // archive this document
+            archiveService.createArchiveDocument(ArchiveDocument.builder().id(questionnaire.getId()).collection("questionnaires").deletedBy(userId).data(questionnaire).build());
+
+        } catch (Exception e) {
+            throw new DatabaseCommunicationException("Error communicating with database for method deleteById: " + e.getMessage(), e);
         }
     }
 
