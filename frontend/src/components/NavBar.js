@@ -19,6 +19,12 @@ export default function Navbar({ fixed }) {
   const navigate = useNavigate();
 
   const [userType, setUserType] = useState(useToken().token.userType); 
+
+  const toProfileView = () => {
+    console.log("inside")
+    navigate(`/profile`);
+  
+  }
   
   const toArchiveView = () => {
     console.log("inside")
@@ -127,6 +133,7 @@ export default function Navbar({ fixed }) {
           </div>
         </label>
         <ul tabIndex={0} className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
+          <li><a onClick={toProfileView}>Profile</a></li>
           <li hidden={userType == "VENDOR" ? true : false}><a onClick={toArchiveView}>Archive</a></li>
           <li><a onClick={logOut}>Logout</a></li>
         </ul>

@@ -6,6 +6,7 @@ import NavBar from './components/NavBar';
 import Login from './components/Login';
 import HomeDash from './components/HomeDash';
 import Archive from './components/Archive';
+import Profile from './components/Profile';
 
 import WorkflowDash from './components/Admin/Workflows/WorkflowDash';
 import FormDash from './components/Admin/FormDash';
@@ -34,6 +35,7 @@ function App() {
       <Routes>
         <Route element={<WithNav />}>
           <Route path="/" element={<HomeDash />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/archive" element={<Archive />} />
 
 
