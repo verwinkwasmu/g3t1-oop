@@ -173,7 +173,7 @@ public class UserService {
                     .orElseThrow(() -> new UserNotFoundException("No vendors found in the database for vendor with id: " + id));
             vendorRepository.deleteById(vendor.getId());
             // archive this document
-            archiveService.createArchiveDocument(ArchiveDocument.builder().id(vendor.getId()).collection("users").deletedBy(deleterId).data(vendor).build());
+            archiveService.createArchiveDocument(ArchiveDocument.builder().id(vendor.getId()).collection("vendors").deletedBy(deleterId).data(vendor).build());
         } catch (Exception e) {
             throw new DatabaseCommunicationException("Error communicating with database for method deleteById: " + e.getMessage(), e);
         }
