@@ -103,8 +103,12 @@ export function getWorkflowsByVendor(id) {
   return axiosClient.get(`/api/v1/workflow/assigned/vendor/${id}`);  
 }
 
-export function getIndividualAssignedWorkflow(id) {
-  return axiosClient.get(`/api/v1/workflow/assigned/${id}`);  
+export function getAssignedWorkflowsByAdminId(id) {
+  return axiosClient.get(`/api/v1/workflow/assigned/admin/${id}`);  
+}
+
+export function getAssignedWorkflowsByVendorId(id) {
+  return axiosClient.get(`/api/v1/workflow/assigned/vendor/${id}`);  
 }
 
 export function createWorkflowTemplate(data) { 
