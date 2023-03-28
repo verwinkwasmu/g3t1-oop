@@ -169,6 +169,43 @@ public class UserService {
         }
     }
 
+    public User loginUser(String id,String pw) {
+        try {
+            User user = userRepository.findById(id)
+                    .orElseThrow(() -> new UserNotFoundException("Either userId or password is wrong. Please try again"));
+
+            // check pw
+            if (user.getPassword().equals(pw)){
+                return user;
+            }
+            else{
+                throw new UserNotFoundException("Either userId or password is wrong. Please try again");
+            }
+
+        } catch (UncategorizedMongoDbException e) {
+            throw new DatabaseCommunicationException("Error communicating with database for method deleteById", e);
+        }
+    }
+
+    public Vendor loginVendor(String id,String pw) {
+        try {
+            Vendor vendor = vendorRepository.findById(id)
+                    .orElseThrow(() -> new UserNotFoundException("Either userId or password is wrong. Please try again"));
+
+            // check pw
+            if (vendor.getPassword().equals(pw)){
+                return vendor;
+            }
+            else{
+                throw new UserNotFoundException("Either userId or password is wrong. Please try again");
+            }
+
+        } catch (UncategorizedMongoDbException e) {
+            throw new DatabaseCommunicationException("Error communicating with database for method deleteById", e);
+        }
+    }
+
+
     public User updateUser(User user) {
         try {
             // Check if user exists

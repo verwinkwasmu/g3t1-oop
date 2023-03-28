@@ -177,6 +177,17 @@
 
 ```
 
+8. Login for users and vendors
+- EXTREMELY primitive login
+
+``[POST] /api/v1/users/vendors/login``
+``[POST] /api/v1/users/login``
+
+```
+[STRING] userId
+[STRING] password
+```
+
 
 ---
 
