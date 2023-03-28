@@ -80,7 +80,7 @@ function UpateWorkflow(props) {
 
         updateIndividualTemplateWorkflow({ id: workflowId, workflowName: workflowName, questionnaireList: temp, createdAt: props.workflow.createdAt })
             .then(function (response) {
-                navigate(`/workflow-templates/${workflowId}`);
+                navigate(`/workflows`);
             })
             .catch(function (error) {
                 console.log("ERROR UPDATING WORKFLOW")
