@@ -1,0 +1,36 @@
+[
+    {
+        "id": 1,
+        "first_name": "Jane",
+        "last_name": "Smith",
+        "company": "ABC Corporation",
+        "email": "janesmith@abc.com",
+        "workflows": {
+            "active": ["workflow obj1", "workflow obj2"],
+            "completed": ["workflow obj3"]
+        }
+    },
+    {
+        "id": 2,
+        "first_name": "John",
+        "last_name": "Smith",
+        "company": "DEF Corporation",
+        "email": "johnsmith@abc.com",
+        "workflows": {
+            "active": ["workflow obj1", "workflow obj2"],
+            "completed": []
+        }
+    },
+    {
+        "id": 3,
+        "first_name": "Adam",
+        "last_name": "Smith",
+        "company": "GHI Corporation",
+        "email": "johnsmith@abc.com",
+        "workflows": {
+            "active": [],
+            "completed": ["workflow obj3"]
+        }
+    }
+
+]
