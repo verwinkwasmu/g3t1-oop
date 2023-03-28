@@ -66,7 +66,7 @@ function WorkflowTemplateView() {
                                     <h2 className="text-xl font-semibold text-blue">Included Forms</h2>
                                 </div>
                                 <div className="card w-80">
-                                    <div className="card-body text-left">
+                                    <div className="text-left">
                                         <table>
                                             <tbody>
                                                 {(questionnaireTitles).map(questionnaireTitle =>
@@ -86,7 +86,7 @@ function WorkflowTemplateView() {
                                     <h2 className="text-xl font-semibold text-blue">Assigned Users</h2>
                                 </div>
                                 <div className="card w-80">
-                                    <div className="card-body text-left text-blue">
+                                    <div className="text-left text-blue">
                                         <table>
                                             <tbody>
                                                 <tr className="card-title mb-2">Click on 'Assign User' to make an assigned workflow with this template.</tr>
