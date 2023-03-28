@@ -111,6 +111,10 @@ export function createWorkflowTemplate(data) {
   return axiosClient.post("/api/v1/workflow", JSON.stringify(data));  
 }
 
+export function createWorkflowAssigned(data) { 
+  return axiosClient.post("/api/v1/workflow/assigned", JSON.stringify(data));  
+}
+
 export function deleteWorkflow(id) { // unique ID
   return axiosClient.delete(`/api/v1/workflow/${id}`);  
 }
