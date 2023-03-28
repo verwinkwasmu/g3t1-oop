@@ -89,11 +89,11 @@
 
 **NOTE:** this is only to get admin and approver
 
-``[GET] /api/v1/users/{userType}``
+``[GET] /api/v1/users/type/{userType}``
 
 3. Get all vendors from 1 company
 
-``[GET] /api/v1/users/vendors/{companyName}``
+``[GET] /api/v1/users/vendors/company/{companyName}``
 
 4. Get 1 user based on unique user id
 - Regardless of the user type  
@@ -136,9 +136,9 @@
 ```
 6. Delete user and vendor by id
 
-``[DELETE] /api/v1/users/delete/{id}``
+``[DELETE] /api/v1/users/delete/{id}/{deleterId}``
 
-``[DELETE] /api/v1/users/vendors/delete/{id}``
+``[DELETE] /api/v1/users/vendors/delete/{id}/{deleterId}``
 
 7. Update user and vendor
 
@@ -175,6 +175,17 @@
     "country": "Singapore"
 }
 
+```
+
+8. Login for users and vendors
+- EXTREMELY primitive login
+
+``[POST] /api/v1/users/vendors/login``
+``[POST] /api/v1/users/login``
+
+```
+[STRING] userId
+[STRING] password
 ```
 
 
