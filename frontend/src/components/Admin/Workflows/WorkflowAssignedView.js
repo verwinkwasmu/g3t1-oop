@@ -26,12 +26,32 @@ function WorkflowAssignedView() {
 
                 const temp = [];
                 for (const index in response.data.questionnaires) {
-                    temp.push([response.data.questionnaires[index].id, response.data.questionnaires[index].title]);
+                    temp.push([response.data.questionnaires[index].id, response.data.questionnaires[index].title, response.data.questionnaires[index].status]);
                 }
                 setQuestionnaireTitles(temp);
             })
         // eslint-disable-next-line
     }, [])
+
+    const checkStatus = (status) => {
+        console.log("")
+        console.log(status)
+        if (status=="SUBMITTED") {
+            return "step step-primary"
+        }
+        else if (status=="ADMIN_APPROVED") {
+            return "step step-secondary"
+        }
+        else if (status=="RETURNED") {
+            return "step step-warning"
+        }
+        else if (status=="APPROVER_APPROVED") {
+            return "step step-accent"
+        }
+        else {
+            return "step"
+        }
+    }
 
     return (
         <>
@@ -53,13 +73,11 @@ function WorkflowAssignedView() {
                         </div>
                     </div>
                     <div className="grid grid-rows-1 grid-cols-4 gap-x-2 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-                        {(questionnaireTitles).map(questionnaire =>
-                            <div className="card w-50 bg-base-100 border border-light-blue m-3 drop-shadow-xl" key={questionnaire.id}>
-                                <div className="card-body text-center">
-                                    <h2 className="card-title">{questionnaire}</h2>
-                                </div>
-                            </div>
-                        )}
+                        <ul className="steps steps-vertical lg:steps-horizontal my-7">
+                            {(questionnaireTitles).map(questionnaireTitle =>
+                                <li className={checkStatus(questionnaireTitle[2])} key={questionnaireTitle[0]}>{questionnaireTitle[1]}</li>
+                            )}
+                        </ul>
                     </div>
                     <div className='grid grid-rows-1 grid-cols-2 mt-5'>
                         <div className="card w-[35rem] bg-base-100 ml-3 drop-shadow-xl">
@@ -71,9 +89,9 @@ function WorkflowAssignedView() {
                                     <div className="card-body text-left">
                                         <table>
                                             <tbody>
-                                                {(questionnaireTitles).map(questionnaire =>
-                                                    <div key={questionnaire.id}>
-                                                        <tr className="card-title mb-2 text-lg font-normal">{questionnaire}</tr>
+                                                {(questionnaireTitles).map(questionnaireTitle =>
+                                                    <div key={questionnaireTitle[0]}>
+                                                        <tr className="card-title mb-2 text-lg font-normal">{questionnaireTitle[1]}</tr>
                                                     </div>
                                                 )}
                                             </tbody>

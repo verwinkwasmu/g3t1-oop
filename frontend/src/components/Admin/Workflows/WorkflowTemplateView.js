@@ -53,20 +53,11 @@ function WorkflowTemplateView() {
                         </div>
                     </div>
                     <div className="grid grid-rows-1 grid-cols-4 gap-x-2 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-                        <ul className="steps steps-vertical lg:steps-horizontal">
+                        <ul className="steps steps-vertical lg:steps-horizontal my-7">
                             {(questionnaireTitles).map(questionnaireTitle =>
-                                questionnaireTitle[2]=="ADMIN_APPROVED" ? <li className="step" key={questionnaireTitle[0]}>{questionnaireTitle[1]}</li> : <li className="step step-error" key={questionnaireTitle[0]}>{questionnaireTitle[1]}</li>
-                                // questionnaireTitle[2]=="ADMIN_APPROVED" ? "HI" : "BYE"
-
+                                <li className="step" key={questionnaireTitle[0]}>{questionnaireTitle[1]}</li>
                             )}
                         </ul>
-                        {/* {(questionnaireTitles).map(questionnaireTitle =>
-                            <div className="card w-50 bg-base-100 border border-light-blue m-3 drop-shadow-xl" key={questionnaireTitle[0]}>
-                                <div className="card-body text-center">
-                                    <h2 className="card-title">{questionnaireTitle[1]}</h2>
-                                </div>
-                            </div>
-                        )} */}
                     </div>
                     <div className='grid grid-rows-1 grid-cols-2 mt-5'>
                         <div className="card w-[35rem] bg-base-100 ml-3 drop-shadow-xl">

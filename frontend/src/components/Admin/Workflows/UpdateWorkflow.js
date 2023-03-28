@@ -83,7 +83,7 @@ function UpateWorkflow(props) {
                 navigate(`/workflow-templates/${props.workflow.id}`);
             })
             .catch(function (error) {
-                console.log("ERROR CREATING WORKFLOW")
+                console.log("ERROR UPDATING WORKFLOW")
             })
     }
 
