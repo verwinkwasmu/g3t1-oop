@@ -50,7 +50,6 @@ function App() {
         <Route path="/accounts/:id" element={<AccountView />} />
 
           <Route path="/accounts" element={<AccountDash />} />
-          <Route path="/workflows/:id" element={<WorkflowView />} />
           <Route path="/accounts/:id" element={<AccountView />} />
 
           <Route path="/forms/create-form" element={<CreateForm />}></Route>

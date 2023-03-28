@@ -145,9 +145,9 @@ function AdminDash() {
                     <table className="flex-auto table-fixed divide-y-2 divide-slate-700">
                         <thead>
                             <tr>
-                                <th className="p-2">Name</th>
+                                <th className="p-2">Deadline</th>
+                                <th>Questionnaire</th>
                                 <th>Workflow</th>
-                                <th>Vendor</th>
                                 <th>Status</th>
                                 <th></th>
                                 <th></th>
