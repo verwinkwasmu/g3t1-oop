@@ -1,7 +1,9 @@
 import { React, useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 
-import { getWorkflows, getAssignedWorkflows } from '../../apiCalls';
+import { MdRemoveRedEye, MdEdit } from 'react-icons/md';
+
+import { getWorkflows, getAssignedWorkflows, getQuestionnaires } from '../../apiCalls';
 
 function AdminDash() {
 
@@ -19,17 +21,42 @@ function AdminDash() {
                     setWorkflowsData([])
                 }
             })
+        
+        getQuestionnaires()
+            .then(function (response) {
+                // console.log(response.data)
+                if (response.data.length > 0) {
+                    setCurrentQuestionnairesView("ACTIVE")
+                    setCurrentQuestionnairesData(response.data.filter(qnnaire => qnnaire.status == "NOT_STARTED" || qnnaire.status == "RETURNED"))
+                    setQuestionnairesData(response.data)
+                } else {
+                    setQuestionnairesData([])
+                }
+            })
 
         // eslint-disable-next-line
     }, [])
 
     const [workflowsData, setWorkflowsData] = useState([]);
-    const [currentView, setCurrentView] = useState("VENDOR");
+    const [questionnairesData, setQuestionnairesData] = useState([]);
+    const [currentWorkflowsData, setCurrentWorkflowsData] = useState([]);
+    const [currentQuestionnairesData, setCurrentQuestionnairesData] = useState([]);
+    const [currentWorkflowsView, setCurrentWorkflowsView] = useState("ACTIVE");
+    const [currentQuestionnairesView, setCurrentQuestionnairesView] = useState("ACTIVE");
 
-    const toggleView = (userGroup) => {
-        console.log("inside toggle view!");
-        setCurrentView(userGroup);
-        console.log("new current view ", currentView)
+    const toggleWorkflowsView = (status) => {
+        setCurrentWorkflowsView(status);
+    }
+
+    const toggleQuestionnairesView = (status) => {
+        if (status == "ACTIVE") {
+            console.log('inside ACTIVE toggle')
+            setCurrentQuestionnairesData(questionnairesData.filter(qnnaire => qnnaire.status == "NOT_STARTED" || qnnaire.status == "RETURNED"))
+        } else if (status == "PENDING") {
+            setCurrentQuestionnairesData(questionnairesData.filter(qnnaire => qnnaire.status == "SUBMITTED"))
+        }
+        console.log(currentQuestionnairesData);
+        setCurrentQuestionnairesView(status);
     }
 
     const toWorkflowView = (workflow) => {
@@ -60,15 +87,15 @@ function AdminDash() {
             <div className="flex justify-between mb-5">
                 <div className="flex">
                     <h1 className="text-xl font-semibold text-blue mr-5">Assigned Workflows
-                        <span hidden={currentView == "VENDOR" ? false : true}>: Active</span>
-                        <span hidden={currentView != "VENDOR" ? false : true}>: Pending Approval</span>
+                        <span hidden={currentWorkflowsView == "VENDOR" ? false : true}>: Active</span>
+                        <span hidden={currentWorkflowsView != "VENDOR" ? false : true}>: Pending Approval</span>
                     </h1>
                 </div>
                 <div className="pb-2 inline-flex">
-                        <button onClick={() => toggleView("VENDOR")} hidden={currentView == "VENDOR" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
+                        <button onClick={() => toggleWorkflowsView("VENDOR")} hidden={currentWorkflowsView == "VENDOR" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
                             Go to Current Active Workflows
                         </button>
-                        <button onClick={() => toggleView("USER")} hidden={currentView != "VENDOR" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
+                        <button onClick={() => toggleWorkflowsView("USER")} hidden={currentWorkflowsView != "VENDOR" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
                             Go to Workflows Pending Approval
                         </button>
                     </div>
@@ -99,7 +126,18 @@ function AdminDash() {
         <div className="mt-10">
             <div className="flex justify-between mb-5">
                 <div className="flex">
-                    <h1 className="text-xl font-semibold text-blue mr-5">Assigned Questionnaires</h1>
+                    <h1 className="text-xl font-semibold text-blue mr-5">Assigned Questionnaires
+                        <span hidden={currentQuestionnairesView == "ACTIVE" ? false : true}>: Active</span>
+                        <span hidden={currentQuestionnairesView != "ACTIVE" ? false : true}>: Pending Approval</span>
+                    </h1>  
+                </div>
+                <div className="pb-2 inline-flex">
+                    <button onClick={() => toggleQuestionnairesView("ACTIVE")} hidden={currentQuestionnairesView == "ACTIVE" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
+                        Go to Current Active Questionnaires
+                    </button>
+                    <button onClick={() => toggleQuestionnairesView("PENDING")} hidden={currentQuestionnairesView != "ACTIVE" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
+                        Go to Questionnaires Pending Approval
+                    </button>
                 </div>
             </div>
             <div className="rounded-3xl py-8 px-20 shadow-2xl">
@@ -116,18 +154,26 @@ function AdminDash() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-700">
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                            {(currentQuestionnairesData).map(qnnaire =>
+                                <tr key={qnnaire.id}>
+                                    <td className="p-2">[DEADLINE]</td>
+                                    <td className="name">{qnnaire.title}</td>
+                                    <td className="workflow">[WORKFLOW]</td>
+                                    <td className="status"><span className="badge">{qnnaire.status}</span></td>
+                                    <td></td>
+                                    <td>
+                                        <span hidden={currentQuestionnairesView == "ACTIVE" ? false : true}>
+                                            <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75"><MdEdit></MdEdit></button>
+                                        </span>
+                                        <span hidden={currentQuestionnairesView == "PENDING" ? false : true}>
+                                            <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75"><MdRemoveRedEye></MdRemoveRedEye></button>
+                                        </span>
+                                    </td>
+                                </tr>)}
                         </tbody>
                     </table>
                 </div>
-                <h2 className="text-center mt-5 text-gray-300 text-base font-semibold italic text-blue mr-5">No pending questionnaires.</h2>
+                <h2 hidden={questionnairesData.length == 0 ? false : true} className="text-center mt-5 text-gray-300 text-base font-semibold italic text-blue mr-5">No pending questionnaires.</h2>
             </div>
         </div>
         </div>

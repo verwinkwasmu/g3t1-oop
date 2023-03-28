@@ -44,9 +44,6 @@ function VendorDash() {
     const [currentWorkflowsView, setCurrentWorkflowsView] = useState("ACTIVE");
     const [currentQuestionnairesView, setCurrentQuestionnairesView] = useState("ACTIVE");
     
-
-    console.log(questionnairesData)
-
     const toggleWorkflowsView = (status) => {
         setCurrentWorkflowsView(status);
     }
@@ -161,7 +158,7 @@ function VendorDash() {
                                     <td className="p-2">[DEADLINE]</td>
                                     <td className="name">{qnnaire.title}</td>
                                     <td className="workflow">[WORKFLOW]</td>
-                                    <td className="status">{qnnaire.status}</td>
+                                    <td className="status"><span className="badge">{qnnaire.status}</span></td>
                                     <td></td>
                                     <td>
                                         <span hidden={currentQuestionnairesView == "ACTIVE" ? false : true}>

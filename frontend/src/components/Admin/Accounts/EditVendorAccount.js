@@ -8,8 +8,6 @@ import { updateVendor } from '../../../apiCalls';
 
 function EditVendorAccount(props) {
 
-    console.log(props.account)
-
     const navigate = useNavigate();
 
     const [id, setId] = useState(props.account.id);
