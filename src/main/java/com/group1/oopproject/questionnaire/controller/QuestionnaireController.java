@@ -1,7 +1,9 @@
 package com.group1.oopproject.questionnaire.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import com.group1.oopproject.exception.ApiErrorResponse;
 import com.group1.oopproject.exception.QuestionnaireNotFoundException;
 import com.group1.oopproject.questionnaire.entity.Questionnaire;
 import com.group1.oopproject.questionnaire.entity.QuestionnaireStatus;
@@ -26,104 +28,119 @@ public class QuestionnaireController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @GetMapping
-    public ResponseEntity<List<Questionnaire>> findAllQuestionnaire() {
+    public ResponseEntity<?> findAllQuestionnaire() {
         try {
             return ResponseEntity.ok(questionnaireService.findAllQuestionnaire());
         } catch (QuestionnaireNotFoundException e) {
             logger.error("QuestionnaireNotFoundException: {}", e.getMessage());
-            return ResponseEntity.notFound().build();
+            ApiErrorResponse errorResponse = new ApiErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "NOT_FOUND", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         } catch (DatabaseCommunicationException e) {
             logger.error("DatabaseCommunicationException: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            ApiErrorResponse errorResponse = new ApiErrorResponse(LocalDateTime.now(), HttpStatus.INTERNAL_SERVER_ERROR.value(), "INTERNAL_SERVER_ERROR", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Questionnaire> findById(@PathVariable String id) {
+    public ResponseEntity<?> findById(@PathVariable String id) {
         try {
             return ResponseEntity.ok(questionnaireService.findById(id));
         } catch (QuestionnaireNotFoundException e) {
             logger.error("QuestionnaireNotFoundException: {}", e.getMessage());
-            return ResponseEntity.notFound().build();
+            ApiErrorResponse errorResponse = new ApiErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "NOT_FOUND", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         } catch (DatabaseCommunicationException e) {
             logger.error("DatabaseCommunicationException: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            ApiErrorResponse errorResponse = new ApiErrorResponse(LocalDateTime.now(), HttpStatus.INTERNAL_SERVER_ERROR.value(), "INTERNAL_SERVER_ERROR", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Questionnaire> createQuestionnaire(@RequestBody Questionnaire questionnaire) {
+    public ResponseEntity<?> createQuestionnaire(@RequestBody Questionnaire questionnaire) {
         try {
             return ResponseEntity.ok(questionnaireService.createQuestionnaire(questionnaire));
         } catch (DatabaseCommunicationException e) {
             logger.error("DatabaseCommunicationException: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            ApiErrorResponse errorResponse = new ApiErrorResponse(LocalDateTime.now(), HttpStatus.INTERNAL_SERVER_ERROR.value(), "INTERNAL_SERVER_ERROR", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 
     @GetMapping("/vendor/{id}")
-    public ResponseEntity<List<Questionnaire>> findByAssignedVendor(@PathVariable String id) {
+    public ResponseEntity<?> findByAssignedVendor(@PathVariable String id) {
         try {
             return ResponseEntity.ok(questionnaireService.findByAssignedVendor(id));
         } catch (QuestionnaireNotFoundException e) {
             logger.error("QuestionnaireNotFoundException: {}", e.getMessage());
-            return ResponseEntity.notFound().build();
+            ApiErrorResponse errorResponse = new ApiErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "NOT_FOUND", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         } catch (DatabaseCommunicationException e) {
             logger.error("DatabaseCommunicationException: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            ApiErrorResponse errorResponse = new ApiErrorResponse(LocalDateTime.now(), HttpStatus.INTERNAL_SERVER_ERROR.value(), "INTERNAL_SERVER_ERROR", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 
     @GetMapping("/admin/{id}")
-    public ResponseEntity<List<Questionnaire>> findByAssignedAdmin(@PathVariable String id) {
+    public ResponseEntity<?> findByAssignedAdmin(@PathVariable String id) {
         try {
             return ResponseEntity.ok(questionnaireService.findByAssignedAdmin(id));
         } catch (QuestionnaireNotFoundException e) {
             logger.error("QuestionnaireNotFoundException: {}", e.getMessage());
-            return ResponseEntity.notFound().build();
+            ApiErrorResponse errorResponse = new ApiErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "NOT_FOUND", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         } catch (DatabaseCommunicationException e) {
             logger.error("DatabaseCommunicationException: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            ApiErrorResponse errorResponse = new ApiErrorResponse(LocalDateTime.now(), HttpStatus.INTERNAL_SERVER_ERROR.value(), "INTERNAL_SERVER_ERROR", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 
     @DeleteMapping("/delete/{id}/{userId}")
-    public ResponseEntity<Void> deleteById(@PathVariable("id") String id, @PathVariable("userId") String userId) {
+    public ResponseEntity<?> deleteById(@PathVariable("id") String id, @PathVariable("userId") String userId) {
         try {
             questionnaireService.deleteById(id, userId);
             return ResponseEntity.noContent().build();
         } catch (QuestionnaireNotFoundException e) {
             logger.error("QuestionnaireNotFoundException: {}", e.getMessage());
-            return ResponseEntity.notFound().build();
+            ApiErrorResponse errorResponse = new ApiErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "NOT_FOUND", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         } catch (DatabaseCommunicationException e) {
             logger.error("DatabaseCommunicationException: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            ApiErrorResponse errorResponse = new ApiErrorResponse(LocalDateTime.now(), HttpStatus.INTERNAL_SERVER_ERROR.value(), "INTERNAL_SERVER_ERROR", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Questionnaire> updateQuestionnaire(@RequestBody Questionnaire updatedQuestionnaire){
+    public ResponseEntity<?> updateQuestionnaire(@RequestBody Questionnaire updatedQuestionnaire){
         try {
             return ResponseEntity.ok(questionnaireService.updateQuestionnaire(updatedQuestionnaire));
         } catch (QuestionnaireNotFoundException e){
             logger.error("QuestionnaireNotFoundException: {}", e.getMessage());
-            return ResponseEntity.notFound().build();
+            ApiErrorResponse errorResponse = new ApiErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "NOT_FOUND", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         } catch (DatabaseCommunicationException e){
             logger.error("DatabaseCommunicationException: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            ApiErrorResponse errorResponse = new ApiErrorResponse(LocalDateTime.now(), HttpStatus.INTERNAL_SERVER_ERROR.value(), "INTERNAL_SERVER_ERROR", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 
     @GetMapping("/status/{status}")
-    public ResponseEntity<List<Questionnaire>> findAllByStatus(@PathVariable String status) {
+    public ResponseEntity<?> findAllByStatus(@PathVariable String status) {
         try {
             return ResponseEntity.ok(questionnaireService.findAllByStatus(QuestionnaireStatus.valueOf(status)));
         } catch (QuestionnaireNotFoundException e) {
             logger.error("QuestionnaireNotFoundException: {}", e.getMessage());
-            return ResponseEntity.notFound().build();
+            ApiErrorResponse errorResponse = new ApiErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "NOT_FOUND", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         } catch (DatabaseCommunicationException e) {
             logger.error("DatabaseCommunicationException: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            ApiErrorResponse errorResponse = new ApiErrorResponse(LocalDateTime.now(), HttpStatus.INTERNAL_SERVER_ERROR.value(), "INTERNAL_SERVER_ERROR", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 }

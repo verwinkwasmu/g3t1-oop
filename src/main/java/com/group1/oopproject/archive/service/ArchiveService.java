@@ -7,6 +7,7 @@ import com.group1.oopproject.exception.ArchiveDocumentNotFoundException;
 import com.group1.oopproject.exception.DatabaseCommunicationException;
 import com.group1.oopproject.questionnaire.entity.Questionnaire;
 import com.group1.oopproject.questionnaire.repository.QuestionnaireRepository;
+import com.group1.oopproject.user.entity.User;
 import com.group1.oopproject.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,9 +54,11 @@ public class ArchiveService {
                     case "questionnaires":
                         questionnaireRepository.save((Questionnaire) data);
                         break;
+                    case "users":
+                        userRepository.save((User) data);
+                        break;
                     //TODO add workflow
                     // TODO add assignedWorkflow
-                    // TODO add user
                 }
 
                 // Delete the archived document from the archived collection
