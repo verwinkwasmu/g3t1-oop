@@ -10,14 +10,16 @@ function UpateWorkflow(props) {
 
     const navigate = useNavigate();
 
-    console.log(props.workflow)
-    const [workflowId, setworkflowId] = useState(props.workflow.id);
-    const [workflowName, setworkflowName] = useState(props.workflow.workflowName);
+    // console.log(props.workflow)
+    const workflowId = props.workflow.id;
+    const workflowName = props.workflow.workflowName;
+    const [test, setworkflowName] = useState(workflowName);
     const [selectedQuestionnaires, setSelectedQuestionnaires] = useState("");
     const [questionnaireOptions, setQuestionnaireOptions] = useState();
 
-    console.log("HEREEEE")
-    console.log(workflowName)
+    // console.log("HEREEEE")
+    // console.log(workflowId)
+    // console.log(workflowName)
 
     const validateForm = () => {
         return !(workflowName.length == 0 || selectedQuestionnaires.length == 0);
@@ -78,7 +80,7 @@ function UpateWorkflow(props) {
 
         updateIndividualTemplateWorkflow({ id: props.workflow.id, workflowName: workflowName, questionnaireList: temp, createdAt: props.workflow.createdAt })
             .then(function (response) {
-                navigate('/workflows');
+                navigate(`/workflow-templates/${props.workflow.id}`);
             })
             .catch(function (error) {
                 console.log("ERROR CREATING WORKFLOW")
@@ -102,7 +104,7 @@ function UpateWorkflow(props) {
                             <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="workflowname">
                                 Workflow Name
                             </label>
-                            <input defaultValue={props.workflow.workflowName} onChange={e => setworkflowName(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="workflowname" type="text" />
+                            <input defaultValue={workflowName} onChange={e => setworkflowName(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="workflowname" type="text" />
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-md font-thin" htmlFor="forms">
