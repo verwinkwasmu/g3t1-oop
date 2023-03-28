@@ -30,6 +30,7 @@ public class Workflow {
     @Id
     private String id;
     private String workflowName;
+    private String workflowDescription;
     private List<String> questionnaireList = new ArrayList<String>();
 
     private List<Questionnaire> questionnaires;

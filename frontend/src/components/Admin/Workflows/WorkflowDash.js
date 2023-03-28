@@ -8,8 +8,12 @@ function WorkflowDash() {
 
     const navigate = useNavigate();
 
+    const [workflowsData, setWorkflowsData] = useState([]);
+    const [render, setRender] = useState("");
+
     useEffect(() => {
         document.title = 'Workflows Dashboard'
+        setRender("Templates");
 
         getWorkflows()
             .then(function (response) {
@@ -24,13 +28,13 @@ function WorkflowDash() {
         // eslint-disable-next-line
     }, [])
 
-    const [workflowsData, setWorkflowsData] = useState([]);
-
     console.log("WORKFLOWSDATA")
     console.log(workflowsData)
 
     const renderTemplates = () => {
         console.log("RENDER TEMPLATES")
+        setRender("Templates");
+
         getWorkflows()
             .then(function (response) {
                 // console.log(response.data)
@@ -44,6 +48,8 @@ function WorkflowDash() {
 
     const renderAssigned = () => {
         console.log("RENDER ASSIGNED")
+        setRender("Assigned");
+
         getAssignedWorkflows()
             .then(function (response) {
                 // console.log(response.data)
@@ -57,7 +63,13 @@ function WorkflowDash() {
 
     const toWorkflowView = (workflow) => {
         console.log("===== INSIDE toWorkflowView =====")
-        navigate(`/workflows/${workflow.id}`, { state: { workflow: workflow } });
+
+        if (render=="Templates") {
+            navigate(`/workflow-templates/${workflow.id}`, { state: { workflowId: workflow.id } });
+        }
+        else {
+            navigate(`/workflow-assigned/${workflow.id}`, { state: { workflowId: workflow.id } });
+        }
     }
 
     return (

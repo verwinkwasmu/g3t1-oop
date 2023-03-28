@@ -50,6 +50,6 @@ This guide will provide instructions on how to start our backend springboot mono
 
 ## Running the Project
 1. Open the terminal in Visual Studio Code
-2. Navigate to the app/
+2. Navigate to the frontend/
 3. Run the command `npm install` to install project dependencies.
-4. Run the command `npm run dev` to start the application.
+4. Run the command ` ` to start the application.
