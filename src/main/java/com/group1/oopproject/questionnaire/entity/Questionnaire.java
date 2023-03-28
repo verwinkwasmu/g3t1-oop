@@ -1,6 +1,7 @@
 package com.group1.oopproject.questionnaire.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -26,6 +27,7 @@ public class Questionnaire {
     private LocalDateTime submissionDate;
     private LocalDateTime submissionDeadline;
     private Map<String, Object> questionsAndAnswers;
+    private List<String> feedback;
     
     @CreatedDate
     private LocalDateTime createdAt;
