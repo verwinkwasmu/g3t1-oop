@@ -111,7 +111,7 @@ function AdminDash() {
                     </div>
             </div>
             <div hidden={currentWorkflowsData.length == 0 ? true : false}>
-            <div  className="carousel carousel-center p-4 space-x-4 shadow-2xl rounded-box">
+            <div className="carousel carousel-center p-4 space-x-4 shadow-2xl rounded-box">
             {(currentWorkflowsData).map(workflow =>
                 <div className="carousel-item">
                     <div className="card card-compact w-72 h-72 bg-base-100 shadow-xl image-full" key={workflow.id}>
@@ -158,7 +158,7 @@ function AdminDash() {
                     </button>
                 </div>
             </div>
-            <div hidden={currentQuestionnairesData.length == 0 ? true : false} className="rounded-3xl py-8 px-20 shadow-2xl">
+            <div hidden={currentQuestionnairesData.length == 0 ? true : false} className="rounded-3xl mb-10 py-8 px-20 shadow-2xl">
                 <div className="flex flex-wrap text-left">
                     <table className="flex-auto table-fixed divide-y-2 divide-slate-700">
                         <thead>
