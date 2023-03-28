@@ -43,7 +43,7 @@ function WorkflowAssignedView() {
             return "step step-secondary"
         }
         else if (status=="RETURNED") {
-            return "step step-warning"
+            return "step step-error"
         }
         else if (status=="APPROVER_APPROVED") {
             return "step step-accent"

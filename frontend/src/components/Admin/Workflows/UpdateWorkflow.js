@@ -78,9 +78,9 @@ function UpateWorkflow(props) {
         console.log(workflowId)
         console.log(workflowName)
 
-        updateIndividualTemplateWorkflow({ id: props.workflow.id, workflowName: workflowName, questionnaireList: temp, createdAt: props.workflow.createdAt })
+        updateIndividualTemplateWorkflow({ id: workflowId, workflowName: workflowName, questionnaireList: temp, createdAt: props.workflow.createdAt })
             .then(function (response) {
-                navigate(`/workflow-templates/${props.workflow.id}`);
+                navigate(`/workflow-templates/${workflowId}`);
             })
             .catch(function (error) {
                 console.log("ERROR UPDATING WORKFLOW")
