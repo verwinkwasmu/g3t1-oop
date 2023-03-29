@@ -2,6 +2,7 @@
 1. [Questionnaire](#Questionnaire)
 2. [User](#User)
 3. [Workflow](#Workflow)
+4. [Archive](#Archive)
 
 ---
 
@@ -39,7 +40,8 @@
             "first thing" : "hello",
             "second thibg": "omma"
         }
-    }
+    },
+    "feedback": []
 }
 ```
 
@@ -62,6 +64,7 @@
             "second thibg": "omma"
         }
     },
+    "feedback": [],
     "createdAt": "2023-03-22T09:16:28.866"
 }
 ```
@@ -193,11 +196,12 @@
 
 ### Archive
 1. Get all archive document based on its collection (returns a list of archive document)
+- Collection `collection` include: `WORFKLOWS`, `QUESTIONNAIRES`, `USERS`, `VENDORS`
 
 ``[GET] /api/v1/archive/collection/{collection}``
 
 2. restore archive document into its original collection
 
-``[POST] /api/v1/restoreDocument/{id}``
+``[DELETE] /api/v1/archive/restoreDocument/{id}``
 
 ---

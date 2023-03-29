@@ -4,7 +4,10 @@ import WithNav from './components/WithNav';
 import NavBar from './components/NavBar';
 
 import Login from './components/Login';
-import MainDash from './components/Admin/MainDash';
+import HomeDash from './components/HomeDash';
+import Archive from './components/Archive';
+import Profile from './components/Profile';
+
 import WorkflowDash from './components/Admin/Workflows/WorkflowDash';
 import FormDash from './components/Admin/FormDash';
 import AccountDash from './components/Admin/Accounts/AccountDash';
@@ -13,10 +16,6 @@ import WorkflowTemplateView from './components/Admin/Workflows/WorkflowTemplateV
 import WorkflowAssignedView from './components/Admin/Workflows/WorkflowAssignedView';
 
 import CreateForm from './components/Admin/CreateForm';
-
-import ApproverDash from './components/Approver/ApproverDash';
-
-import Profile from './components/Profile';
 
 import useToken from './useToken';
 
@@ -35,11 +34,11 @@ function App() {
   return (
     <div>
       <Routes>
-        {/* <Route element={<WithoutNav />}>
-          <Route path="/login" element={<Login />} />
-        </Route> */}
         <Route element={<WithNav />}>
-          <Route path="/" element={<MainDash />} />
+          <Route path="/" element={<HomeDash />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/archive" element={<Archive />} />
+
 
           <Route path="/workflows" element={<WorkflowDash />} />
 
@@ -58,9 +57,7 @@ function App() {
 
           <Route path="/forms/create-form" element={<CreateForm />}></Route>
 
-          <Route path="/approver" element={<ApproverDash />}></Route>
 
-          {/* <Route path="/profile" element={<Profile />} /> */}
         </Route>
       </Routes>
 
