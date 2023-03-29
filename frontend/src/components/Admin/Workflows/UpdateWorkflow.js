@@ -53,16 +53,18 @@ function UpateWorkflow(props) {
                 }
             })
 
+        // var temp = []
         // for (const index in props.workflow.questionnaires) {
-        //     selectedQuestionnaires.push(
+        //     temp.push(
         //         {
         //             value: props.workflow.questionnaires[index].id, 
         //             label: props.workflow.questionnaires[index].title
         //         }
         //     );
         // }
-        console.log("selectedQuestionnaires")
-        console.log(selectedQuestionnaires)
+        // setSelectedQuestionnaires(temp)
+        // console.log("selectedQuestionnaires")
+        // console.log(selectedQuestionnaires)
         // eslint-disable-next-line
     }, [])
 
@@ -70,21 +72,21 @@ function UpateWorkflow(props) {
     // console.log(selectedQuestionnaires)
 
     const handleUpdate = () => {
-        console.log("INSIDE HANDLE CREATE");
+        console.log("INSIDE HANDLE UPDATE");
 
         const temp = [];
         for (const element of selectedQuestionnaires) {
             temp.push(element.value);
         }
 
-        console.log("workflowname")
-        console.log(workflowId)
-        console.log(workflowName)
-        console.log(temp)
-        console.log(props.workflow.createdAt)
-
         if (props.render=="templates") {
-            updateIndividualTemplateWorkflow({ id: workflowId, workflowName: workflowName, questionnaireList: temp, createdAt: props.workflow.createdAt })
+            var workflowNameToPass = workflowName;
+            if (test!=undefined) {
+                workflowNameToPass = test;
+            }
+
+            
+            updateIndividualTemplateWorkflow({ id: workflowId, workflowName: workflowNameToPass, questionnaireList: temp })
             .then(function (response) {
                 window.location.reload(false)
             })
@@ -93,8 +95,17 @@ function UpateWorkflow(props) {
             })
         }
         else if (props.render=="assigned") {
-            updateIndividualAssignedWorkflow({ workflowName: workflowName, questionnaireList: temp })
+            var workflowNameToPass = workflowName;
+            if (test!=undefined) {
+                workflowNameToPass = test;
+            }
+            var approverReviewStatus = "INTIIAL_DRAFT"
+            if (props.workflow.approverReviewStatus!=null) {
+                approverReviewStatus = props.workflow.approverReviewStatus
+            }
+            updateIndividualAssignedWorkflow({ id: workflowId, workflowName: workflowNameToPass, questionnaireList: temp, createdAt: props.workflow.createdAt, assignedVendorId: props.workflow.assignedVendorId, assignedAdminId: props.workflow.assignedAdminId, approvalRequestDate: props.workflow.approvalRequestDate, approverReviewStatus: approverReviewStatus, approvedAt:props.workflow.approvedAt })
             .then(function (response) {
+                console.log(response.data)
                 window.location.reload(false)
             })
             .catch(function (error) {
