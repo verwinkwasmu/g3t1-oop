@@ -83,7 +83,6 @@ function WorkflowAssignedView() {
                             <h2 className="text-3xl font-semibold text-blue">{workflowsData.workflowName}</h2>
                         </div>
                         <div className="flex mt-5">
-                            <AssignNewUser></AssignNewUser>
                             <UpdateWorkflow workflow={workflowsData} render="assigned"></UpdateWorkflow>
                             <DeleteWorkflow workflow={workflowsData} render="assigned"></DeleteWorkflow>
                         </div>

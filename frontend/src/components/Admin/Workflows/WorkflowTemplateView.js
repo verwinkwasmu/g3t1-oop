@@ -47,7 +47,7 @@ function WorkflowTemplateView() {
                             <h2 className="text-3xl font-semibold text-blue">{workflowsData.workflowName}</h2>
                         </div>
                         <div className="flex mt-5">
-                            <AssignNewUser></AssignNewUser>
+                            <AssignNewUser workflow={workflowsData}></AssignNewUser>
                             <UpdateWorkflow workflow={workflowsData} render="templates"></UpdateWorkflow>
                             <DeleteWorkflow workflow={workflowsData} render="templates"></DeleteWorkflow>
                         </div>
@@ -71,7 +71,7 @@ function WorkflowTemplateView() {
                                             <tbody>
                                                 {(questionnaireTitles).map(questionnaireTitle =>
                                                     <div key={questionnaireTitle[0]}>
-                                                        <tr className="card-title mb-2">{questionnaireTitle[1]}</tr>
+                                                        <tr className="card-title mb-2 font-normal">{questionnaireTitle[1]}</tr>
                                                     </div>
                                                 )}
                                             </tbody>
@@ -89,7 +89,7 @@ function WorkflowTemplateView() {
                                     <div className="text-left text-blue">
                                         <table>
                                             <tbody>
-                                                <tr className="card-title mb-2">Click on 'Assign User' to make an assigned workflow with this template.</tr>
+                                                <tr className="card-title mb-2 font-normal">Click on 'Assign User' to make an assigned workflow with this template.</tr>
                                             </tbody>
                                         </table>
                                     </div>

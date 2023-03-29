@@ -131,3 +131,7 @@ export function getQuestionnaires() {
 export function getIndividualQuestionnaire(id) {
   return axiosClient.get(`/api/v1/questionnaire/${id}`);  
 }
+
+export function createQuestionnaire(data) { 
+  return axiosClient.post("/api/v1/questionnaire/create", JSON.stringify(data));  
+}
