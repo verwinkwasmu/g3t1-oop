@@ -1,6 +1,8 @@
 package com.group1.oopproject.workflow.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import com.group1.oopproject.exception.ApiErrorResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -87,18 +89,18 @@ public class WorkflowController {
         }
     }
 
-    // @GetMapping("/assigned/admin/{id}")
-    // public ResponseEntity <List<AssignedWorkflow>> findAssignedByAdminId(@PathVariable String id) {
-    //     try {
-    //         return ResponseEntity.ok(workflowService.findAssignedByAdminId(id));
-    //     } catch (WorkflowNotFoundException e) {
-    //         logger.error("WorkflowNotFoundException: {}", e.getMessage());
-    //         return ResponseEntity.notFound().build();
-    //     } catch (DatabaseCommunicationException e) {
-    //         logger.error("Error communicating with database: {}", e.getMessage());
-    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    //     }
-    // }
+    @GetMapping("/assigned/admin/{id}")
+    public ResponseEntity <List<AssignedWorkflow>> findAssignedByAdminId(@PathVariable String id) {
+        try {
+            return ResponseEntity.ok(workflowService.findAssignedByAdminId(id));
+        } catch (WorkflowNotFoundException e) {
+            logger.error("WorkflowNotFoundException: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
+        } catch (DatabaseCommunicationException e) {
+            logger.error("Error communicating with database: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
     @GetMapping("/assigned/vendor/{id}")
     public ResponseEntity <List<AssignedWorkflow>> findAssignedByVendorId(@PathVariable String id) {
@@ -161,28 +163,37 @@ public class WorkflowController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Workflow> deleteWorkflow(@PathVariable String id){
-        try{
-            return ResponseEntity.ok(workflowService.deleteWorkflow(id));
-        }catch (WorkflowNotFoundException e) {
+    @DeleteMapping("/delete/{id}/{userId}")
+    public ResponseEntity<?> deleteById(@PathVariable("id") String id, @PathVariable("userId") String userId) {
+        try {
+            workflowService.deleteById(id, userId);
+            return ResponseEntity.noContent().build();
+        } catch (WorkflowNotFoundException e) {
             logger.error("WorkflowNotFoundException: {}", e.getMessage());
-            return ResponseEntity.notFound().build();
-        } catch(DatabaseCommunicationException e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            ApiErrorResponse errorResponse = new ApiErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "NOT_FOUND", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        } catch (DatabaseCommunicationException e) {
+            logger.error("DatabaseCommunicationException: {}", e.getMessage());
+            ApiErrorResponse errorResponse = new ApiErrorResponse(LocalDateTime.now(), HttpStatus.INTERNAL_SERVER_ERROR.value(), "INTERNAL_SERVER_ERROR", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 
 
-    @DeleteMapping("/assigned/{id}")
-    public ResponseEntity<Workflow> deleteAssignedWorkflow(@PathVariable String id){
-        try{
-            return ResponseEntity.ok(workflowService.deleteAssignedWorkflow(id));
-        }catch (WorkflowNotFoundException e) {
+
+    @DeleteMapping("/delete/assigned/{id}/{userId}")
+    public ResponseEntity<?> deleteAssignedById(@PathVariable("id") String id, @PathVariable("userId") String userId) {
+        try {
+            workflowService.deleteAssignedById(id, userId);
+            return ResponseEntity.noContent().build();
+        } catch (WorkflowNotFoundException e) {
             logger.error("WorkflowNotFoundException: {}", e.getMessage());
-            return ResponseEntity.notFound().build();
-        } catch(DatabaseCommunicationException e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            ApiErrorResponse errorResponse = new ApiErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "NOT_FOUND", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        } catch (DatabaseCommunicationException e) {
+            logger.error("DatabaseCommunicationException: {}", e.getMessage());
+            ApiErrorResponse errorResponse = new ApiErrorResponse(LocalDateTime.now(), HttpStatus.INTERNAL_SERVER_ERROR.value(), "INTERNAL_SERVER_ERROR", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 

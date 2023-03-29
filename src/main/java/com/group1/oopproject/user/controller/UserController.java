@@ -131,10 +131,30 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String id) {
+    @PostMapping("/login")
+    public ResponseEntity<User> loginUser(@RequestBody String userId, @RequestBody String password) {
         try {
-            userService.deleteUser(id);
+            return ResponseEntity.ok(userService.loginUser(userId, password));
+        } catch (DatabaseCommunicationException e) {
+            logger.error("Error communicating with database: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/vendors/login")
+    public ResponseEntity<Vendor> loginVendor(@RequestBody String vendorId, @RequestBody String password) {
+        try {
+            return ResponseEntity.ok(userService.loginVendor(vendorId, password));
+        } catch (DatabaseCommunicationException e) {
+            logger.error("Error communicating with database: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @DeleteMapping("/delete/{id}/{deleterId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") String id,@PathVariable("deleterId") String deleterId) {
+        try {
+            userService.deleteUser(id, deleterId);
             return ResponseEntity.noContent().build();
         } catch (UserNotFoundException e) {
             logger.error("UserNotFoundException: {}", e.getMessage());
@@ -145,10 +165,10 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/vendors/delete/{id}")
-    public ResponseEntity<Void> deleteVendor(@PathVariable String id) {
+    @DeleteMapping("/vendors/delete/{id}/{deleterId}")
+    public ResponseEntity<Void> deleteVendor(@PathVariable("id") String id,@PathVariable("deleterId") String deleterId) {
         try {
-            userService.deleteVendor(id);
+            userService.deleteVendor(id, deleterId);
             return ResponseEntity.noContent().build();
         } catch (UserNotFoundException e) {
             logger.error("UserNotFoundException: {}", e.getMessage());

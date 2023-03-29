@@ -17,14 +17,19 @@ import com.group1.oopproject.exception.UserNotFoundException;
 import com.group1.oopproject.user.entity.User;
 import com.group1.oopproject.user.repository.UserRepository;
 
+import com.group1.oopproject.archive.entity.ArchiveDocument;
+import com.group1.oopproject.archive.service.ArchiveService;
+
 @Service
 public class UserService {
 
     @Autowired
     private UserRepository userRepository;
     @Autowired
-
     private VendorRepository vendorRepository;
+
+    @Autowired
+    private ArchiveService archiveService;
 
     public List<User> getAllUsers() {
         try {
@@ -149,25 +154,67 @@ public class UserService {
         }
     }
 
-    public void deleteUser(String id) {
+    public void deleteUser(String id, String deleterId) {
         try {
             User user = userRepository.findById(id)
                     .orElseThrow(() -> new UserNotFoundException("No users found in the database for user with id: " + id));
             userRepository.deleteById(user.getId());
+
+            // archive this document
+            archiveService.createArchiveDocument(ArchiveDocument.builder().id(user.getId()).collection("users").deletedBy(deleterId).data(user).build());
+        } catch (Exception e) {
+            throw new DatabaseCommunicationException("Error communicating with database for method deleteById: " + e.getMessage(), e);
+        }
+    }
+
+    public void deleteVendor(String id, String deleterId) {
+        try {
+            Vendor vendor = vendorRepository.findById(id)
+                    .orElseThrow(() -> new UserNotFoundException("No vendors found in the database for vendor with id: " + id));
+            vendorRepository.deleteById(vendor.getId());
+            // archive this document
+            archiveService.createArchiveDocument(ArchiveDocument.builder().id(vendor.getId()).collection("vendors").deletedBy(deleterId).data(vendor).build());
+        } catch (Exception e) {
+            throw new DatabaseCommunicationException("Error communicating with database for method deleteById: " + e.getMessage(), e);
+        }
+    }
+
+    public User loginUser(String id,String pw) {
+        try {
+            User user = userRepository.findById(id)
+                    .orElseThrow(() -> new UserNotFoundException("Either userId or password is wrong. Please try again"));
+
+            // check pw
+            if (user.getPassword().equals(pw)){
+                return user;
+            }
+            else{
+                throw new UserNotFoundException("Either userId or password is wrong. Please try again");
+            }
+
         } catch (UncategorizedMongoDbException e) {
             throw new DatabaseCommunicationException("Error communicating with database for method deleteById", e);
         }
     }
 
-    public void deleteVendor(String id) {
+    public Vendor loginVendor(String id,String pw) {
         try {
             Vendor vendor = vendorRepository.findById(id)
-                    .orElseThrow(() -> new UserNotFoundException("No vendors found in the database for vendor with id: " + id));
-            vendorRepository.deleteById(vendor.getId());
+                    .orElseThrow(() -> new UserNotFoundException("Either userId or password is wrong. Please try again"));
+
+            // check pw
+            if (vendor.getPassword().equals(pw)){
+                return vendor;
+            }
+            else{
+                throw new UserNotFoundException("Either userId or password is wrong. Please try again");
+            }
+
         } catch (UncategorizedMongoDbException e) {
             throw new DatabaseCommunicationException("Error communicating with database for method deleteById", e);
         }
     }
+
 
     public User updateUser(User user) {
         try {

@@ -6,9 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { updateVendor } from '../../../apiCalls';
 
-function EditAccount(props) {
-
-    console.log(props.account)
+function EditVendorAccount(props) {
 
     const navigate = useNavigate();
 
@@ -49,16 +47,16 @@ function EditAccount(props) {
 
     return (
         <>
-            <label htmlFor="EditAccount" className="btn btn-xs btn-link text-lg text-blue hover:opacity-75">
+            <label htmlFor="EditVendorAccount" className="btn btn-xs btn-link text-lg text-blue hover:opacity-75">
                 <MdEdit></MdEdit>
             </label>
-            {/* <button className="text-blue hover:opacity-75" htmlFor="EditAccount"><MdEdit></MdEdit></button> */}
+            {/* <button className="text-blue hover:opacity-75" htmlFor="EditVendorAccount"><MdEdit></MdEdit></button> */}
 
             
-            <input type="checkbox" id="EditAccount" className="modal-toggle" />
+            <input type="checkbox" id="EditVendorAccount" className="modal-toggle" />
             <div className="modal text-left">
             <div className="modal-box max-w-5xl relative py-12 px-20">
-                <label htmlFor="EditAccount" className="btn btn-sm btn-circle bg-red border-transparent absolute right-20 top-12">✕</label>
+                <label htmlFor="EditVendorAccount" className="btn btn-sm btn-circle bg-red border-transparent absolute right-20 top-12">✕</label>
                 <h1 className="text-3xl mb-3 font-semibold text-blue">Edit Account</h1>
 
                 <form>
@@ -125,7 +123,7 @@ function EditAccount(props) {
                     </div>                    
                     <div className="mt-6 flex justify-center">
                         {validateForm()}
-                        <label onClick={() => {handleSave()}} htmlFor="EditAccount" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full" type="button" disabled={(validateForm() !== true) ? true : false}>
+                        <label onClick={() => {handleSave()}} htmlFor="EditVendorAccount" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full" type="button" disabled={(validateForm() !== true) ? true : false}>
                             Save Changes
                         </label>
                     </div>
@@ -137,4 +135,4 @@ function EditAccount(props) {
     )
 }
 
-export default EditAccount;
+export default EditVendorAccount;

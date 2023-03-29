@@ -2,6 +2,7 @@
 1. [Questionnaire](#Questionnaire)
 2. [User](#User)
 3. [Workflow](#Workflow)
+4. [Archive](#Archive)
 
 ---
 
@@ -39,7 +40,8 @@
             "first thing" : "hello",
             "second thibg": "omma"
         }
-    }
+    },
+    "feedback": []
 }
 ```
 
@@ -62,6 +64,7 @@
             "second thibg": "omma"
         }
     },
+    "feedback": [],
     "createdAt": "2023-03-22T09:16:28.866"
 }
 ```
@@ -89,11 +92,11 @@
 
 **NOTE:** this is only to get admin and approver
 
-``[GET] /api/v1/users/{userType}``
+``[GET] /api/v1/users/type/{userType}``
 
 3. Get all vendors from 1 company
 
-``[GET] /api/v1/users/vendors/{companyName}``
+``[GET] /api/v1/users/vendors/company/{companyName}``
 
 4. Get 1 user based on unique user id
 - Regardless of the user type  
@@ -136,9 +139,9 @@
 ```
 6. Delete user and vendor by id
 
-``[DELETE] /api/v1/users/delete/{id}``
+``[DELETE] /api/v1/users/delete/{id}/{deleterId}``
 
-``[DELETE] /api/v1/users/vendors/delete/{id}``
+``[DELETE] /api/v1/users/vendors/delete/{id}/{deleterId}``
 
 7. Update user and vendor
 
@@ -177,16 +180,28 @@
 
 ```
 
+8. Login for users and vendors
+- EXTREMELY primitive login
+
+``[POST] /api/v1/users/vendors/login``
+``[POST] /api/v1/users/login``
+
+```
+[STRING] userId
+[STRING] password
+```
+
 
 ---
 
 ### Archive
 1. Get all archive document based on its collection (returns a list of archive document)
+- Collection `collection` include: `WORFKLOWS`, `QUESTIONNAIRES`, `USERS`, `VENDORS`
 
 ``[GET] /api/v1/archive/collection/{collection}``
 
 2. restore archive document into its original collection
 
-``[POST] /api/v1/restoreDocument/{id}``
+``[DELETE] /api/v1/archive/restoreDocument/{id}``
 
 ---

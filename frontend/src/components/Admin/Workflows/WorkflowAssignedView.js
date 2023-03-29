@@ -34,12 +34,33 @@ function WorkflowAssignedView() {
 
                 const temp = [];
                 for (const index in response.data.questionnaires) {
-                    temp.push([response.data.questionnaires[index].id, response.data.questionnaires[index].title]);
+                    temp.push([response.data.questionnaires[index].id, response.data.questionnaires[index].title, response.data.questionnaires[index].status]);
                 }
                 setQuestionnaireTitles(temp);
             })
         // eslint-disable-next-line
     }, [])
+
+    const checkStatus = (status) => {
+        console.log("")
+        console.log(status)
+        if (status=="SUBMITTED") {
+            return "step step-primary"
+        }
+        else if (status=="ADMIN_APPROVED") {
+            return "step step-secondary"
+        }
+        else if (status=="RETURNED") {
+            return "step step-error"
+        }
+        else if (status=="APPROVER_APPROVED") {
+            return "step step-accent"
+        }
+        else {
+            return "step"
+        }
+    }
+
 
     return (
         <>

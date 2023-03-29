@@ -34,7 +34,7 @@ public class QuestionnaireService {
         } catch (QuestionnaireNotFoundException e) {
             throw e;
         } catch (Exception e) {
-            throw new DatabaseCommunicationException("Error communicating with database for method findAllQuestionnaire", e);
+            throw new DatabaseCommunicationException("Error communicating with database for method findAllQuestionnaire: " + e.getMessage(), e);
         }
     }
 
@@ -42,8 +42,8 @@ public class QuestionnaireService {
         try {
             Optional<Questionnaire> questionnaire = questionnaireRepository.findById(id);
             return questionnaire.orElseThrow(() -> new QuestionnaireNotFoundException("Questionnaire not found with id: " + id));
-        } catch (UncategorizedMongoDbException e) {
-            throw new DatabaseCommunicationException("Error communicating with database for method findById", e);
+        } catch (Exception e) {
+            throw new DatabaseCommunicationException("Error communicating with database for method findById: " + e.getMessage(), e);
         }
     }
 
@@ -52,7 +52,7 @@ public class QuestionnaireService {
             questionnaire.setCreatedAt(LocalDateTime.now());
             return questionnaireRepository.save(questionnaire);
         } catch (Exception e) {
-            throw new DatabaseCommunicationException("Error communicating with the database for method createQuestionnaire",
+            throw new DatabaseCommunicationException("Error communicating with the database for method createQuestionnaire: " + e.getMessage(),
                     e);
         }
     }
@@ -67,7 +67,7 @@ public class QuestionnaireService {
         } catch (QuestionnaireNotFoundException e) {
             throw e;
         } catch (Exception e) {
-            throw new DatabaseCommunicationException("Error communicating with database for method findByAssignedVendor",
+            throw new DatabaseCommunicationException("Error communicating with database for method findByAssignedVendor: " + e.getMessage(),
                     e);
         }
     }
@@ -82,7 +82,7 @@ public class QuestionnaireService {
         } catch (QuestionnaireNotFoundException e) {
             throw e;
         } catch (Exception e) {
-            throw new DatabaseCommunicationException("Error communicating with database for method findByAssignedAdmin",
+            throw new DatabaseCommunicationException("Error communicating with database for method findByAssignedAdmin: " + e.getMessage(),
                     e);
         }
     }
@@ -110,8 +110,8 @@ public class QuestionnaireService {
             } else {
                 throw new QuestionnaireNotFoundException("No questionnaire found in the database with id: " + questionnaire.getId());
             }
-        } catch (UncategorizedMongoDbException e) {
-            throw new DatabaseCommunicationException("Error communicating with database for method updateById", e);
+        } catch (Exception e) {
+            throw new DatabaseCommunicationException("Error communicating with database for method updateById: " + e.getMessage(), e);
         }
     }
 
@@ -125,7 +125,7 @@ public class QuestionnaireService {
         } catch (QuestionnaireNotFoundException e) {
             throw e;
         } catch (Exception e) {
-            throw new DatabaseCommunicationException("Error communicating with database for method findAllByStatus",
+            throw new DatabaseCommunicationException("Error communicating with database for method findAllByStatus: " + e.getMessage(),
                     e);
         }
     }
