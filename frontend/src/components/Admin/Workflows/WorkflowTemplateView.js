@@ -48,8 +48,8 @@ function WorkflowTemplateView() {
                         </div>
                         <div className="flex mt-5">
                             <AssignNewUser></AssignNewUser>
-                            <UpdateWorkflow workflow={workflowsData}></UpdateWorkflow>
-                            <DeleteWorkflow workflow={workflowsData}></DeleteWorkflow>
+                            <UpdateWorkflow workflow={workflowsData} render="templates"></UpdateWorkflow>
+                            <DeleteWorkflow workflow={workflowsData} render="templates"></DeleteWorkflow>
                         </div>
                     </div>
                     <div className="grid grid-rows-1 grid-cols-4 gap-x-2 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">

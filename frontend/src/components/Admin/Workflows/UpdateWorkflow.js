@@ -4,22 +4,21 @@ import Select from 'react-select'
 
 import { BsGear } from "react-icons/bs";
 
-import { updateIndividualTemplateWorkflow, getQuestionnaires } from '../../../apiCalls';
+import { updateIndividualTemplateWorkflow, getQuestionnaires, updateIndividualAssignedWorkflow } from '../../../apiCalls';
 
 function UpateWorkflow(props) {
 
     const navigate = useNavigate();
 
-    // console.log(props.workflow)
+    console.log("UPDATEWORKFLOW")
+    console.log(props.render)
+    console.log(props.workflow)
+
     const workflowId = props.workflow.id;
     const workflowName = props.workflow.workflowName;
-    const [test, setworkflowName] = useState(workflowName);
+    const [test, setworkflowName] = useState("");
     const [selectedQuestionnaires, setSelectedQuestionnaires] = useState("");
     const [questionnaireOptions, setQuestionnaireOptions] = useState();
-
-    // console.log("HEREEEE")
-    // console.log(workflowId)
-    // console.log(workflowName)
 
     const validateForm = () => {
         return !(workflowName.length == 0 || selectedQuestionnaires.length == 0);
@@ -31,6 +30,10 @@ function UpateWorkflow(props) {
     }
 
     useEffect(() => {
+        setworkflowName(props.workflow.workflowName)
+        console.log("TEST NAME")
+        console.log(test)
+
         getQuestionnaires()
             .then(function (response) {
                 // console.log(response.data)
@@ -77,14 +80,28 @@ function UpateWorkflow(props) {
         console.log("workflowname")
         console.log(workflowId)
         console.log(workflowName)
+        console.log(temp)
+        console.log(props.workflow.createdAt)
 
-        updateIndividualTemplateWorkflow({ id: workflowId, workflowName: workflowName, questionnaireList: temp, createdAt: props.workflow.createdAt })
+        if (props.render=="templates") {
+            updateIndividualTemplateWorkflow({ id: workflowId, workflowName: workflowName, questionnaireList: temp, createdAt: props.workflow.createdAt })
             .then(function (response) {
-                navigate(`/workflows`);
+                window.location.reload(false)
             })
             .catch(function (error) {
                 console.log("ERROR UPDATING WORKFLOW")
             })
+        }
+        else if (props.render=="assigned") {
+            updateIndividualAssignedWorkflow({ workflowName: workflowName, questionnaireList: temp })
+            .then(function (response) {
+                window.location.reload(false)
+            })
+            .catch(function (error) {
+                console.log("ERROR UPDATING WORKFLOW")
+            })
+        }   
+        
     }
 
     return (

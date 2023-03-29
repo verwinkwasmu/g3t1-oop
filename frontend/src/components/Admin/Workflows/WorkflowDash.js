@@ -75,7 +75,7 @@ function WorkflowDash() {
     return (
         <>
             <div className="rounded-t-3xl mx-10 mt-10 h-screen py-8 px-20 shadow-2xl">
-                <div className="bg-white">
+                <div className="bg-white h-full overflow-y-auto">
 
                     <div className="flex justify-between mb-5">
                         <div className="flex">
@@ -113,6 +113,7 @@ function WorkflowDash() {
                     </div>
                 </div>
             </div>
+            
         </>
 
     )

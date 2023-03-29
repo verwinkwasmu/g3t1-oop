@@ -95,6 +95,10 @@ export function updateIndividualTemplateWorkflow(data) {
   return axiosClient.put("/api/v1/workflow", JSON.stringify(data));  
 }
 
+export function updateIndividualAssignedWorkflow(data) {
+  return axiosClient.put("/api/v1/workflow/assigned", JSON.stringify(data));  
+}
+
 export function getAssignedWorkflows() {
   return axiosClient.get("/api/v1/workflow/assigned");  
 }
