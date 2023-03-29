@@ -100,6 +100,10 @@ export function updateIndividualTemplateWorkflow(data) {
   return axiosClient.put("/api/v1/workflow", JSON.stringify(data));  
 }
 
+export function updateIndividualAssignedWorkflow(data) {
+  return axiosClient.put("/api/v1/workflow/assigned", JSON.stringify(data));  
+}
+
 export function getAssignedWorkflows() {
   return axiosClient.get("/api/v1/workflow/assigned");  
 }
@@ -118,6 +122,10 @@ export function getAssignedWorkflowsByVendorId(id) {
 
 export function createWorkflowTemplate(data) { 
   return axiosClient.post("/api/v1/workflow", JSON.stringify(data));  
+}
+
+export function createWorkflowAssigned(data) { 
+  return axiosClient.post("/api/v1/workflow/assigned", JSON.stringify(data));  
 }
 
 export function deleteWorkflow(id) { // unique ID

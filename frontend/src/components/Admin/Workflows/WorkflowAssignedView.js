@@ -33,9 +33,7 @@ function WorkflowAssignedView() {
         // eslint-disable-next-line
     }, [])
 
-    const checkStatus = (status) => {
-        console.log("")
-        console.log(status)
+    const checkStatusSteps = (status) => {
         if (status=="SUBMITTED") {
             return "step step-primary"
         }
@@ -50,6 +48,24 @@ function WorkflowAssignedView() {
         }
         else {
             return "step"
+        }
+    }
+
+    const checkStatusBadge = (status) => {
+        if (status=="SUBMITTED") {
+            return "badge badge-primary"
+        }
+        else if (status=="ADMIN_APPROVED") {
+            return "badge badge-secondary"
+        }
+        else if (status=="RETURNED") {
+            return "badge badge-error"
+        }
+        else if (status=="APPROVER_APPROVED") {
+            return "badge badge-accent"
+        }
+        else {
+            return "badge"
         }
     }
 
@@ -68,14 +84,14 @@ function WorkflowAssignedView() {
                         </div>
                         <div className="flex mt-5">
                             <AssignNewUser></AssignNewUser>
-                            <UpdateWorkflow workflow={workflowsData}></UpdateWorkflow>
-                            <DeleteWorkflow workflow={workflowsData}></DeleteWorkflow>
+                            <UpdateWorkflow workflow={workflowsData} render="assigned"></UpdateWorkflow>
+                            <DeleteWorkflow workflow={workflowsData} render="assigned"></DeleteWorkflow>
                         </div>
                     </div>
                     <div className="grid grid-rows-1 grid-cols-4 gap-x-2 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
                         <ul className="steps steps-vertical lg:steps-horizontal my-7">
                             {(questionnaireTitles).map(questionnaireTitle =>
-                                <li className={checkStatus(questionnaireTitle[2])} key={questionnaireTitle[0]}>{questionnaireTitle[1]}</li>
+                                <li className={checkStatusSteps(questionnaireTitle[2])} key={questionnaireTitle[0]}>{questionnaireTitle[1]}</li>
                             )}
                         </ul>
                     </div>
@@ -86,12 +102,15 @@ function WorkflowAssignedView() {
                                     <h2 className="text-xl font-semibold text-blue">Included Forms</h2>
                                 </div>
                                 <div className="card w-80">
-                                    <div className="card-body text-left">
+                                    <div className="text-left">
                                         <table>
                                             <tbody>
                                                 {(questionnaireTitles).map(questionnaireTitle =>
                                                     <div key={questionnaireTitle[0]}>
-                                                        <tr className="card-title mb-2 text-lg font-normal">{questionnaireTitle[1]}</tr>
+                                                        <tr className="card-title mb-2 text-lg font-normal">{
+                                                            questionnaireTitle[1]}
+                                                            <span className={checkStatusBadge(questionnaireTitle[2])}>{questionnaireTitle[2]}</span>
+                                                        </tr>
                                                     </div>
                                                 )}
                                             </tbody>
@@ -106,7 +125,7 @@ function WorkflowAssignedView() {
                                     <h2 className="text-xl font-semibold text-blue">Assigned Users</h2>
                                 </div>
                                 <div className="card w-80">
-                                    <div className="card-body text-left text-blue">
+                                    <div className="text-left text-blue">
                                         <table>
                                             <tbody>
                                                 <tr className="card-title mb-2 text-lg font-normal">Vendor ID: {workflowsData.assignedVendorId!=null ? workflowsData.assignedVendorId : "Not Assigned"}</tr>
