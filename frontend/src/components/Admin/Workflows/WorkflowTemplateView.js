@@ -2,6 +2,8 @@ import { IoGitPullRequestOutline } from 'react-icons/io5';
 
 import { React, useState, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 import DeleteWorkflow from './DeleteWorkflow';
 import AssignNewUser from './AssignNewUser';
@@ -26,9 +28,11 @@ function WorkflowTemplateView() {
 
                 const temp = [];
                 for (const index in response.data.questionnaires) {
-                    temp.push([response.data.questionnaires[index].id, response.data.questionnaires[index].title, response.data.questionnaires[index].status]);
+                    temp.push([response.data.questionnaires[index].id, response.data.questionnaires[index].title]);
+                    console.log("HI HELP")
                 }
                 setQuestionnaireTitles(temp);
+                // console.log(questionnaireTitles[0])
             })
         // eslint-disable-next-line
     }, [])
@@ -72,6 +76,12 @@ function WorkflowTemplateView() {
                                                 {(questionnaireTitles).map(questionnaireTitle =>
                                                     <div key={questionnaireTitle[0]}>
                                                         <tr className="card-title mb-2">{questionnaireTitle[1]}</tr>
+                                                        <Link to={`/questionnaires/view-indiv-questionnaire/${questionnaireTitle[0]}`}>
+                                                            View Questionnaire
+                                                        </Link>
+                                                        {/* <Link to={`/questionnaires/view-indiv-questionnaire/${questionnaireTitle[0]}`}>
+                                                            Edit Questionnaire
+                                                        </Link> */}
                                                     </div>
                                                 )}
                                             </tbody>
