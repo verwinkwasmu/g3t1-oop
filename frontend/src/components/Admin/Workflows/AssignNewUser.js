@@ -71,10 +71,8 @@ function AssignNewUser(props) {
  
             createQuestionnaire(questionnaire)
                 .then(function (response) {
-                    console.log("12345678910")
-                    console.log(JSON.stringify(response.data))
-                    console.log(response.data)
                     output.push(response.data.id)
+                    
                 })
                 .catch(function (error) {
                     console.log("ERROR CREATING QUESTIONNAIRE")
@@ -84,10 +82,30 @@ function AssignNewUser(props) {
         return output
     }
 
+    // const handleQuestionnaires = () => {
+    //     console.log("HANDLE QUESTIONNAIRE")
+    
+    //     const promises = questionnairesInput.map(questionnaire => createQuestionnaire(questionnaire));
+    //     return Promise.all(promises)
+    //         .then(responses => responses.map(response => response.data.id),
+
+    //         )
+
+    //         .catch(error => {
+    //             console.log("ERROR CREATING QUESTIONNAIRE")
+    //             return [];
+    //         });
+    // }
+
+
+    
+
     const handleCreate = () => {
         console.log("INSIDE HANDLE CREATE");
 
         const questionnaireIds = handleQuestionnaires()
+        console.log("WHAT THE HECK")
+        console.log(questionnaireIds)
 
         createWorkflowAssigned({ 
             "workflowName": workflowName, 
@@ -100,6 +118,7 @@ function AssignNewUser(props) {
             "approvedAt": null 
         })
             .then(function (response) {
+                console.log(response.data)
                 navigate('/workflows');
             })
             .catch(function (error) {

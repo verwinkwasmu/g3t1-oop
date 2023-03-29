@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 
@@ -8,11 +8,19 @@ const baseURL = "http://localhost:8080/api/v1/questionnaire";
 const updateBaseURL = "http://localhost:8080/api/v1/questionnaire/update"
 
 export default function ViewIndivQuestionnaire(props) {
+
+    const location = useLocation();
+    const navigate = useNavigate();
     const [questionnaire, setQuestionnaire] = useState(null);
     const  id  = useParams()
-    const location = useLocation();
-    console.log(location)
-    const fromAssigned = location.state && location.state.fromAssigned;
+    const fromAssigned = location.state.fromAssigned;
+    const workflowId = location.state.workflowId
+
+    console.log(location.state)
+
+    // console.log('RAHRAHRA')
+    // console.log(workflowId)
+    // console.log(fromAssigned)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -57,6 +65,14 @@ export default function ViewIndivQuestionnaire(props) {
         }
     }
 
+
+    const handleEditClick = (questionnaireId) => {
+        navigate(`/vendor/questionnaires/edit-questionnaire/${questionnaireId}`, 
+        { state: {   
+            workflowId: workflowId
+        }});    
+    }
+
     return (
         <div>
             <h2>{questionnaire.title}</h2>
@@ -65,9 +81,11 @@ export default function ViewIndivQuestionnaire(props) {
             <p>{questionnaire.assignedAdminId}</p>
             <p>{questionnaire.createdAt}</p>
 
-            <Link to={`/vendor/questionnaires/edit-questionnaire/${questionnaire.id}`}>
+            <button onClick={() => handleEditClick(questionnaire.id)}>Edit Questionnaire</button>
+
+            {/* <Link to={`/vendor/questionnaires/edit-questionnaire/${questionnaire.id}`}>
                 <p>edit for vendor test</p>
-            </Link>
+            </Link> */}
 
             {fromAssigned == "fromAssigned" && (
                 <div>

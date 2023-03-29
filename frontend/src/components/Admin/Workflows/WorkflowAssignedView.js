@@ -23,7 +23,12 @@ function WorkflowAssignedView() {
 
 
     const handleViewClick = (questionnaireId) => {
-        navigate(`/questionnaires/view-indiv-questionnaire/${questionnaireId}`, { state: { fromAssigned: 'fromAssigned' } });
+        navigate(`/questionnaires/view-indiv-questionnaire/${questionnaireId}`, 
+        { state: {   
+            fromAssigned: 'fromAssigned',
+            workflowId: workflowId
+
+        }});    
     }
 
     useEffect(() => {
