@@ -37,7 +37,7 @@ public class WorkflowService {
             if (workflows.isEmpty()) {
                 throw new WorkflowNotFoundException("No workflows found in the database");
             }
-            
+
             for (Workflow workflow : workflows) {
                 List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
                 for (String questionnaireId : workflow.getQuestionnaireList()) {
@@ -187,38 +187,28 @@ public class WorkflowService {
     }
 
     public Workflow updateWorkflow(Workflow workflow) throws DatabaseCommunicationException {
-        try{
-            Workflow workflowToUpdate = workflowRepository.findById(workflow.getId()).get();
-            workflowToUpdate.setWorkflowName(workflow.getWorkflowName());
-            workflowToUpdate.setWorkflowDescription(workflow.getWorkflowDescription());
-            workflowToUpdate.setQuestionnaireList(workflow.getQuestionnaireList());
-            return workflowRepository.save(workflowToUpdate);
-        } catch (WorkflowNotFoundException e) {
-            throw e;
+        try {
+            if (workflowRepository.findById(workflow.getId()).isPresent()){
+                // UPDATE
+                return workflowRepository.save(workflow);
+            } else {
+                throw new WorkflowNotFoundException("No workflow found in the database with id: " + workflow.getId());
+            }
         } catch (Exception e) {
-            throw new DatabaseCommunicationException("Error communicating with database for method findAllWorkflows", e);
+            throw new DatabaseCommunicationException("Error communicating with database for method updateById: " + e.getMessage(), e);
         }
     }   
 
     public AssignedWorkflow updateAssignedWorkflow(AssignedWorkflow assignedWorkflow) throws DatabaseCommunicationException {
-        try{
-            AssignedWorkflow workflowToUpdate = assignedWorkflowRepository.findById(assignedWorkflow.getId()).get();
-            workflowToUpdate.setWorkflowName(assignedWorkflow.getWorkflowName());
-            workflowToUpdate.setWorkflowDescription(assignedWorkflow.getWorkflowDescription());
-            workflowToUpdate.setQuestionnaireList(assignedWorkflow.getQuestionnaireList());
-            workflowToUpdate.setAssignedVendorId(assignedWorkflow.getAssignedVendorId());
-            workflowToUpdate.setApproverReviewStatus(assignedWorkflow.getApproverReviewStatus());
-            workflowToUpdate.setApprovalRequestDate(assignedWorkflow.getApprovalRequestDate());
-
-            if (assignedWorkflow.getApproverReviewStatus().equals("APPROVED")){
-                workflowToUpdate.setApprovedAt(LocalDateTime.now());
+        try {
+            if (assignedWorkflowRepository.findById(assignedWorkflow.getId()).isPresent()){
+                // UPDATE
+                return assignedWorkflowRepository.save(assignedWorkflow);
+            } else {
+                throw new WorkflowNotFoundException("No workflow found in the database with id: " + assignedWorkflow.getId());
             }
-            
-            return workflowRepository.save(workflowToUpdate);
-        } catch (WorkflowNotFoundException e) {
-            throw e;
         } catch (Exception e) {
-            throw new DatabaseCommunicationException("Error communicating with database for method findAllWorkflows", e);
+            throw new DatabaseCommunicationException("Error communicating with database for method updateById: " + e.getMessage(), e);
         }
     }  
     
