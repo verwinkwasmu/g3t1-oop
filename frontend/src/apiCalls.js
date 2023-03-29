@@ -96,6 +96,7 @@ export function updateIndividualTemplateWorkflow(data) {
 }
 
 export function updateIndividualAssignedWorkflow(data) {
+  console.log(JSON.stringify(data))
   return axiosClient.put("/api/v1/workflow/assigned", JSON.stringify(data));  
 }
 
