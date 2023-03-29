@@ -1,50 +1,79 @@
+import WithoutNav from './components/WithoutNav';
+import WithNav from './components/WithNav';
+
 import NavBar from './components/NavBar';
 
-import MainDash from './components/Admin/MainDash';
+import Login from './components/Login';
+import HomeDash from './components/HomeDash';
+
 import WorkflowDash from './components/Admin/Workflows/WorkflowDash';
 import FormDash from './components/Admin/FormDash';
 import AccountDash from './components/Admin/Accounts/AccountDash';
 import AccountView from './components/Admin/Accounts/AccountView';
 import WorkflowTemplateView from './components/Admin/Workflows/WorkflowTemplateView';
 import WorkflowAssignedView from './components/Admin/Workflows/WorkflowAssignedView';
+import WorkflowView from './components/Admin/Workflows/WorkflowView';
 
-import CreateForm from './components/Admin/CreateForm';
 
-import ApprovalDash from './components/Approver/ApprovalDash';
+import ApproverDash from './components/Approver/ApproverDash';
+
+import CreateQuestionnaire from './components/Admin/Questionnaires/CreateQuestionnaire';
+import ViewAllQuestionnaires from './components/Admin/Questionnaires/ViewAllQuestionnaires';
+import EditQuestionnaire from './components/Admin/Questionnaires/EditQuestionnaire';
+import ViewIndivQuestionnaire from './components/Admin/Questionnaires/ViewIndivQuestionnaire';
+
+import VendorEditQuestionnaire from './components/Vendor/Questionnaires/VendorEditQuestionnaire';
 
 import Profile from './components/Profile';
 
+import useToken from './useToken';
 
 import { Route, Routes } from "react-router-dom";
 
 function App() {
+  const { token, setToken } = useToken();
+
+  console.log(token)
+
+  if (!token) {
+    console.log("token not found")
+    return <Login setToken={setToken}/>
+  }
+
   return (
     <div>
-      <NavBar></NavBar>
       <Routes>
-        <Route path="/" element={<MainDash />} />
-        <Route path="/workflows" element={<WorkflowDash />} />
+        <Route  element={<WithNav/>}>
 
-        <Route path="/forms" element={<FormDash />} />
+          <Route path="/" element={<HomeDash />} />
+          <Route path="/workflows" element={<WorkflowDash />} />
+          <Route path="/forms" element={<FormDash />} />
+          <Route path="/accounts" element={<AccountDash />} />
+          <Route path="/workflows/:id" element={<WorkflowView />} />
+          <Route path="/accounts/:id" element={<AccountView />} />
+          <Route path="/workflow-templates/:id" element={<WorkflowTemplateView />} />
+          <Route path="/workflow-assigned/:id" element={<WorkflowAssignedView />} />
+          {/* <Route path="/accounts/:accountid" element={<AccountView />} /> */}
+          <Route path="/accounts/:id" element={<AccountView />}/>
+          <Route path="/approvals" element={<ApproverDash />}/>
+          {/* <Route path="/profile" element={<Profile />} /> */}
+          <Route path="/questionnaires/create-questionnaire" element={<CreateQuestionnaire/>}/>
+          <Route path="/questionnaires/view-all-questionnaires" element={<ViewAllQuestionnaires/>}/>
+          <Route path="/questionnaires/edit-questionnaire/:id" element={<EditQuestionnaire/>}/>
+          <Route path="/questionnaires/view-indiv-questionnaire/:id" element={<ViewIndivQuestionnaire/>}/>
 
-        <Route path="/accounts" element={<AccountDash />} />
-        {/* <Route path="/accounts/id" element={<AccountView />} /> */}
-        <Route path="/workflow-templates/:id" element={<WorkflowTemplateView />} />
-        <Route path="/workflow-assigned/:id" element={<WorkflowAssignedView />} />
-        {/* <Route path="/accounts/:accountid" element={<AccountView />} /> */}
-        <Route path="/accounts/:id" element={<AccountView />} />
+          <Route path="/vendor/questionnaires/edit-questionnaire/:id" element={<VendorEditQuestionnaire/>}/>
 
-        <Route path="/forms/create-form" element={<CreateForm />}></Route>
 
-        <Route path="/approvals" element={<ApprovalDash />}></Route>
 
-        {/* <Route path="/profile" element={<Profile />} /> */}
 
+        </Route>
+        
       </Routes>
-
     </div>
 
   );
 }
 
 export default App;
+
