@@ -8,7 +8,9 @@ import com.group1.oopproject.exception.DatabaseCommunicationException;
 import com.group1.oopproject.questionnaire.entity.Questionnaire;
 import com.group1.oopproject.questionnaire.repository.QuestionnaireRepository;
 import com.group1.oopproject.user.entity.User;
+import com.group1.oopproject.user.entity.Vendor;
 import com.group1.oopproject.user.repository.UserRepository;
+import com.group1.oopproject.user.repository.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,8 @@ public class ArchiveService {
     private QuestionnaireRepository questionnaireRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private VendorRepository vendorRepository;
 
     public List<ArchiveDocument> findArchiveDocumentByCollection(String collection) {
         try {
@@ -56,6 +60,9 @@ public class ArchiveService {
                         break;
                     case "users":
                         userRepository.save((User) data);
+                        break;
+                    case "vendors":
+                        vendorRepository.save((Vendor) data);
                         break;
                     //TODO add workflow
                     // TODO add assignedWorkflow
