@@ -9,7 +9,8 @@ import { Link } from "react-router-dom";
 import DeleteWorkflow from './DeleteWorkflow';
 import AssignNewUser from './AssignNewUser';
 import UpdateWorkflow from './UpdateWorkflow';
-// import { getIndividualAssignedWorkflow } from '../../../apiCalls';
+import FlagApproval from './FlagApproval';
+import { getIndividualAssignedWorkflow } from '../../../apiCalls';
 
 function WorkflowAssignedView() {
 
@@ -27,17 +28,17 @@ function WorkflowAssignedView() {
     }
 
     useEffect(() => {
-        // getIndividualAssignedWorkflow(workflowId)
-        //     .then(function (response) {
-        //         console.log(response.data)
-        //         setWorkflowsData(response.data)
+        getIndividualAssignedWorkflow(workflowId)
+            .then(function (response) {
+                console.log(response.data)
+                setWorkflowsData(response.data)
 
-        //         const temp = [];
-        //         for (const index in response.data.questionnaires) {
-        //             temp.push([response.data.questionnaires[index].id, response.data.questionnaires[index].title, response.data.questionnaires[index].status]);
-        //         }
-        //         setQuestionnaireTitles(temp);
-        //     })
+                const temp = [];
+                for (const index in response.data.questionnaires) {
+                    temp.push([response.data.questionnaires[index].id, response.data.questionnaires[index].title, response.data.questionnaires[index].status]);
+                }
+                setQuestionnaireTitles(temp);
+            })
         // eslint-disable-next-line
     }, [])
 
@@ -93,7 +94,8 @@ function WorkflowAssignedView() {
                         <div className="flex mt-5">
                             <AssignNewUser></AssignNewUser>
                             <UpdateWorkflow workflow={workflowsData} render="assigned"></UpdateWorkflow>
-                            <DeleteWorkflow workflow={workflowsData} render="assigned"></DeleteWorkflow>
+                            <DeleteWorkflow workflow={workflowsData} assigned={true} render="assigned"></DeleteWorkflow>
+                            <FlagApproval workflow={workflowsData} />
                         </div>
                     </div>
                     <div className="grid grid-rows-1 grid-cols-4 gap-x-2 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">

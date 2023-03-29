@@ -181,7 +181,7 @@ public class WorkflowController {
 
 
 
-    @DeleteMapping("/delete/assigned/{id}/{userId}")
+    @DeleteMapping("/assigned/delete/{id}/{userId}")
     public ResponseEntity<?> deleteAssignedById(@PathVariable("id") String id, @PathVariable("userId") String userId) {
         try {
             workflowService.deleteAssignedById(id, userId);
