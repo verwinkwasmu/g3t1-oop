@@ -41,10 +41,12 @@ public class WorkflowService {
             for (Workflow workflow : workflows) {
                 List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
                 for (String questionnaireId : workflow.getQuestionnaireList()) {
+                    if (questionnaireId != null){
                     Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
                     Questionnaire questionnaire = optionalQuestionnaire.get();
                     questionnaireList.add(questionnaire);
                     workflow.setQuestionnaires(questionnaireList);
+                    }
                 }
             }
             return workflows;
@@ -65,17 +67,19 @@ public class WorkflowService {
             for (AssignedWorkflow assignedWorkflow : assignedWorkflows) {
                 List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
                 for (String questionnaireId : assignedWorkflow.getQuestionnaireList()) {
-                    Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
-                    Questionnaire questionnaire = optionalQuestionnaire.get();
-                    questionnaireList.add(questionnaire);
-                    assignedWorkflow.setQuestionnaires(questionnaireList);
+                    if (questionnaireId != null){
+                        Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+                        Questionnaire questionnaire = optionalQuestionnaire.get();
+                        questionnaireList.add(questionnaire);
+                        assignedWorkflow.setQuestionnaires(questionnaireList);
+                    }
                 }
             }
             return assignedWorkflows;
         } catch (WorkflowNotFoundException e) {
             throw e;
         } catch (Exception e) {
-            throw new DatabaseCommunicationException("Error communicating with database for method findAllWorkflows", e);
+            throw new DatabaseCommunicationException("Error communicating with database for method findAllWorkflows" + e.getMessage(), e);
         }
     }
 
