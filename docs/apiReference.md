@@ -196,11 +196,12 @@
 
 ### Archive
 1. Get all archive document based on its collection (returns a list of archive document)
+- Collection `collection` include: `WORFKLOWS`, `QUESTIONNAIRES`, `USERS`, `VENDORS`
 
 ``[GET] /api/v1/archive/collection/{collection}``
 
 2. restore archive document into its original collection
 
-``[POST] /api/v1/restoreDocument/{id}``
+``[DELETE] /api/v1/archive/restoreDocument/{id}``
 
 ---
