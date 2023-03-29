@@ -104,7 +104,7 @@ export default function Navbar({ fixed }) {
           <li className="nav-item">
               <Link
                   className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-blue hover:opacity-75"
-                  to="/forms"
+                  to="/questionnaires"
               >
                   <MdDescription /><span>Questionnaires</span>
               </Link>
