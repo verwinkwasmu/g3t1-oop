@@ -41,9 +41,7 @@ function WorkflowAssignedView() {
         // eslint-disable-next-line
     }, [])
 
-    const checkStatus = (status) => {
-        console.log("")
-        console.log(status)
+    const checkStatusSteps = (status) => {
         if (status=="SUBMITTED") {
             return "step step-primary"
         }
@@ -61,6 +59,23 @@ function WorkflowAssignedView() {
         }
     }
 
+    const checkStatusBadge = (status) => {
+        if (status=="SUBMITTED") {
+            return "badge badge-primary"
+        }
+        else if (status=="ADMIN_APPROVED") {
+            return "badge badge-secondary"
+        }
+        else if (status=="RETURNED") {
+            return "badge badge-error"
+        }
+        else if (status=="APPROVER_APPROVED") {
+            return "badge badge-accent"
+        }
+        else {
+            return "badge"
+        }
+    }
 
     return (
         <>
@@ -76,19 +91,16 @@ function WorkflowAssignedView() {
                             <h2 className="text-3xl font-semibold text-blue">{workflowsData.workflowName}</h2>
                         </div>
                         <div className="flex mt-5">
-                            <AssignNewUser></AssignNewUser>
-                            <UpdateWorkflow workflow={workflowsData}></UpdateWorkflow>
-                            <DeleteWorkflow workflow={workflowsData}></DeleteWorkflow>
+                            <UpdateWorkflow workflow={workflowsData} render="assigned"></UpdateWorkflow>
+                            <DeleteWorkflow workflow={workflowsData} render="assigned"></DeleteWorkflow>
                         </div>
                     </div>
                     <div className="grid grid-rows-1 grid-cols-4 gap-x-2 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-                        {(questionnaireTitles).map(questionnaire =>
-                            <div className="card w-50 bg-base-100 border border-light-blue m-3 drop-shadow-xl" key={questionnaire[0]}>
-                                <div className="card-body text-center">
-                                    <h2 className="card-title">{questionnaire[1]}</h2>
-                                </div>
-                            </div>
-                        )}
+                        <ul className="steps steps-vertical lg:steps-horizontal my-7">
+                            {(questionnaireTitles).map(questionnaireTitle =>
+                                <li className={checkStatusSteps(questionnaireTitle[2])} key={questionnaireTitle[0]}>{questionnaireTitle[1]}</li>
+                            )}
+                        </ul>
                     </div>
                     <div className='grid grid-rows-1 grid-cols-2 mt-5'>
                         <div className="card w-[35rem] bg-base-100 ml-3 drop-shadow-xl">
@@ -97,13 +109,17 @@ function WorkflowAssignedView() {
                                     <h2 className="text-xl font-semibold text-blue">Included Forms</h2>
                                 </div>
                                 <div className="card w-80">
-                                    <div className="card-body text-left">
+                                    <div className="text-left">
                                         <table>
                                             <tbody>
-                                                {(questionnaireTitles).map(questionnaire =>
-                                                    <div key={questionnaire[0]}>
-                                                        <tr className="card-title mb-2 text-lg font-normal">{questionnaire[1]}</tr>                                            
+                                                {(questionnaireTitles).map(questionnaireTitle =>
+                                                    <div key={questionnaireTitle[0]}>
+                                                        <tr className="card-title mb-2 text-lg font-normal">{
+                                                            questionnaireTitle[1]}
+                                                            <span className={checkStatusBadge(questionnaireTitle[2])}>{questionnaireTitle[2]}</span>
+                                                        </tr>
                                                         <button onClick={() => handleViewClick(questionnaire[0])}>VIEW QUESTIONNAIRE</button>
+
                                                     </div>
                                                 )}
                                             </tbody>
@@ -118,7 +134,7 @@ function WorkflowAssignedView() {
                                     <h2 className="text-xl font-semibold text-blue">Assigned Users</h2>
                                 </div>
                                 <div className="card w-80">
-                                    <div className="card-body text-left text-blue">
+                                    <div className="text-left text-blue">
                                         <table>
                                             <tbody>
                                                 <tr className="card-title mb-2 text-lg font-normal">Vendor ID: {workflowsData.assignedVendorId!=null ? workflowsData.assignedVendorId : "Not Assigned"}</tr>

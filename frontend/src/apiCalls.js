@@ -95,6 +95,11 @@ export function updateIndividualTemplateWorkflow(data) {
   return axiosClient.put("/api/v1/workflow", JSON.stringify(data));  
 }
 
+export function updateIndividualAssignedWorkflow(data) {
+  console.log(JSON.stringify(data))
+  return axiosClient.put("/api/v1/workflow/assigned", JSON.stringify(data));  
+}
+
 export function getAssignedWorkflows() {
   return axiosClient.get("/api/v1/workflow/assigned");  
 }
@@ -111,6 +116,10 @@ export function createWorkflowTemplate(data) {
   return axiosClient.post("/api/v1/workflow", JSON.stringify(data));  
 }
 
+export function createWorkflowAssigned(data) { 
+  return axiosClient.post("/api/v1/workflow/assigned", JSON.stringify(data));  
+}
+
 export function deleteWorkflow(id) { // unique ID
   return axiosClient.delete(`/api/v1/workflow/${id}`);  
 }
@@ -121,4 +130,8 @@ export function getQuestionnaires() {
 
 export function getIndividualQuestionnaire(id) {
   return axiosClient.get(`/api/v1/questionnaire/${id}`);  
+}
+
+export function createQuestionnaire(data) { 
+  return axiosClient.post("/api/v1/questionnaire/create", JSON.stringify(data));  
 }

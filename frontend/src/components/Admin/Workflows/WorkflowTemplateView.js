@@ -51,9 +51,9 @@ function WorkflowTemplateView() {
                             <h2 className="text-3xl font-semibold text-blue">{workflowsData.workflowName}</h2>
                         </div>
                         <div className="flex mt-5">
-                            <AssignNewUser></AssignNewUser>
-                            <UpdateWorkflow workflow={workflowsData}></UpdateWorkflow>
-                            <DeleteWorkflow workflow={workflowsData}></DeleteWorkflow>
+                            <AssignNewUser workflow={workflowsData}></AssignNewUser>
+                            <UpdateWorkflow workflow={workflowsData} render="templates"></UpdateWorkflow>
+                            <DeleteWorkflow workflow={workflowsData} render="templates"></DeleteWorkflow>
                         </div>
                     </div>
                     <div className="grid grid-rows-1 grid-cols-4 gap-x-2 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
@@ -70,12 +70,12 @@ function WorkflowTemplateView() {
                                     <h2 className="text-xl font-semibold text-blue">Included Forms</h2>
                                 </div>
                                 <div className="card w-80">
-                                    <div className="card-body text-left">
+                                    <div className="text-left">
                                         <table>
                                             <tbody>
                                                 {(questionnaireTitles).map(questionnaireTitle =>
                                                     <div key={questionnaireTitle[0]}>
-                                                        <tr className="card-title mb-2">{questionnaireTitle[1]}</tr>
+                                                        <tr className="card-title mb-2 font-normal">{questionnaireTitle[1]}</tr>
                                                         <Link to={`/questionnaires/view-indiv-questionnaire/${questionnaireTitle[0]}`}>
                                                             View Questionnaire
                                                         </Link>
@@ -96,10 +96,10 @@ function WorkflowTemplateView() {
                                     <h2 className="text-xl font-semibold text-blue">Assigned Users</h2>
                                 </div>
                                 <div className="card w-80">
-                                    <div className="card-body text-left text-blue">
+                                    <div className="text-left text-blue">
                                         <table>
                                             <tbody>
-                                                <tr className="card-title mb-2">Click on 'Assign User' to make an assigned workflow with this template.</tr>
+                                                <tr className="card-title mb-2 font-normal">Click on 'Assign User' to make an assigned workflow with this template.</tr>
                                             </tbody>
                                         </table>
                                     </div>

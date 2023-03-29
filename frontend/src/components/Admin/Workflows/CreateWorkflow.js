@@ -69,7 +69,7 @@ function CreateWorkflow() {
         <>
             <label htmlFor="CreateWorkflow" className="btn bg-cyan border-transparent outline-none rounded-full mr-2">
                 <IoGitPullRequestOutline size={20} className="mr-3"></IoGitPullRequestOutline>
-                Create New Workflow
+                Create New Workflow Template
             </label>
 
             <input type="checkbox" id="CreateWorkflow" className="modal-toggle" />
