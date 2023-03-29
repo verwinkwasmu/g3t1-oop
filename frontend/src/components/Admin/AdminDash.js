@@ -47,15 +47,12 @@ function AdminDash() {
     const [currentQuestionnairesView, setCurrentQuestionnairesView] = useState("ACTIVE");
 
     const toggleWorkflowsView = (status) => {
-        console.log(workflowsData);
-        console.log(workflowsData.filter(w => w.approvalRequestDate == null));
         if (status == "ACTIVE") {
             console.log('inside ACTIVE toggle')
             setCurrentWorkflowsData(workflowsData.filter(w => w.approvalRequestDate == null))
         } else if (status == "PENDING") {
             setCurrentWorkflowsData(workflowsData.filter(w => w.approvalRequestDate != null))
         }
-        console.log("currentWData: ", currentWorkflowsData);
         setCurrentWorkflowsView(status);
     }
 
@@ -65,13 +62,12 @@ function AdminDash() {
         } else if (status == "PENDING") {
             setCurrentQuestionnairesData(questionnairesData.filter(q => q.status == "SUBMITTED"))
         }
-        console.log("currentQData: ", currentQuestionnairesData);
         setCurrentQuestionnairesView(status);
     }
 
     const toWorkflowView = (workflow) => {
         console.log("===== INSIDE toWorkflowView =====")
-        navigate(`/workflows/${workflow.id}`, { state: { workflow: workflow } });
+        navigate(`/workflow-assigned/${workflow.id}`, { state: { workflow: workflow } });
     }
 
     const getWorkflowCompletion = (questionnaires) => {

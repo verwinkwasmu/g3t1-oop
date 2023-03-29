@@ -70,7 +70,7 @@ function VendorDash() {
 
     const toWorkflowView = (workflow) => {
         console.log("===== INSIDE toWorkflowView =====")
-        navigate(`/workflows/${workflow.id}`, { state: { workflow: workflow } });
+        navigate(`/workflow-assigned/${workflow.id}`, { state: { workflow: workflow } });
     }
 
     const getWorkflowCompletion = (questionnaires) => {

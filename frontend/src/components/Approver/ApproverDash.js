@@ -57,12 +57,12 @@ function ApproverDash() {
 
     const toWorkflowView = (workflow) => {
         console.log("===== INSIDE toWorkflowView =====")
-        navigate(`/workflows/${workflow.id}`, { state: { workflow: workflow } });
+        navigate(`/workflow-assigned/${workflow.id}`, { state: { workflow: workflow } });
     }
 
     return (
         <>
-            <div className="rounded-t-3xl mx-10 mt-10 h-screen py-8 px-20 shadow-2xl">
+            <div className="rounded-3xl mx-10 my-10 py-8 px-20 shadow-2xl">
                 <div className="bg-white">
 
                     <div className="flex flex-wrap mb-5">
