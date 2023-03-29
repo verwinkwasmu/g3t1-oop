@@ -1,8 +1,7 @@
 import WithoutNav from './components/WithoutNav';
 import WithNav from './components/WithNav';
+import Archive from './components/Archive'
 
-import WithoutNav from './components/WithoutNav';
-import WithNav from './components/WithNav';
 
 import NavBar from './components/NavBar';
 
@@ -54,31 +53,17 @@ function App() {
 
           <Route path="/workflows" element={<WorkflowDash />} />
 
-        <Route path="/accounts" element={<AccountDash />} />
-        {/* <Route path="/accounts/id" element={<AccountView />} /> */}
-        <Route path="/workflow-templates/:id" element={<WorkflowTemplateView />} />
-        <Route path="/workflow-assigned/:id" element={<WorkflowAssignedView />} />
-        {/* <Route path="/accounts/:accountid" element={<AccountView />} /> */}
-        <Route path="/accounts/:id" element={<AccountView />} />
-
           <Route path="/accounts" element={<AccountDash />} />
-          <Route path="/workflows/:id" element={<WorkflowView />} />
-          <Route path="/accounts/:id" element={<AccountView />} />
-
-          <Route path="/forms/create-form" element={<CreateForm />}></Route>
-
-
-        </Route>
-        <Route  element={<WithNav/>}>
-
-          <Route path="/" element={<HomeDash />} />
-          <Route path="/workflows" element={<WorkflowDash />} />
-          <Route path="/forms" element={<FormDash />} />
-          <Route path="/accounts" element={<AccountDash />} />
-          <Route path="/workflows/:id" element={<WorkflowView />} />
-          <Route path="/accounts/:id" element={<AccountView />} />
+          {/* <Route path="/accounts/id" element={<AccountView />} /> */}
           <Route path="/workflow-templates/:id" element={<WorkflowTemplateView />} />
           <Route path="/workflow-assigned/:id" element={<WorkflowAssignedView />} />
+          {/* <Route path="/accounts/:accountid" element={<AccountView />} /> */}
+
+          <Route path="/accounts" element={<AccountDash />} />
+          <Route path="/workflows/:id" element={<WorkflowView />} />
+          <Route path="/forms" element={<FormDash />} />
+          <Route path="/accounts" element={<AccountDash />} />
+          <Route path="/accounts/:id" element={<AccountView />} />
           {/* <Route path="/accounts/:accountid" element={<AccountView />} /> */}
           <Route path="/accounts/:id" element={<AccountView />}/>
           <Route path="/approvals" element={<ApproverDash />}/>
