@@ -118,7 +118,7 @@ function WorkflowAssignedView() {
                                                             questionnaireTitle[1]}
                                                             <span className={checkStatusBadge(questionnaireTitle[2])}>{questionnaireTitle[2]}</span>
                                                         </tr>
-                                                        <button onClick={() => handleViewClick(questionnaire[0])}>VIEW QUESTIONNAIRE</button>
+                                                        <button onClick={() => handleViewClick(questionnaireTitle[0])}>VIEW QUESTIONNAIRE</button>
 
                                                     </div>
                                                 )}

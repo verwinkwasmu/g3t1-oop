@@ -68,10 +68,11 @@ function AssignNewUser(props) {
         const output = []
 
         for (const questionnaire of questionnairesInput) {
-            console.log(questionnaire)
+ 
             createQuestionnaire(questionnaire)
                 .then(function (response) {
-                    console.log("SUCCESS")
+                    console.log("12345678910")
+                    console.log(JSON.stringify(response.data))
                     console.log(response.data)
                     output.push(response.data.id)
                 })
@@ -88,10 +89,16 @@ function AssignNewUser(props) {
 
         const questionnaireIds = handleQuestionnaires()
 
-        console.log("QUESTIONNAIRE IDS")
-        console.log(questionnaireIds)
-
-        createWorkflowAssigned({ workflowName: workflowName, workflowDescription: workflowDescription, questionnaireList: questionnaireIds, assignedAdminId: "temp", assignedVendorId: selectedVendors, approvalRequestDate: null, approverReviewStatus: "INITIAL_DRAFT", approvedAt: null })
+        createWorkflowAssigned({ 
+            "workflowName": workflowName, 
+            "workflowDescription": workflowDescription, 
+            "questionnaireList": questionnaireIds, 
+            "assignedAdminId": "temp", 
+            "assignedVendorId": selectedVendors.value, 
+            "approvalRequestDate": null, 
+            "approverReviewStatus": null, 
+            "approvedAt": null 
+        })
             .then(function (response) {
                 navigate('/workflows');
             })
