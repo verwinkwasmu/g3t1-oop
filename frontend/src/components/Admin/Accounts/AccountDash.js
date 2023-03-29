@@ -66,12 +66,12 @@ function AccountDash() {
     }
 
     const toAccountView = (account) => {
-        navigate(`/accounts/${account.id}`, { state: { account: account } });
+        navigate(`/accounts/${account.id}`, { state: { account: account, origin: "ACCOUNTDASH" } });
     }
 
     return (
         <>
-            <div className="rounded-t-3xl mx-10 mt-10 h-screen py-12 px-20 shadow-2xl">    
+            <div className="rounded-3xl mx-10 my-10 py-12 px-20 shadow-2xl">    
                     <div className="flex justify-between mb-5">
                         <div className="flex">
                             <h1 className="text-3xl font-semibold text-blue mr-5">Registered Accounts
@@ -170,7 +170,7 @@ function AccountDash() {
                                 <td className="id p-2">{account.id}</td>
                                 <td className="name">{account.name}</td>
                                 <td className="company">{account.email}</td>
-                                <td className="status">{account.userType == "ADMIN" ? "Admin" : "Approver"}</td>
+                                <td className="status"><span className={account.userType == "VENDOR" ? "badge bg-blue-500" : "badge"}>{account.userType}</span></td>
                                 <td className="actions text-right">
                                     <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75" onClick={() => {toAccountView(account)}}><MdRemoveRedEye></MdRemoveRedEye></button>
                                     <EditUserAccount account={account}></EditUserAccount>

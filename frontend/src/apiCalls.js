@@ -35,6 +35,9 @@ export default {
   axiosClient
 };
 
+
+// ACCOUNT MANAGEMENT 
+
 export function getUsers() {
   return axiosClient.get("/api/v1/users");  
 }
@@ -67,12 +70,12 @@ export function createVendor(data) {
   return axiosClient.post("/api/v1/users/vendors/create", JSON.stringify(data));  
 }
 
-export function deleteUser(id) { // unique ID
-  return axiosClient.delete(`/api/v1/users/delete/${id}`);  
+export function deleteUser(id, deleterId) { // unique ID
+  return axiosClient.delete(`/api/v1/users/delete/${id}/${deleterId}`);  
 }
 
-export function deleteVendor(id) { // unique ID
-  return axiosClient.delete(`/api/v1/users/vendors/delete/${id}`);  
+export function deleteVendor(id, deleterId) { // unique ID
+  return axiosClient.delete(`/api/v1/users/vendors/delete/${id}/${deleterId}`);  
 }
 
 export function updateUser(data) {
@@ -82,6 +85,8 @@ export function updateUser(data) {
 export function updateVendor(data) {
   return axiosClient.put("/api/v1/users/vendors/update", JSON.stringify(data));  
 }
+
+// WORKFLOW MANAGEMENT
 
 export function getWorkflows() {
   return axiosClient.get("/api/v1/workflow");  
@@ -95,6 +100,11 @@ export function updateIndividualTemplateWorkflow(data) {
   return axiosClient.put("/api/v1/workflow", JSON.stringify(data));  
 }
 
+export function updateIndividualAssignedWorkflow(data) {
+  console.log(JSON.stringify(data))
+  return axiosClient.put("/api/v1/workflow/assigned", JSON.stringify(data));  
+}
+
 export function getAssignedWorkflows() {
   return axiosClient.get("/api/v1/workflow/assigned");  
 }
@@ -103,17 +113,27 @@ export function getWorkflowsByVendor(id) {
   return axiosClient.get(`/api/v1/workflow/assigned/vendor/${id}`);  
 }
 
-export function getIndividualAssignedWorkflow(id) {
-  return axiosClient.get(`/api/v1/workflow/assigned/${id}`);  
+export function getAssignedWorkflowsByAdminId(id) {
+  return axiosClient.get(`/api/v1/workflow/assigned/admin/${id}`);  
+}
+
+export function getAssignedWorkflowsByVendorId(id) {
+  return axiosClient.get(`/api/v1/workflow/assigned/vendor/${id}`);  
 }
 
 export function createWorkflowTemplate(data) { 
   return axiosClient.post("/api/v1/workflow", JSON.stringify(data));  
 }
 
+export function createWorkflowAssigned(data) { 
+  return axiosClient.post("/api/v1/workflow/assigned", JSON.stringify(data));  
+}
+
 export function deleteWorkflow(id) { // unique ID
   return axiosClient.delete(`/api/v1/workflow/${id}`);  
 }
+
+// QUESTIONNAIRE MANAGEMENT
 
 export function getQuestionnaires() {
   return axiosClient.get("/api/v1/questionnaire");  
@@ -121,4 +141,14 @@ export function getQuestionnaires() {
 
 export function getIndividualQuestionnaire(id) {
   return axiosClient.get(`/api/v1/questionnaire/${id}`);  
+}
+
+// ARCHIVE MANAGEMENT
+
+export function getArchiveByCollection(collection) {
+  return axiosClient.get(`/api/v1/archive/collection/${collection}`);  
+}
+
+export function restoreFromArchive(id) {
+  return axiosClient.delete(`/api/v1/archive/restoreDocument/${id}`);  
 }
