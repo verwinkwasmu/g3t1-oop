@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import DeleteWorkflow from './DeleteWorkflow';
 import AssignNewUser from './AssignNewUser';
 import UpdateWorkflow from './UpdateWorkflow';
-import { getIndividualAssignedWorkflow } from '../../../apiCalls';
+// import { getIndividualAssignedWorkflow } from '../../../apiCalls';
 
 function WorkflowAssignedView() {
 
@@ -32,17 +32,17 @@ function WorkflowAssignedView() {
     }
 
     useEffect(() => {
-        getIndividualAssignedWorkflow(workflowId)
-            .then(function (response) {
-                console.log(response.data)
-                setWorkflowsData(response.data)
+        // getIndividualAssignedWorkflow(workflowId)
+        //     .then(function (response) {
+        //         console.log(response.data)
+        //         setWorkflowsData(response.data)
 
-                const temp = [];
-                for (const index in response.data.questionnaires) {
-                    temp.push([response.data.questionnaires[index].id, response.data.questionnaires[index].title, response.data.questionnaires[index].status]);
-                }
-                setQuestionnaireTitles(temp);
-            })
+        //         const temp = [];
+        //         for (const index in response.data.questionnaires) {
+        //             temp.push([response.data.questionnaires[index].id, response.data.questionnaires[index].title, response.data.questionnaires[index].status]);
+        //         }
+        //         setQuestionnaireTitles(temp);
+        //     })
         // eslint-disable-next-line
     }, [])
 

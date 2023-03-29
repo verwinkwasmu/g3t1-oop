@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { MdRemoveRedEye, MdEdit } from 'react-icons/md';
 
-import { getWorkflows, getAssignedWorkflows, getQuestionnaires } from '../../apiCalls';
+import { getWorkflows, getAssignedWorkflowsByAdminId, getQuestionnaires } from '../../apiCalls';
 
 function AdminDash() {
 
@@ -12,10 +12,12 @@ function AdminDash() {
     useEffect(() => {
         document.title = 'Admin Dashboard'
 
-        getAssignedWorkflows()
+        getAssignedWorkflowsByAdminId('admin1')
             .then(function (response) {
                 // console.log(response.data)
                 if (response.data.length > 0) {
+                    setCurrentWorkflowsView("ACTIVE")
+                    setCurrentWorkflowsData(response.data.filter(w => w.approvalRequestDate == null))
                     setWorkflowsData(response.data)
                 } else {
                     setWorkflowsData([])
@@ -45,23 +47,27 @@ function AdminDash() {
     const [currentQuestionnairesView, setCurrentQuestionnairesView] = useState("ACTIVE");
 
     const toggleWorkflowsView = (status) => {
+        if (status == "ACTIVE") {
+            console.log('inside ACTIVE toggle')
+            setCurrentWorkflowsData(workflowsData.filter(w => w.approvalRequestDate == null))
+        } else if (status == "PENDING") {
+            setCurrentWorkflowsData(workflowsData.filter(w => w.approvalRequestDate != null))
+        }
         setCurrentWorkflowsView(status);
     }
 
     const toggleQuestionnairesView = (status) => {
         if (status == "ACTIVE") {
-            console.log('inside ACTIVE toggle')
-            setCurrentQuestionnairesData(questionnairesData.filter(qnnaire => qnnaire.status == "NOT_STARTED" || qnnaire.status == "RETURNED"))
+            setCurrentQuestionnairesData(questionnairesData.filter(q => q.status == "NOT_STARTED" || q.status == "RETURNED"))
         } else if (status == "PENDING") {
-            setCurrentQuestionnairesData(questionnairesData.filter(qnnaire => qnnaire.status == "SUBMITTED"))
+            setCurrentQuestionnairesData(questionnairesData.filter(q => q.status == "SUBMITTED"))
         }
-        console.log(currentQuestionnairesData);
         setCurrentQuestionnairesView(status);
     }
 
     const toWorkflowView = (workflow) => {
         console.log("===== INSIDE toWorkflowView =====")
-        navigate(`/workflows/${workflow.id}`, { state: { workflow: workflow } });
+        navigate(`/workflow-assigned/${workflow.id}`, { state: { workflow: workflow } });
     }
 
     const getWorkflowCompletion = (questionnaires) => {
@@ -87,21 +93,22 @@ function AdminDash() {
             <div className="flex justify-between mb-5">
                 <div className="flex">
                     <h1 className="text-xl font-semibold text-blue mr-5">Assigned Workflows
-                        <span hidden={currentWorkflowsView == "VENDOR" ? false : true}>: Active</span>
-                        <span hidden={currentWorkflowsView != "VENDOR" ? false : true}>: Pending Approval</span>
+                        <span hidden={currentWorkflowsView == "ACTIVE" ? false : true}>: Active</span>
+                        <span hidden={currentWorkflowsView != "ACTIVE" ? false : true}>: Pending Approval</span>
                     </h1>
                 </div>
                 <div className="pb-2 inline-flex">
-                        <button onClick={() => toggleWorkflowsView("VENDOR")} hidden={currentWorkflowsView == "VENDOR" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
+                        <button onClick={() => toggleWorkflowsView("ACTIVE")} hidden={currentWorkflowsView == "ACTIVE" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
                             Go to Current Active Workflows
                         </button>
-                        <button onClick={() => toggleWorkflowsView("USER")} hidden={currentWorkflowsView != "VENDOR" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
+                        <button onClick={() => toggleWorkflowsView("PENDING")} hidden={currentWorkflowsView != "ACTIVE" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
                             Go to Workflows Pending Approval
                         </button>
                     </div>
             </div>
+            <div hidden={currentWorkflowsData.length == 0 ? true : false}>
             <div className="carousel carousel-center p-4 space-x-4 shadow-2xl rounded-box">
-            {(workflowsData).map(workflow =>
+            {(currentWorkflowsData).map(workflow =>
                 <div className="carousel-item">
                     <div className="card card-compact w-72 h-72 bg-base-100 shadow-xl image-full" key={workflow.id}>
                         <figure><img src="https://startinfinity.s3.us-east-2.amazonaws.com/production/blog/post/17/main/GeiehNbQ1t86Mg5zKnEgucWslfZXTckjj8mSDV2O.png" alt="workflow description" /></figure>
@@ -121,6 +128,13 @@ function AdminDash() {
             )}
             
             </div>
+
+            </div>
+            
+            <h2 hidden={currentWorkflowsData.length == 0 ? false : true} className="text-center mt-5 text-gray-300 text-base font-semibold italic text-blue mr-5">No 
+                <span hidden={currentWorkflowsView == "ACTIVE" ? false : true}> active workflows.</span>
+                <span hidden={currentWorkflowsView != "ACTIVE" ? false : true}> workflows pending approval.</span>
+            </h2>
         </div>
 
         <div className="mt-10">
@@ -140,14 +154,14 @@ function AdminDash() {
                     </button>
                 </div>
             </div>
-            <div className="rounded-3xl py-8 px-20 shadow-2xl">
+            <div hidden={currentQuestionnairesData.length == 0 ? true : false} className="rounded-3xl mb-10 py-8 px-20 shadow-2xl">
                 <div className="flex flex-wrap text-left">
                     <table className="flex-auto table-fixed divide-y-2 divide-slate-700">
                         <thead>
                             <tr>
-                                <th className="p-2">Name</th>
+                                <th className="p-2">Deadline</th>
+                                <th>Questionnaire</th>
                                 <th>Workflow</th>
-                                <th>Vendor</th>
                                 <th>Status</th>
                                 <th></th>
                                 <th></th>
@@ -173,8 +187,11 @@ function AdminDash() {
                         </tbody>
                     </table>
                 </div>
-                <h2 hidden={questionnairesData.length == 0 ? false : true} className="text-center mt-5 text-gray-300 text-base font-semibold italic text-blue mr-5">No pending questionnaires.</h2>
             </div>
+            <h2 hidden={currentQuestionnairesData.length == 0 ? false : true} className="text-center mt-5 text-gray-300 text-base font-semibold italic text-blue mr-5">No 
+                <span hidden={currentQuestionnairesView == "ACTIVE" ? false : true}> active questionnaires.</span>
+                <span hidden={currentQuestionnairesView != "ACTIVE" ? false : true}> questionnaires pending approval.</span>
+            </h2>
         </div>
         </div>
         

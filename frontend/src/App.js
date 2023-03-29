@@ -52,22 +52,18 @@ function App() {
 
 
           <Route path="/workflows" element={<WorkflowDash />} />
-
-          <Route path="/accounts" element={<AccountDash />} />
-          {/* <Route path="/accounts/id" element={<AccountView />} /> */}
           <Route path="/workflow-templates/:id" element={<WorkflowTemplateView />} />
           <Route path="/workflow-assigned/:id" element={<WorkflowAssignedView />} />
-          {/* <Route path="/accounts/:accountid" element={<AccountView />} /> */}
 
           <Route path="/accounts" element={<AccountDash />} />
           <Route path="/workflows/:id" element={<WorkflowView />} />
           <Route path="/forms" element={<FormDash />} />
           <Route path="/accounts" element={<AccountDash />} />
           <Route path="/accounts/:id" element={<AccountView />} />
-          {/* <Route path="/accounts/:accountid" element={<AccountView />} /> */}
-          <Route path="/accounts/:id" element={<AccountView />}/>
+
           <Route path="/approvals" element={<ApproverDash />}/>
-          {/* <Route path="/profile" element={<Profile />} /> */}
+          
+          <Route path="/questionnaires" element={<FormDash/>}/>
           <Route path="/questionnaires/create-questionnaire" element={<CreateQuestionnaire/>}/>
           <Route path="/questionnaires/view-all-questionnaires" element={<ViewAllQuestionnaires/>}/>
           <Route path="/questionnaires/edit-questionnaire/:id" element={<EditQuestionnaire/>}/>

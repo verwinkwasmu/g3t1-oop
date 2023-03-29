@@ -13,6 +13,7 @@ function EditVendorAccount(props) {
     const [id, setId] = useState(props.account.id);
     const [name, setName] = useState(props.account.name);
     const [email, setEmail] = useState(props.account.email);
+    const [userType, setUserType] = useState(props.account.userType);
     const [contactNum, setContactNum] = useState(props.account.contactNum);
     const [password, setPassword] = useState(props.account.password);
 
@@ -23,11 +24,16 @@ function EditVendorAccount(props) {
 
 
     const validateForm = () => {
-        if (id.length == 0 || name.length == 0 || email.length == 0 || contactNum.length == 0 || password.length == 0 ||
-            companyName.length == 0 || regNumber.length == 0 || bizNature.length == 0 || gstNumber == 0) {
-            return false;
+
+        if (userType == "VENDOR") {
+            if (id.length == 0 || name.length == 0 || email.length == 0 || contactNum.length == 0 || password.length == 0 ||
+                companyName.length == 0 || regNumber.length == 0 || bizNature.length == 0 || gstNumber == 0) {
+                return false;
+            }
+    
         }
 
+        
         return true;
     }
 
