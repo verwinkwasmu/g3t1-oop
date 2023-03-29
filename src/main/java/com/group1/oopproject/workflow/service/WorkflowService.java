@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import com.group1.oopproject.archive.entity.ArchiveDocument;
+import com.group1.oopproject.archive.service.ArchiveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.mongodb.UncategorizedMongoDbException;
@@ -26,6 +28,8 @@ public class WorkflowService {
     private AssignedWorkflowRepository assignedWorkflowRepository;
     @Autowired
     private QuestionnaireRepository questionnaireRepository;
+    @Autowired
+    private ArchiveService archiveService;
 
     public List<Workflow> findAllWorkflows() {
         try {
@@ -198,11 +202,15 @@ public class WorkflowService {
         }
     }  
     
-    public Workflow deleteWorkflow(String workflowId) throws DatabaseCommunicationException {
+    public void deleteById(String id, String userId) throws DatabaseCommunicationException {
         try{
-            Optional<Workflow> deletedWorkflow = workflowRepository.findById(workflowId);
-            workflowRepository.deleteById(workflowId);
-            return deletedWorkflow.orElseThrow(() -> new WorkflowNotFoundException("Workflow deleted"));
+            Workflow workflow = workflowRepository.findById(id)
+            .orElseThrow(() -> new WorkflowNotFoundException("No workflow found in the database with id: " + id));
+            
+            workflowRepository.deleteById(workflow.getId());
+
+            archiveService.createArchiveDocument(ArchiveDocument.builder().id(workflow.getId()).collection("workflow").deletedBy(userId).data(workflow).build());
+
         } catch (WorkflowNotFoundException e) {
             throw e;
         }catch(Exception e){
@@ -211,11 +219,15 @@ public class WorkflowService {
         }
     }
 
-    public AssignedWorkflow deleteAssignedWorkflow(String workflowId) throws DatabaseCommunicationException {
+    public void deleteAssignedById(String id, String userId) throws DatabaseCommunicationException {
         try{
-            Optional<AssignedWorkflow> deletedWorkflow = assignedWorkflowRepository.findById(workflowId);
-            assignedWorkflowRepository.deleteById(workflowId);
-            return deletedWorkflow.orElseThrow(() -> new WorkflowNotFoundException("Workflow deleted"));
+            AssignedWorkflow assignedWorkflow = assignedWorkflowRepository.findById(id)
+            .orElseThrow(() -> new WorkflowNotFoundException("No workflow found in the database with id: " + id));
+            
+            assignedWorkflowRepository.deleteById(assignedWorkflow.getId());
+
+            archiveService.createArchiveDocument(ArchiveDocument.builder().id(assignedWorkflow.getId()).collection("assignedWorkflow").deletedBy(userId).data(assignedWorkflow).build());
+
         } catch (WorkflowNotFoundException e) {
             throw e;
         }catch(Exception e){
@@ -223,5 +235,6 @@ public class WorkflowService {
             e); 
         }
     }
+
 
 }

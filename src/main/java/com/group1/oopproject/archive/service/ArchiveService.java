@@ -11,6 +11,10 @@ import com.group1.oopproject.user.entity.User;
 import com.group1.oopproject.user.entity.Vendor;
 import com.group1.oopproject.user.repository.UserRepository;
 import com.group1.oopproject.user.repository.VendorRepository;
+import com.group1.oopproject.workflow.entity.AssignedWorkflow;
+import com.group1.oopproject.workflow.entity.Workflow;
+import com.group1.oopproject.workflow.repository.AssignedWorkflowRepository;
+import com.group1.oopproject.workflow.repository.WorkflowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +33,10 @@ public class ArchiveService {
     private UserRepository userRepository;
     @Autowired
     private VendorRepository vendorRepository;
+    @Autowired
+    private WorkflowRepository workflowRepository;
+    @Autowired
+    private AssignedWorkflowRepository assignedWorkflowRepository;
 
     public List<ArchiveDocument> findArchiveDocumentByCollection(String collection) {
         try {
@@ -64,8 +72,12 @@ public class ArchiveService {
                     case "vendors":
                         vendorRepository.save((Vendor) data);
                         break;
-                    //TODO add workflow
-                    // TODO add assignedWorkflow
+                    case "workflow":
+                        workflowRepository.save((Workflow) data);
+                        break;
+                    case "assignedWorkflow":
+                        assignedWorkflowRepository.save((AssignedWorkflow) data);
+                        break;
                 }
 
                 // Delete the archived document from the archived collection
