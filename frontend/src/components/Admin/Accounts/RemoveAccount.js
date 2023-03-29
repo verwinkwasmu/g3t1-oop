@@ -14,6 +14,7 @@ function RemoveAccount(props) {
     console.log("removeAccount –> props.accounts: ", props.accounts)
     // even though props.accounts is accurate, it isnt updating in the modal fast enough
 
+    const [token] = useState('admin1')
     const [id] = useState(props.accounts[0].id)
     const [userType] = useState(props.accounts[0].userType)
     const [name] = useState(props.accounts[0].name)
@@ -25,7 +26,7 @@ function RemoveAccount(props) {
         console.log(id);
 
         if (userType == "VENDOR") {
-            deleteVendor(id)
+            deleteVendor(id, token)
                 .then(function(response){
                     navigate("/accounts")
                     

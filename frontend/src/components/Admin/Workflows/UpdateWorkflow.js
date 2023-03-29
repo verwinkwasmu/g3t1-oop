@@ -4,22 +4,21 @@ import Select from 'react-select'
 
 import { BsGear } from "react-icons/bs";
 
-import { updateIndividualTemplateWorkflow, getQuestionnaires } from '../../../apiCalls';
+import { updateIndividualTemplateWorkflow, getQuestionnaires, updateIndividualAssignedWorkflow } from '../../../apiCalls';
 
 function UpateWorkflow(props) {
 
     const navigate = useNavigate();
 
-    // console.log(props.workflow)
+    console.log("UPDATEWORKFLOW")
+    console.log(props.render)
+    console.log(props.workflow)
+
     const workflowId = props.workflow.id;
     const workflowName = props.workflow.workflowName;
-    const [test, setworkflowName] = useState(workflowName);
+    const [test, setworkflowName] = useState("");
     const [selectedQuestionnaires, setSelectedQuestionnaires] = useState("");
     const [questionnaireOptions, setQuestionnaireOptions] = useState();
-
-    // console.log("HEREEEE")
-    // console.log(workflowId)
-    // console.log(workflowName)
 
     const validateForm = () => {
         return !(workflowName.length == 0 || selectedQuestionnaires.length == 0);
@@ -31,6 +30,10 @@ function UpateWorkflow(props) {
     }
 
     useEffect(() => {
+        setworkflowName(props.workflow.workflowName)
+        console.log("TEST NAME")
+        console.log(test)
+
         getQuestionnaires()
             .then(function (response) {
                 // console.log(response.data)
@@ -50,16 +53,18 @@ function UpateWorkflow(props) {
                 }
             })
 
+        // var temp = []
         // for (const index in props.workflow.questionnaires) {
-        //     selectedQuestionnaires.push(
+        //     temp.push(
         //         {
         //             value: props.workflow.questionnaires[index].id, 
         //             label: props.workflow.questionnaires[index].title
         //         }
         //     );
         // }
-        console.log("selectedQuestionnaires")
-        console.log(selectedQuestionnaires)
+        // setSelectedQuestionnaires(temp)
+        // console.log("selectedQuestionnaires")
+        // console.log(selectedQuestionnaires)
         // eslint-disable-next-line
     }, [])
 
@@ -67,24 +72,47 @@ function UpateWorkflow(props) {
     // console.log(selectedQuestionnaires)
 
     const handleUpdate = () => {
-        console.log("INSIDE HANDLE CREATE");
+        console.log("INSIDE HANDLE UPDATE");
 
         const temp = [];
         for (const element of selectedQuestionnaires) {
             temp.push(element.value);
         }
 
-        console.log("workflowname")
-        console.log(workflowId)
-        console.log(workflowName)
+        if (props.render=="templates") {
+            var workflowNameToPass = workflowName;
+            if (test!=undefined) {
+                workflowNameToPass = test;
+            }
 
-        updateIndividualTemplateWorkflow({ id: workflowId, workflowName: workflowName, questionnaireList: temp, createdAt: props.workflow.createdAt })
+            
+            updateIndividualTemplateWorkflow({ id: workflowId, workflowName: workflowNameToPass, questionnaireList: temp })
             .then(function (response) {
-                navigate(`/workflows`);
+                window.location.reload(false)
             })
             .catch(function (error) {
                 console.log("ERROR UPDATING WORKFLOW")
             })
+        }
+        else if (props.render=="assigned") {
+            var workflowNameToPass = workflowName;
+            if (test!=undefined) {
+                workflowNameToPass = test;
+            }
+            var approverReviewStatus = "INTIIAL_DRAFT"
+            if (props.workflow.approverReviewStatus!=null) {
+                approverReviewStatus = props.workflow.approverReviewStatus
+            }
+            updateIndividualAssignedWorkflow({ id: workflowId, workflowName: workflowNameToPass, questionnaireList: temp, createdAt: props.workflow.createdAt, assignedVendorId: props.workflow.assignedVendorId, assignedAdminId: props.workflow.assignedAdminId, approvalRequestDate: props.workflow.approvalRequestDate, approverReviewStatus: approverReviewStatus, approvedAt:props.workflow.approvedAt })
+            .then(function (response) {
+                console.log(response.data)
+                window.location.reload(false)
+            })
+            .catch(function (error) {
+                console.log("ERROR UPDATING WORKFLOW")
+            })
+        }   
+        
     }
 
     return (
