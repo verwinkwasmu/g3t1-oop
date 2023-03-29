@@ -37,6 +37,16 @@ public class WorkflowService {
             if (workflows.isEmpty()) {
                 throw new WorkflowNotFoundException("No workflows found in the database");
             }
+            
+            for (Workflow workflow : workflows) {
+                List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
+                for (String questionnaireId : workflow.getQuestionnaireList()) {
+                    Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+                    Questionnaire questionnaire = optionalQuestionnaire.get();
+                    questionnaireList.add(questionnaire);
+                    workflow.setQuestionnaires(questionnaireList);
+                }
+            }
             return workflows;
         } catch (WorkflowNotFoundException e) {
             throw e;
@@ -50,6 +60,16 @@ public class WorkflowService {
             List<AssignedWorkflow> assignedWorkflows = assignedWorkflowRepository.findAll();
             if (assignedWorkflows.isEmpty()) {
                 throw new WorkflowNotFoundException("No workflows found in the database");
+            }
+
+            for (AssignedWorkflow assignedWorkflow : assignedWorkflows) {
+                List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
+                for (String questionnaireId : assignedWorkflow.getQuestionnaireList()) {
+                    Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+                    Questionnaire questionnaire = optionalQuestionnaire.get();
+                    questionnaireList.add(questionnaire);
+                    assignedWorkflow.setQuestionnaires(questionnaireList);
+                }
             }
             return assignedWorkflows;
         } catch (WorkflowNotFoundException e) {
