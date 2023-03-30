@@ -35,6 +35,15 @@ export default {
   axiosClient
 };
 
+// AUTHENTICATION
+
+export function loginUser(data) {
+  return axiosClient.post("/api/v1/users/login", JSON.stringify(data));  
+}
+
+export function loginVendor(data) {
+  return axiosClient.post("/api/v1/users/vendors/login", JSON.stringify(data));  
+}
 
 // ACCOUNT MANAGEMENT 
 
@@ -135,12 +144,6 @@ export function createWorkflowAssigned(data) {
 
 export function deleteWorkflow(id) { // unique ID
   return axiosClient.delete(`/api/v1/workflow/${id}`);  
-}
-
-export function getIndividualAssignedWorkflow(id){
-  return axiosClient.get(`/api/v1/workflow/assigned/${id}`);  
-
-
 }
 
 // QUESTIONNAIRE MANAGEMENT
