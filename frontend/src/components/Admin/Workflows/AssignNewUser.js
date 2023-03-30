@@ -104,9 +104,7 @@ function AssignNewUser(props) {
         console.log("INSIDE HANDLE CREATE");
 
         const questionnaireIds = handleQuestionnaires()
-        console.log("WHAT THE HECK")
-        console.log(questionnaireIds)
-
+        
         createWorkflowAssigned({ 
             "workflowName": workflowName, 
             "workflowDescription": workflowDescription, 
@@ -118,8 +116,8 @@ function AssignNewUser(props) {
             "approvedAt": null 
         })
             .then(function (response) {
-                console.log(response.data)
-                navigate('/workflows');
+                console.log(response.data.id)
+                navigate(`/workflow-assigned/${response.data.id}`, { state: { workflowId: response.data.id } });
             })
             .catch(function (error) {
                 console.log("ERROR CREATING WORKFLOW")
@@ -143,7 +141,6 @@ function AssignNewUser(props) {
                             <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="userid">
                                 Vendor
                             </label>
-                            {/* <input className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="userid" type="text" /> */}
                             <Select
                                 options={vendorOptions}
                                 placeholder={"Choose Vendor"}

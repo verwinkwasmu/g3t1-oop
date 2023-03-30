@@ -143,6 +143,9 @@ export function getIndividualQuestionnaire(id) {
   return axiosClient.get(`/api/v1/questionnaire/${id}`);  
 }
 
+export function createQuestionnaire(data) { 
+  return axiosClient.post("/api/v1/questionnaire/create", JSON.stringify(data));  
+}
 // ARCHIVE MANAGEMENT
 
 export function getArchiveByCollection(collection) {
@@ -151,9 +154,4 @@ export function getArchiveByCollection(collection) {
 
 export function restoreFromArchive(id) {
   return axiosClient.delete(`/api/v1/archive/restoreDocument/${id}`);  
-}
-
-
-export function createQuestionnaire(data) { 
-  return axiosClient.post("/api/v1/questionnaire/create", JSON.stringify(data));  
 }
