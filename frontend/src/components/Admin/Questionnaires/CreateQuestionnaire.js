@@ -6,6 +6,7 @@ import { Button } from 'react-bulma-components';
 import jsPDF from 'jspdf';
 
 
+
 const CreateQuestionnaire = () => {
   const [questions, setQuestions] = useState({});
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -278,163 +279,186 @@ const updateTextInput = (questionId, value) => {
   };
 
   return (
-    <div className="flex flex-col w-full" > 
 
-      <div className="grid h-500 card bg-base-300 rounded-box place-items-center">
-        <div className="btn-group btn-group-vertical lg:btn-group-horizontal">
-          <button onClick={() => addQuestion('text')} className="btn" >Add Question</button>
-          <button onClick={handleSaveAsPDF} className="btn" >Save as PDF</button>
-          <Button onClick={saveQuestionnaire} className="btn" >Submit</Button>
-        </div>
-        {submitSuccess && (
-            <div className="toast toast-top toast-start">
-              <div className="alert alert-success">
-                <div>
-                  <span>Save Successful.</span>
-                  <button className="btn btn-square btn-outline" onClick={() => setSubmitSuccess(false)}>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                  </button>
-                </div>
-              </div>
+    <>
+
+      {submitSuccess && (
+        <div className="toast toast-top toast-start">
+          <div className="alert alert-success">
+            <div>
+              <span>Save Successful.</span>
+              <button className="btn btn-square btn-outline" onClick={() => setSubmitSuccess(false)}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
             </div>
-        )}
-
-        <div className="form-control">
-          <label htmlFor='questionnaire-title' className="label"  >Questionnaire TItle: </label>
-          <input type ="text" value={title} id='questionnaire-title' name='questionnaire-title' onChange={(event) => setTitle(event.target.value)} className="input-group" ></input>
-
-          <label htmlFor='assigned-vendor' className="label" >Assigned Vendor: </label>
-          <input type ="text" id='assigned-vendor' name='assigned-vendor' defaultValue="DEFAULT" className="input-group"  ></input>
-        
-          <div>
-            <label htmlFor='assigned-admin'className="label" >Assigned Admin: </label>
-            <input type ="text"id='assigned-admin' name='assigned-admin' defaultValue="DEFAULT" ></input>
-
-
-            <label htmlFor='status' className="label" >Status </label>
-            <input type ="text" defaultValue="NOT_STARTED" id='status' name='status' ></input>
           </div>
-          
+        </div>
+      )}
+      <div className="rounded-t-3xl mx-10 mt-10 h-screen py-8 px-20 shadow-2xl">
+        <div className="bg-white h-full overflow-y-auto">
+          <div className="flex flex-wrap mb-5">
+              <div className="flex-auto">
+                <p className="text-3xl font-semibold text-blue">Create Questionnaire</p>
+              </div>
+              <div className="flex ">
+                  <div className="btn-group btn-group-vertical lg:btn-group-horizontal">
+                    <button onClick={() => addQuestion('text')} className="btn" >Add Question</button>
+                    <button onClick={handleSaveAsPDF} className="btn" >Save as PDF</button>
+                    <Button onClick={saveQuestionnaire} className="btn" >Submit</Button>
+                  </div>
+              </div>
+              <div className='flex'>
+                <label htmlFor='questionnaire-title' className="label"  >Questionnaire TItle: </label>
+                <input type ="text" value={title} id='questionnaire-title' name='questionnaire-title' onChange={(event) => setTitle(event.target.value)} className="input-group" ></input>
+
+                <label htmlFor='assigned-vendor' className="label" >Assigned Vendor: </label>
+                <input type ="text" id='assigned-vendor' name='assigned-vendor' defaultValue="DEFAULT" className="input-group"  ></input>
+              </div>
+
+              <div className='flex'>
+                  <label htmlFor='assigned-admin'className="label" >Assigned Admin: </label>
+                  <input type ="text"id='assigned-admin' name='assigned-admin' defaultValue="DEFAULT" ></input>
+
+
+                  <label htmlFor='status' className="label" >Status </label>
+                  <input type ="text" defaultValue="NOT_STARTED" id='status' name='status' ></input>
+              </div>
+
+              <div className="grid h-500 card bg-base-300 rounded-box place-items-center" >
+                <DragDropContext onDragEnd={onDragEnd}>
+                  {console.log(questions)}
+                  {Object.values(questions).map((question, index) => (
+                          <Droppable key={question.id} droppableId={question.id}>
+                            {(provided) => (
+                              <ul {...provided.droppableProps} ref={provided.innerRef}>
+                              {/* {Object.values(questions).map((question, index) => ( */}
+                                  <Draggable key={question.id} draggableId={question.id} index={index}>
+                                  {(provided) => (
+                                      <li
+                                      {...provided.draggableProps}
+                                      {...provided.dragHandleProps}
+                                      ref={provided.innerRef}
+                                      >
+                                        <button onClick={() => deleteQuestion(question.id)}>Delete Question</button>
+                                        {console.log(question)}
+                                        <div>
+                                            <label>
+                                            Question Prompt:
+                                                <input
+                                                    type="text"
+                                                    value={question.prompt}
+                                                    onChange={(e) => updatePrompt(question.id, e.target.value)}
+                                                />
+                                                </label>
+                                                <label>
+                                                Type of Input:
+                                                <select
+                                                    value={question.type}
+                                                    onChange={(e) => updateQuestionType(question.id, e.target.value)}
+                                                >
+                                                    <option value="text">Text</option>
+                                                    <option value="radio">Radio</option>
+                                                    <option value="checkbox">Checkbox</option>
+                                                </select>
+                                              </label>
+                                          </div>
+                                          {question.type === 'text' && (
+                                          <div>
+                                            <label>
+                                                Text Input:
+                                                <input
+                                                type="text"
+                                                name ='text-input'
+                                                id='text-input'
+                                                defaultValue='FOR VENDOR'
+                                                />
+                                            </label>
+                                          </div>
+                                          )}
+                                          {question.type === 'radio' && (
+                                              <div>                                        
+                                                <button onClick={() => addOption(question.id)}>Add Option</button>          
+                                                {question.options.map((option, index) => (
+                                                    <div key={option.id}>                                                      
+                                                      <label>
+                                                          Option {index + 1}:
+                                                          <input
+                                                            type="text"
+                                                            value={option.value}
+                                                            onChange={(e) =>
+                                                                updateOptionValue(question.id, option.id, e.target.value)
+                                                            }
+                                                          />
+                                                      </label>                              
+                                                      <button onClick={() => deleteOption(question.id, option.id)}>
+                                                            Delete Option
+                                                      </button>
+                                                    </div>
+                                                  ))}
+                                              </div>
+                                          )}
+                                      
+                                          {question.type === 'checkbox' && (
+                                            <div>
+                                                <button onClick={() => addOption(question.id)}>Add Option</button>
+                                                {question.options.map((option, index) => (
+                                                  <div key={option.id}>
+                                                      <label>
+                                                        Option {index + 1}:
+                                                        <input
+                                                            type="text"
+                                                            value={option.value}
+                                                            onChange={(e) =>
+                                                            updateOptionValue(question.id, option.id, e.target.value)
+                                                            }
+                                                        />
+                                                      </label>
+                                                      <button onClick={() => deleteOption(question.id, option.id)}>
+                                                      Delete Option
+                                                      </button>
+                                                  </div>
+                                                ))}
+                                            </div>
+                                          )}
+                                      </li>
+                                  )}
+                                  </Draggable>
+                              {provided.placeholder}
+                              </ul>
+                            )}
+                          </Droppable>
+                    ))}
+              </DragDropContext>
+            </div>
+          </div>
         </div>
       </div>
+      
+    
+    </>
+  );
 
-      <div className="divider"></div> 
+  //       <div className="form-control">
+  //         <label htmlFor='questionnaire-title' className="label"  >Questionnaire TItle: </label>
+  //         <input type ="text" value={title} id='questionnaire-title' name='questionnaire-title' onChange={(event) => setTitle(event.target.value)} className="input-group" ></input>
 
-      <div className="grid h-500 card bg-base-300 rounded-box place-items-center" >
-        <DragDropContext onDragEnd={onDragEnd}>
-              {console.log(questions)}
-              {Object.values(questions).map((question, index) => (
-                      <Droppable key={question.id} droppableId={question.id}>
-                        {(provided) => (
-                          <ul {...provided.droppableProps} ref={provided.innerRef}>
-                          {/* {Object.values(questions).map((question, index) => ( */}
-                              <Draggable key={question.id} draggableId={question.id} index={index}>
-                              {(provided) => (
-                                  <li
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
-                                  ref={provided.innerRef}
-                                  >
-                                    <button onClick={() => deleteQuestion(question.id)}>Delete Question</button>
-                                    {console.log(question)}
-                                    <div>
-                                        <label>
-                                        Question Prompt:
-                                            <input
-                                                type="text"
-                                                value={question.prompt}
-                                                onChange={(e) => updatePrompt(question.id, e.target.value)}
-                                            />
-                                            </label>
-                                            <label>
-                                            Type of Input:
-                                            <select
-                                                value={question.type}
-                                                onChange={(e) => updateQuestionType(question.id, e.target.value)}
-                                            >
-                                                <option value="text">Text</option>
-                                                <option value="radio">Radio</option>
-                                                <option value="checkbox">Checkbox</option>
-                                            </select>
-                                          </label>
-                                      </div>
-                                      {question.type === 'text' && (
-                                      <div>
-                                        <label>
-                                            Text Input:
-                                            <input
-                                            type="text"
-                                            name ='text-input'
-                                            id='text-input'
-                                            defaultValue='FOR VENDOR'
-                                            />
-                                        </label>
-                                      </div>
-                                      )}
-                                      {question.type === 'radio' && (
-                                          <div>
-                                            
-                                            <button onClick={() => addOption(question.id)}>Add Option</button>
-              
-                                            {question.options.map((option, index) => (
-                                                <div key={option.id}>
+  //         <label htmlFor='assigned-vendor' className="label" >Assigned Vendor: </label>
+  //         <input type ="text" id='assigned-vendor' name='assigned-vendor' defaultValue="DEFAULT" className="input-group"  ></input>
+        
+  //         <div>
+  //          
+  //         </div>
+          
+  //       </div>
+  //     </div>
 
-                                                  <label>
-                                                      Option {index + 1}:
-                                                      <input
-                                                        type="text"
-                                                        value={option.value}
-                                                        onChange={(e) =>
-                                                            updateOptionValue(question.id, option.id, e.target.value)
-                                                        }
-                                                      />
-                                                  </label>
-                                  
-                                                  <button onClick={() => deleteOption(question.id, option.id)}>
-                                                        Delete Option
-                                                  </button>
-                                                </div>
-                                            ))}
-                                          </div>
-                                      )}
-                                      {question.type === 'checkbox' && (
-                                        <div>
-                                            <button onClick={() => addOption(question.id)}>Add Option</button>
-                                            {question.options.map((option, index) => (
-                                              <div key={option.id}>
-                                                  <label>
-                                                    Option {index + 1}:
-                                                    <input
-                                                        type="text"
-                                                        value={option.value}
-                                                        onChange={(e) =>
-                                                        updateOptionValue(question.id, option.id, e.target.value)
-                                                        }
-                                                    />
-                                                  </label>
-                                                  <button onClick={() => deleteOption(question.id, option.id)}>
-                                                  Delete Option
-                                                  </button>
-                                              </div>
-                                            ))}
-                                        </div>
-                                      )}
-                                  </li>
+  //     <div className="divider"></div> 
 
-                              )}
-                              </Draggable>
-                          {/* ))} */}
-                          {provided.placeholder}
-                          </ul>
-                        )}
-                      </Droppable>
-                ))}
-        </DragDropContext>
-      </div>
+
 
   
-    </div>
-  );
+  //   </div>
+  // );
 
 };
 export default CreateQuestionnaire;

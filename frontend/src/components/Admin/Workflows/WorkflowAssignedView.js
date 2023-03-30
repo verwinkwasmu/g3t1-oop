@@ -3,8 +3,6 @@ import { IoGitPullRequestOutline } from 'react-icons/io5';
 import { React, useState, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { Link } from "react-router-dom";
-
 
 import DeleteWorkflow from './DeleteWorkflow';
 import AssignNewUser from './AssignNewUser';
@@ -22,10 +20,12 @@ function WorkflowAssignedView() {
     const [workflowAssignedUsers, setWorkflowAssignedUsers] = useState([]);
 
 
+    console.log('I WANT MY STATE TO WORK')
+    console.log(workflowId)
+
     const handleViewClick = (questionnaireId) => {
         navigate(`/questionnaires/view-indiv-questionnaire/${questionnaireId}`, 
         { state: {   
-            fromAssigned: 'fromAssigned',
             workflowId: workflowId
 
         }});    

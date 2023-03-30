@@ -1,27 +1,37 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useParams, useLocation, useNavigate, withRouter} from "react-router-dom";
 
 
 const baseURL = "http://localhost:8080/api/v1/questionnaire";
-const updateBaseURL = "http://localhost:8080/api/v1/questionnaire/update"
+const updateBaseURL = "http://localhost:8080/api/v1/workflow/assigned"
+
+// LOOK INTO HOW TO TOGGLE BETWEEN VIEWS FOR EACH USER
 
 export default function ViewIndivQuestionnaire(props) {
+    console.log("IN INDIV QUESTIONNAIRE VIEW")
 
+
+    const user = localStorage.getItem('token');
     const location = useLocation();
     const navigate = useNavigate();
-    const [questionnaire, setQuestionnaire] = useState(null);
-    const  id  = useParams()
-    const fromAssigned = location.state.fromAssigned;
-    const workflowId = location.state.workflowId
 
     console.log(location.state)
 
-    // console.log('RAHRAHRA')
-    // console.log(workflowId)
-    // console.log(fromAssigned)
 
+    const [questionnaire, setQuestionnaire] = useState(null);
+    const  id  = useParams()
+    const workflowId = location.state.workflowId
+
+
+    // console.log("from assigned" + fromAssigned)
+    // console.log("workflowId" + workflowId)
+
+
+    console.log(user)
+
+    // need to get questionnaire id from workflow id
+    // then get from quesrionnaire table 
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -43,6 +53,8 @@ export default function ViewIndivQuestionnaire(props) {
             ...questionnaire,
             status: "ADMIN_APPROVED"
         };
+
+        // change the id to the id gotten from workflow
         try {
             const response = await axios.put(`${updateBaseURL}`, updatedQuestionnaire);
             setQuestionnaire(response.data);
@@ -57,6 +69,7 @@ export default function ViewIndivQuestionnaire(props) {
             ...questionnaire,
             status: "RETURNED"
         };
+        // change the id to the id gotten from workflow
         try {
             const response = await axios.put(`${updateBaseURL}`, updatedQuestionnaire);
             setQuestionnaire(response.data);
@@ -81,19 +94,26 @@ export default function ViewIndivQuestionnaire(props) {
             <p>{questionnaire.assignedAdminId}</p>
             <p>{questionnaire.createdAt}</p>
 
-            <button onClick={() => handleEditClick(questionnaire.id)}>Edit Questionnaire</button>
 
             {/* <Link to={`/vendor/questionnaires/edit-questionnaire/${questionnaire.id}`}>
                 <p>edit for vendor test</p>
             </Link> */}
 
-            {fromAssigned == "fromAssigned" && (
+            {user.userType == "ADMIN" && (
                 <div>
                     <button onClick={handleAdminApproveClick}>APPROVE</button>
                     <button onClick={handleAdminRejectClick}>REJECT</button>
                 </div>
                
             )}
+
+            {user.userType == "VENDOR" && (
+                <div>
+                    <button onClick={() => handleEditClick(questionnaire.id)}>Edit Questionnaire</button>
+                </div>
+                        
+            )}
+
 
             
 
