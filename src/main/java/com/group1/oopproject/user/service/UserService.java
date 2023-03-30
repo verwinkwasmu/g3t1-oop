@@ -179,14 +179,20 @@ public class UserService {
         }
     }
 
-    public User loginUser(String id,String pw) {
+    public String[] loginUser(User input_user) {
         try {
+            String id = input_user.getId();
+            String pw = input_user.getPassword();
+
             User user = userRepository.findById(id)
                     .orElseThrow(() -> new UserNotFoundException("Either userId or password is wrong. Please try again"));
 
             // check pw
             if (user.getPassword().equals(pw)){
-                return user;
+                String[] result = new String[2];
+                result[0] = user.getId();
+                result[1] = String.valueOf(user.getUserType());
+                return result;
             }
             else{
                 throw new UserNotFoundException("Either userId or password is wrong. Please try again");
@@ -197,14 +203,20 @@ public class UserService {
         }
     }
 
-    public Vendor loginVendor(String id,String pw) {
+    public String[] loginVendor(Vendor input_vendor) {
         try {
+            String id = input_vendor.getId();
+            String pw = input_vendor.getPassword();
+
             Vendor vendor = vendorRepository.findById(id)
                     .orElseThrow(() -> new UserNotFoundException("Either userId or password is wrong. Please try again"));
 
             // check pw
             if (vendor.getPassword().equals(pw)){
-                return vendor;
+                String[] result = new String[2];
+                result[0] = vendor.getId();
+                result[1] = String.valueOf(vendor.getUserType());
+                return result;
             }
             else{
                 throw new UserNotFoundException("Either userId or password is wrong. Please try again");
