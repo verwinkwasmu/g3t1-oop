@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { MdRemoveRedEye, MdEdit } from 'react-icons/md';
 
-import { getWorkflows, getAssignedWorkflows, getQuestionnaires } from '../../apiCalls';
+import { getWorkflows, getAssignedWorkflowsByVendorId, getQuestionnaires } from '../../apiCalls';
 
 function VendorDash() {
 
@@ -12,10 +12,12 @@ function VendorDash() {
     useEffect(() => {
         document.title = 'User Dashboard'
 
-        getAssignedWorkflows()
+        getAssignedWorkflowsByVendorId('vendor1')
             .then(function (response) {
                 // console.log(response.data)
                 if (response.data.length > 0) {
+                    setCurrentWorkflowsView("ACTIVE")
+                    setCurrentWorkflowsData(response.data.filter(w => w.approvalRequestDate == null))
                     setWorkflowsData(response.data)
                 } else {
                     setWorkflowsData([])
@@ -45,6 +47,13 @@ function VendorDash() {
     const [currentQuestionnairesView, setCurrentQuestionnairesView] = useState("ACTIVE");
     
     const toggleWorkflowsView = (status) => {
+        if (status == "ACTIVE") {
+            console.log('inside ACTIVE toggle')
+            setCurrentWorkflowsData(workflowsData.filter(w => w.approvalRequestDate == null))
+        } else if (status == "PENDING") {
+            setCurrentWorkflowsData(workflowsData.filter(w => w.approvalRequestDate != null))
+        }
+        console.log("currentWData: ", currentWorkflowsData);
         setCurrentWorkflowsView(status);
     }
 
@@ -61,7 +70,7 @@ function VendorDash() {
 
     const toWorkflowView = (workflow) => {
         console.log("===== INSIDE toWorkflowView =====")
-        navigate(`/workflows/${workflow.id}`, { state: { workflow: workflow } });
+        navigate(`/workflow-assigned/${workflow.id}`, { state: { workflow: workflow } });
     }
 
     const getWorkflowCompletion = (questionnaires) => {
@@ -99,6 +108,7 @@ function VendorDash() {
                         </button>
                     </div>
             </div>
+            <div hidden={currentWorkflowsData.length == 0 ? true : false}>
             <div className="carousel carousel-center p-4 space-x-4 shadow-2xl rounded-box">
             {(workflowsData).map(workflow =>
                 <div className="carousel-item">
@@ -118,8 +128,12 @@ function VendorDash() {
                     </div>
                 </div> 
             )}
-            
             </div>
+            </div>
+            <h2 hidden={currentWorkflowsData.length == 0 ? false : true} className="text-center mt-5 text-gray-300 text-base font-semibold italic text-blue mr-5">No 
+                <span hidden={currentWorkflowsView == "ACTIVE" ? false : true}> active workflows.</span>
+                <span hidden={currentWorkflowsView != "ACTIVE" ? false : true}> workflows pending approval.</span>
+            </h2>
         </div>
 
         <div className="mt-10">
@@ -139,13 +153,13 @@ function VendorDash() {
                     </button>
                 </div>
             </div>
-            <div className="rounded-3xl py-8 px-20 shadow-2xl">
+            <div hidden={currentQuestionnairesData.length == 0 ? true : false} className="rounded-3xl py-8 px-20 shadow-2xl">
                 <div className="flex flex-wrap text-left">
                     <table className="flex-auto table-fixed divide-y-2 divide-slate-700">
                         <thead>
                             <tr>
                                 <th className="p-2">Deadline</th>
-                                <th>Title</th>
+                                <th>Questionnaire</th>
                                 <th>Workflow</th>
                                 <th>Status</th>
                                 <th></th>
@@ -172,8 +186,11 @@ function VendorDash() {
                         </tbody>
                     </table>
                 </div>
-                <h2 hidden={questionnairesData.length == 0 ? false : true} className="text-center mt-5 text-gray-300 text-base font-semibold italic text-blue mr-5">No pending questionnaires.</h2>
             </div>
+            <h2 hidden={currentQuestionnairesData.length == 0 ? false : true} className="text-center mt-5 text-gray-300 text-base font-semibold italic text-blue mr-5">No 
+                <span hidden={currentQuestionnairesView == "ACTIVE" ? false : true}> active questionnaires.</span>
+                <span hidden={currentQuestionnairesView != "ACTIVE" ? false : true}> questionnaires pending approval.</span>
+            </h2>
         </div>
         </div>
         

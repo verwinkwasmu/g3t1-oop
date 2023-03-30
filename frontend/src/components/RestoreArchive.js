@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 
 import { MdRestoreFromTrash } from 'react-icons/md';
 
+import { restoreFromActive } from '../apiCalls';
+
+
 function RestoreArchived(props) {
 
     const [item, setItem] = useState(props.item);
