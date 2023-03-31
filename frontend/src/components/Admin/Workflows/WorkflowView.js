@@ -16,6 +16,8 @@ function WorkflowView() {
     const workflow = location.state.workflow;
     const [workflowAssignedUsers, setWorkflowAssignedUsers] = useState([]);
 
+    console.log("in indiv workflow assigned view?")
+
     // useEffect(() => {
     //     getIndividualAssignedWorkflow(workflow.id)
     //         .then(function (response) {

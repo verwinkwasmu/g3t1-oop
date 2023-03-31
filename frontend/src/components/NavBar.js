@@ -18,7 +18,7 @@ export default function Navbar({ fixed }) {
 
   const navigate = useNavigate();
 
-  const [userType, setUserType] = useState(useToken().token.userType); 
+  const [userType, setUserType] = useState(useToken().token[1]); 
 
   const toProfileView = () => {
     navigate(`/profile`);

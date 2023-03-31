@@ -56,10 +56,10 @@ function App() {
           <Route path="/workflow-assigned/:id" element={<WorkflowAssignedView />} />
 
           <Route path="/accounts" element={<AccountDash />} />
-          {/* <Route path="/workflows/:id" element={<WorkflowView />} />
+          <Route path="/workflows/:id" element={<WorkflowView />} />
           <Route path="/forms" element={<FormDash />} />
           <Route path="/accounts" element={<AccountDash />} />
-          <Route path="/accounts/:id" element={<AccountView />} /> */}
+          <Route path="/accounts/:id" element={<AccountView />} />
 
           <Route path="/approvals" element={<ApproverDash />}/>
           

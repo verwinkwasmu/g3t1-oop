@@ -13,7 +13,7 @@ function EditUserAccount(props) {
     const [id, setId] = useState(props.account.id);
     const [name, setName] = useState(props.account.name);
     const [email, setEmail] = useState(props.account.email);
-    const [userType, setUserType] = useState("ADMIN");
+    const [userType, setUserType] = useState(props.account.userType);
     const [password, setPassword] = useState(props.account.email);
 
 
@@ -60,7 +60,7 @@ function EditUserAccount(props) {
                                 <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="id">
                                     ID
                                 </label>
-                                <input defaultValue={id} onChange={e => setId(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="id" type="text"/>
+                                <input disabled defaultValue={id} onChange={e => setId(e.target.value)} className="bg-gray-50 shadow appearance-none border border-gray-300 rounded-full w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline" id="id" type="text"/>
                             </div>
                             <div className="mb-4">
                                 <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="firstname">

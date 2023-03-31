@@ -3,8 +3,6 @@ import { IoGitPullRequestOutline } from 'react-icons/io5';
 import { React, useState, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { Link } from "react-router-dom";
-
 
 import DeleteWorkflow from './DeleteWorkflow';
 import AssignNewUser from './AssignNewUser';
@@ -12,6 +10,7 @@ import UpdateWorkflow from './UpdateWorkflow';
 import { getIndividualAssignedWorkflow } from '../../../apiCalls';
 
 function WorkflowAssignedView() {
+    console.log("IN ASSIGNED VIEW?")
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -22,8 +21,15 @@ function WorkflowAssignedView() {
     const [workflowAssignedUsers, setWorkflowAssignedUsers] = useState([]);
 
 
+    console.log('I WANT MY STATE TO WORK')
+    console.log(workflowId)
+
     const handleViewClick = (questionnaireId) => {
-        navigate(`/questionnaires/view-indiv-questionnaire/${questionnaireId}`, { state: { fromAssigned: 'fromAssigned' } });
+        navigate(`/questionnaires/view-indiv-questionnaire/${questionnaireId}`, 
+        { state: {   
+            workflowId: workflowId
+
+        }});    
     }
 
     useEffect(() => {
@@ -119,6 +125,7 @@ function WorkflowAssignedView() {
                                                             <span className={checkStatusBadge(questionnaireTitle[2])}>{questionnaireTitle[2]}</span>
                                                         </tr>
                                                         <button onClick={() => handleViewClick(questionnaireTitle[0])}>VIEW QUESTIONNAIRE</button>
+
                                                     </div>
                                                 )}
                                             </tbody>

@@ -186,11 +186,21 @@
 ``[POST] /api/v1/users/vendors/login``
 ``[POST] /api/v1/users/login``
 
+=> please pass the user/vendor object in with id and password
+- other fields will be treated as `null`
+
 ```
-[STRING] userId
-[STRING] password
+{
+    "id":"vendor1",
+    "password": "watermelonsugar",
+}
 ```
 
+will return the following output
+- List of Strings
+- format: `userId` and `userType`
+
+`["adminyl","ADMIN"]`
 
 ---
 

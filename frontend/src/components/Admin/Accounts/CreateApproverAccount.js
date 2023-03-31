@@ -6,14 +6,14 @@ import { useNavigate } from 'react-router-dom';
 
 import { createUser } from "../../../apiCalls";
 
-function CreateUserAccount() {
+function CreateApproverAccount() {
 
     const navigate = useNavigate();
 
     const [id, setId] = useState("");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
-    const [userType, setUserType] = useState("ADMIN");
+    const [userType, setUserType] = useState("APPROVER");
     const [password, setPassword] = useState("");
 
 
@@ -39,15 +39,15 @@ function CreateUserAccount() {
 
     return (
         <>
-            <label htmlFor="CreateUserAccount" className="btn bg-cyan border-transparent outline-none rounded-full mr-2" >
+            <label htmlFor="CreateApproverAccount" className="btn bg-cyan border-transparent outline-none rounded-full mr-2" >
                 <MdAdd className="mr-3"></MdAdd>
-                Add New User</label>
+                Add New { userType == "ADMIN" ? "Admin" : "Approver" }</label>
             
-            <input type="checkbox" id="CreateUserAccount" className="modal-toggle" />
+            <input type="checkbox" id="CreateApproverAccount" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box max-w-5xl relative py-12 px-20">
-                <label htmlFor="CreateUserAccount" className="btn btn-sm btn-circle bg-red border-transparent absolute right-20 top-12">✕</label>
-                    <h1 className="text-3xl mb-3 font-semibold text-blue">Add New User</h1>
+                <label htmlFor="CreateApproverAccount" className="btn btn-sm btn-circle bg-red border-transparent absolute right-20 top-12">✕</label>
+                    <h1 className="text-3xl mb-3 font-semibold text-blue">Add New { userType == "ADMIN" ? "Admin" : "Approver" }</h1>
                     <form>
                         <div id="userDetails">
                             <div className="mb-4">
@@ -68,15 +68,6 @@ function CreateUserAccount() {
                                 </label>
                                 <input onChange={e => setEmail(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="text"/>
                             </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="userType">
-                                    User Type
-                                </label>
-                                <select onChange={e => setUserType(e.target.value)} className="select select-bordered shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                                    <option value="ADMIN">Administrator</option>
-                                    <option value="APPROVER">Approver</option>
-                                </select>     
-                            </div>
                             <div className="mb-6">
                                 <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="password">
                                     Password
@@ -86,7 +77,7 @@ function CreateUserAccount() {
                         </div>
                     <div className="flex justify-center">
                         {validateForm()}
-                        <label onClick={() => {handleSave()}} htmlFor="CreateUserAccount" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full" type="button" disabled={(validateForm() !== true) ? true : false}>
+                        <label onClick={() => {handleSave()}} htmlFor="CreateApproverAccount" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full" type="button" disabled={(validateForm() !== true) ? true : false}>
                             Add New User
                         </label>
                     </div>
@@ -98,4 +89,4 @@ function CreateUserAccount() {
     )
 }
 
-export default CreateUserAccount;
+export default CreateApproverAccount;

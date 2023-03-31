@@ -4,12 +4,13 @@ import { MdRemoveRedEye, MdEdit } from 'react-icons/md';
 import { useNavigate, useLocation } from "react-router-dom";
 
 import CreateVendorAccount from './CreateVendorAccount';
-import CreateUserAccount from './CreateUserAccount';
+import CreateAdminAccount from './CreateAdminAccount';
+import CreateApproverAccount from './CreateApproverAccount';
 import RemoveAccount from './RemoveAccount';
 import EditVendorAccount from './EditVendorAccount';
 import EditUserAccount from './EditUserAccount';
 
-import { getUsers, getVendors, getWorkflows } from '../../../apiCalls';
+import { getUsersByType, getVendors, getAssignedWorkflowsByVendorId, getAssignedWorkflowsByAdminId, updateVendor, updateUser } from '../../../apiCalls';
 
 
 function AccountDash() {
@@ -30,12 +31,23 @@ function AccountDash() {
           }
         })
 
-        getUsers()
+        getUsersByType("ADMIN")
         .then(function(response){
           if (response.data.length > 0) {
-            setUsersData(response.data)
+            console.log(response.data)
+            setAdminsData(response.data)
           } else {
-            setUsersData([])
+            setAdminsData([])
+          }
+        })
+
+        getUsersByType("APPROVER")
+        .then(function(response){
+          if (response.data.length > 0) {
+            console.log(response.data)
+            setApproversData(response.data)
+          } else {
+            setApproversData([])
           }
         })
     
@@ -44,9 +56,95 @@ function AccountDash() {
 
 
     const [vendorsData, setVendorsData] = useState([]);
-    const [usersData, setUsersData] = useState([]);
+    const [adminsData, setAdminsData] = useState([]);
+    const [approversData, setApproversData] = useState([]);
     const [currentView, setCurrentView] = useState("VENDOR");
     const [selected, setSelected] = useState([]);
+    const [workflowStatus, setWorkflowStatus] = useState("INACTIVE");
+    const [itemToEdit, setItemToEdit] = useState({data: "default"});
+
+    const [vendorId, setVendorId] = useState("");
+    const [vendorName, setVendorName] = useState("");
+    const [vendorEmail, setVendorEmail] = useState("");
+    const [vendorContactNum, setVendorContactNum] = useState("");
+    const [vendorPassword, setVendorPassword] = useState("");
+
+    const [vendorCompanyName, setVendorCompanyName] = useState("");
+    const [vendorCountry, setVendorCountry] = useState("");
+    const [vendorRegNumber, setVendorRegNumber] = useState("");
+    const [vendorBizNature, setVendorBizNature] = useState("");
+    const [vendorGstNumber, setVendorGstNumber] = useState("");
+
+    const [userId, setUserId] = useState("");
+    const [userName, setUserName] = useState("");
+    const [userEmail, setUserEmail] = useState("");
+    const [userPassword, setUserPassword] = useState("");
+
+    // const [formStatus, setFormStatus] = useState(true);
+
+    const validateForm = () => {
+        if (currentView == "VENDOR") {
+            if (vendorId.length == 0 || vendorName.length == 0 || vendorEmail.length == 0|| vendorContactNum.length == 0 || vendorPassword.length == 0 ||
+                vendorCompanyName.length == 0 || vendorRegNumber.length == 0 || vendorBizNature.length == 0 || vendorGstNumber.length == 0 ) {
+                    return false;
+            }
+    
+        } 
+
+        return true;
+    }
+
+    const handleSave = () => {
+        console.log("INSIDE HANDLE SAVE");
+        if (currentView == "VENDOR") {
+            updateVendor(
+                {
+                    id: vendorId,
+                    name: vendorName,
+                    email: vendorEmail,
+                    password: vendorPassword,
+                    userType: currentView,
+                    companyName: vendorCompanyName,
+                    regNumber: vendorRegNumber,
+                    bizNature: vendorBizNature,
+                    contactNum: vendorContactNum,
+                    gstnumber: vendorGstNumber,
+                    country: vendorCountry
+                }
+            )
+            .then(function(response){
+                window.location.reload();
+            })
+            .catch(function(error){
+            })
+            
+        }
+
+        if (currentView == "ADMIN" || currentView == "APPROVER") {
+            updateUser(
+                {
+                    id: userId,
+                    name: userName,
+                    email: userEmail,
+                    password: userPassword,
+                    userType: currentView
+                }
+            )
+            .then(function(response){
+                window.location.reload();
+            })
+            .catch(function(error){
+                console.log("HELLO")
+                // setVendorId(itemToEdit.id)
+                // setCompanyName(props.account.companyName)
+                // setEmail(props.account.email)
+            })
+            
+        }
+
+
+        
+    }
 
     const toggleView = (userGroup) => {
         setCurrentView(userGroup);
@@ -60,9 +158,36 @@ function AccountDash() {
             var updatedAccounts = selected.filter(acc => acc.id !== parseInt(account.id));
         }
         setSelected(updatedAccounts);
-        // console.log("selected: ", selected)
 
+    }
 
+    function checkActiveWorkflows(id) {
+
+        getAssignedWorkflowsByVendorId(id)
+        .then(function(response1){
+          if (response1.data.length > 0) {
+              for (var workflow in response1.data) {
+                  if (workflow.approvalRequestDate == null) {
+                    setWorkflowStatus("ACTIVE");
+                    break;
+                  }
+              }
+          } else {
+            getAssignedWorkflowsByAdminId(id)
+            .then(function(response2){
+              if (response2.data.length > 0) {
+                for (var workflow in response1.data) {
+                    if (workflow.approvalRequestDate == null) {
+                      setWorkflowStatus("ACTIVE");
+                      break;
+                    }
+                }
+            } 
+            })
+          }
+        })
+
+        return workflowStatus;
     }
 
     const toAccountView = (account) => {
@@ -74,16 +199,20 @@ function AccountDash() {
             <div className="rounded-3xl mx-10 my-10 py-12 px-20 shadow-2xl">    
                     <div className="flex justify-between mb-5">
                         <div className="flex">
-                            <h1 className="text-3xl font-semibold text-blue mr-5">Registered Accounts
-                                <span hidden={currentView == "VENDOR" ? false : true}>: Vendors</span>
-                                <span hidden={currentView != "VENDOR" ? false : true}>: Staff</span>
+                            <h1 className="text-3xl font-semibold text-blue mr-5">Registered
+                                <span hidden={currentView == "VENDOR" ? false : true}> Vendors</span>
+                                <span hidden={currentView == "ADMIN" ? false : true}> Admins</span>
+                                <span hidden={currentView == "APPROVER" ? false : true}> Approvers</span>
                             </h1>
                             <div className="pb-2 inline-flex">
                                 <button onClick={() => toggleView("VENDOR")} hidden={currentView == "VENDOR" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
                                     Go to Vendors
                                 </button>
-                                <button onClick={() => toggleView("USER")} hidden={currentView != "VENDOR" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
-                                    Go to Staff
+                                <button onClick={() => toggleView("ADMIN")} hidden={currentView == "ADMIN" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
+                                    Go to Admins
+                                </button>
+                                <button onClick={() => toggleView("APPROVER")} hidden={currentView == "APPROVER" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
+                                    Go to Approvers
                                 </button>
                             </div>
                         </div>
@@ -91,78 +220,74 @@ function AccountDash() {
                             <div hidden={currentView == "VENDOR" ? false : true}>
                                 <CreateVendorAccount></CreateVendorAccount>
                             </div>
-                            <div hidden={currentView == "USER" ? false : true}>
-                                <CreateUserAccount></CreateUserAccount>
+                            <div hidden={currentView == "ADMIN" ? false : true}>
+                                <CreateAdminAccount></CreateAdminAccount>
+                            </div>
+                            <div hidden={currentView == "APPROVER" ? false : true}>
+                                <CreateApproverAccount></CreateApproverAccount>
                             </div>
                             {/* <RemoveAccount accounts={selected}></RemoveAccount>   */}
                         </div>
                     </div>
                     <div>
 
-            {/* <form>
-                <div class="flex">
-                    <select onChange={null} className="select select-bordered shadow appearance-none border rounded-l-full w-44 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                        <option>Company</option>
-                        <option>Contact Name</option>
-                        <option>Contact ID</option>
-                    </select>                       
-                    <div class="relative w-full">
-                        <input type="search" id="search-dropdown" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-full h-12 border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Search" required />
-                        <button type="submit" class="absolute top-0 right-0 p-2.5 text-sm font-medium text-white bg-blue-700 rounded-r-full h-12 border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                            <span class="sr-only">Search</span>
-                        </button>
-                    </div>
-                </div>
-            </form> */}
-
                     </div>
                     <div className="flex flex-wrap text-left">
-                        <table className="flex-auto table-fixed divide-y-2 divide-slate-700" hidden={currentView == "VENDOR" ? false : true}>
+                        <table className="flex-auto table-fixed divide-y-2 divide-slate-700" hidden={(currentView == "VENDOR" || currentView == "ADMIN") ? false : true}>
                             <thead>
                                 <tr>
                                     {/* <th className="p-2">[]</th> */}
                                     <th className="p-2">ID</th>
                                     <th>Name</th>
-                                    <th>Company</th>
-                                    <th>Status</th>
+                                    <th hidden={currentView == "VENDOR" ? false : true}>Company</th>
+                                    <th>Workflow Status</th>
                                     <th></th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-700">
-                            {(vendorsData).map(account =>
+                            {(currentView == "VENDOR" ? vendorsData : adminsData ).map(account =>
                                 <tr key={account.id}>
                                 {/* <td className="p-2">
                                     <input id={account.id} type="checkbox" onChange={() => {handleSelect(account)}} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
                                 </td> */}
                                 <td className="id p-2">{account.id}</td>
                                 <td className="name">{account.name}</td>
-                                <td className="company">{account.companyName}</td>
-                                <td className="status"><span className="badge">Active</span></td>
+                                <td className="company" hidden={currentView == "VENDOR" ? false : true}>{account.companyName}</td>
+                                <td className="status"><span className={checkActiveWorkflows(account.id) == "ACTIVE" ? "badge bg-blue-500" : "badge"}>{checkActiveWorkflows(account.id)}</span></td>
                                 <td className="actions text-right">
                                     <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75" onClick={() => {toAccountView(account)}}><MdRemoveRedEye></MdRemoveRedEye></button>
-                                    <EditVendorAccount account={account}></EditVendorAccount>
+                                    <span hidden={currentView == "VENDOR" ? false : true}>
+                                        {/* <EditVendorAccount account={account}></EditVendorAccount> */}
+                                        <label onClick={() => {setItemToEdit(account); setVendorId(account.id); setVendorName(account.name); setVendorEmail(account.email); setVendorContactNum(account.contactNum); setVendorPassword(account.password); setVendorCompanyName(account.companyName); setVendorCountry(account.country); setVendorRegNumber(account.regNumber); setVendorBizNature(account.bizNature); setVendorGstNumber(account.gstnumber)}} htmlFor="EditVendorAccount" className="btn btn-xs btn-link text-lg text-blue hover:opacity-75">
+                                            <MdEdit></MdEdit>
+                                        </label>
+                                    </span>
+                                    <span hidden={currentView == "ADMIN" ? false : true}>
+                                    <label onClick={() => {setItemToEdit(account); setUserId(account.id); setUserName(account.name); setUserEmail(account.email); setUserPassword(account.password)}} htmlFor="EditUserAccount" className="btn btn-xs btn-link text-lg text-blue hover:opacity-75">
+                                        <MdEdit></MdEdit>
+                                    </label>
+                                        {/* <EditUserAccount account={account} type="ADMIN" hidden={currentView == "ADMIN" ? false : true}></EditUserAccount> */}
+                                    </span>
                                 </td>
                                 </tr>)}
                             </tbody>
                         </table>
                     </div>
                     <div className="flex flex-wrap text-left">
-                    <table className="flex-auto table-fixed divide-y-2 divide-slate-700" hidden={currentView == "USER" ? false : true}>
+                    <table className="flex-auto table-fixed divide-y-2 divide-slate-700" hidden={currentView == "APPROVER" ? false : true}>
                             <thead>
                                 <tr>
                                     {/* <th className="p-2">[]</th> */}
                                     <th className="p-2">ID</th>
                                     <th>Name</th>
                                     <th>Email</th>
-                                    <th>User Type</th>
                                     <th></th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-700">
-                            {(usersData).map(account =>
+                            {(approversData).map(account =>
                                 <tr key={account.id}>
                                 {/* <td className="p-2">
                                     <input id={account.id} type="checkbox" onChange={() => {handleSelect(account)}} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
@@ -170,15 +295,149 @@ function AccountDash() {
                                 <td className="id p-2">{account.id}</td>
                                 <td className="name">{account.name}</td>
                                 <td className="company">{account.email}</td>
-                                <td className="status"><span className={account.userType == "VENDOR" ? "badge bg-blue-500" : "badge"}>{account.userType}</span></td>
                                 <td className="actions text-right">
                                     <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75" onClick={() => {toAccountView(account)}}><MdRemoveRedEye></MdRemoveRedEye></button>
-                                    <EditUserAccount account={account}></EditUserAccount>
+                                    <label onClick={() => {setItemToEdit(account); setUserId(account.id); setUserName(account.name); setUserEmail(account.email); setUserPassword(account.password)}} htmlFor="EditUserAccount" className="btn btn-xs btn-link text-lg text-blue hover:opacity-75">
+                                        <MdEdit></MdEdit>
+                                    </label>
+                                    {/* <EditUserAccount account={account} type="APPROVER"></EditUserAccount> */}
                                 </td>
                                 </tr>)}
                             </tbody>
                         </table>
                     </div>
+            </div>
+
+            <input type="checkbox" id="EditVendorAccount" className="modal-toggle" />
+            <div className="modal text-left">
+            <div className="modal-box max-w-5xl relative py-12 px-20">
+                <label htmlFor="EditVendorAccount" className="btn btn-sm btn-circle bg-red border-transparent absolute right-20 top-12">✕</label>
+                <h1 className="text-3xl mb-3 font-semibold text-blue">Edit Vendor Account</h1>
+
+                <form>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div id="userDetails">
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="id">
+                                    ID
+                                </label>
+                                <input disabled defaultValue={vendorId} onChange={e => setVendorId(e.target.value)} className="bg-gray-50 shadow appearance-none border border-gray-300 rounded-full w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline" id="id" type="text"/>
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="firstname">
+                                    Name
+                                </label>
+                                <input defaultValue={vendorName} onChange={e => setVendorName(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="firstname" type="text"/>
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="email">
+                                    Email
+                                </label>
+                                <input defaultValue={vendorEmail} onChange={e => setVendorEmail(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="text"/>
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="contactNum">
+                                    Contact Number
+                                </label>
+                                <input defaultValue={vendorContactNum} onChange={e => setVendorContactNum(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="contactNum" type="text"/>
+                            </div>
+                            <div className="mb-6">
+                                <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="password">
+                                    Password
+                                </label>
+                                <input defaultValue={itemToEdit.password} onChange={e => setVendorPassword(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************"/>
+                            </div>
+                        </div>
+                        <div id="companyDetails">
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="companyName">
+                                Company Name
+                            </label>
+                            <input defaultValue={vendorCompanyName} onChange={e => setVendorCompanyName(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="companyName" type="text"/>
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="companyName">
+                                Country of Operation
+                            </label>
+                            <select onChange={e => setVendorCountry(e.target.value)} className="select select-bordered shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                <option selected={vendorCountry == "Singapore" ? true : false}>Singapore</option>
+                                <option selected={vendorCountry == "USA" ? true : false}>USA</option>
+                                <option selected={vendorCountry == "China" ? true : false}>China</option>
+                                <option selected={vendorCountry == "Russia" ? true : false}>Russia</option>
+                            </select>     
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="regNumber">
+                                Company Registration Number
+                            </label>
+                            <input defaultValue={vendorRegNumber} onChange={e => setVendorRegNumber(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="regNumber" type="text"/>
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="bizNature">
+                                Nature of Business
+                            </label>
+                            <input defaultValue={vendorBizNature} onChange={e => setVendorBizNature(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="bizNature" type="text"/>
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="gstNumber">
+                                GST Number
+                            </label>
+                            <input defaultValue={vendorGstNumber} onChange={e => setVendorGstNumber(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="gstNumber" type="text"/>
+                        </div>
+                            
+                        </div>
+                    </div>                    
+                    <div className="mt-6 flex justify-center">
+                        {/* {validateForm()} */}
+                        <label onClick={() => {handleSave()}} htmlFor="EditVendorAccount" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full" type="button" disabled={(validateForm() == false) ? true : false}>
+                            Save Changes
+                        </label>
+                    </div>
+                    </form>
+            </div>
+            </div>
+
+            <input type="checkbox" id="EditUserAccount" className="modal-toggle" />
+            <div className="modal text-left">
+            <div className="modal-box max-w-5xl relative py-12 px-20">
+                <label htmlFor="EditUserAccount" className="btn btn-sm btn-circle bg-red border-transparent absolute right-20 top-12">✕</label>
+                <h1 className="text-3xl mb-3 font-semibold text-blue">Edit {currentView == "ADMIN" ? "Admin" : "Approver"} Account</h1>
+                <form>
+                <div id="userDetails">
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="id">
+                            ID
+                        </label>
+                        <input disabled defaultValue={userId} onChange={e => setUserId(e.target.value)} className="bg-gray-50 shadow appearance-none border border-gray-300 rounded-full w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline" id="id" type="text"/>
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="firstname">
+                            Name
+                        </label>
+                        <input defaultValue={userName} onChange={e => setUserName(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="firstname" type="text"/>
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="email">
+                            Email
+                        </label>
+                        <input defaultValue={userEmail} onChange={e => setUserEmail(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="text"/>
+                    </div>
+                    <div className="mb-6">
+                        <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="password">
+                            Password
+                        </label>
+                        <input defaultValue={userPassword} onChange={e => setUserPassword(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************"/>
+                    </div>                    
+                </div>
+                                        
+                    <div className="mt-6 flex justify-center">
+                        {validateForm()}
+                        <label onClick={() => {handleSave()}} htmlFor="EditUserAccount" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full" type="button" disabled={(validateForm() == false) ? true : false}>
+                            Save Changes
+                        </label>
+                    </div>
+                    </form>
+            </div>
             </div>
         </>
 

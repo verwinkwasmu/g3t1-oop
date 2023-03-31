@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate, useParams, useNavigate } from 'react-router';
+import { Navigate, useParams, useNavigate, useLocation } from 'react-router';
 import axios from 'axios';
 
 
@@ -11,10 +11,14 @@ const updateBaseURL = "http://localhost:8080/api/v1/questionnaire/update"
 export default function VendorEditQuestionnaire(){
 
   const navigate = useNavigate();
+  const location = useLocation();
   const [questionnaire, setQuestionnaire] = useState(null);
   const [answers, setAnswers] = useState({});
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const workflowId = location.state.workflowId
   const id = useParams()
+
+  console.log(workflowId)
 
   // useEffect(() => {
   //   const fetchQuestionnaire = async () => {
@@ -65,16 +69,6 @@ export default function VendorEditQuestionnaire(){
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('HELLOHELLOHELLO')
-
-    // const updatedQuestionsAndAnswers = Object.values(answers).map((answer, index) => {
-    //   console.log(answer)
-    //   const question = questionnaire.questionsAndAnswers[answer.id];
-    //   // console.log(question)
-    //   return {
-    //     ...question,
-    //     answer: answer
-    //   };
-    // });
     console.log(answers)
     const updatedQuestionsAndAnswers = {};
       for (const [key, value] of Object.entries(questionnaire.questionsAndAnswers)) {

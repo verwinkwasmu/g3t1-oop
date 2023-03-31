@@ -35,6 +35,15 @@ export default {
   axiosClient
 };
 
+// AUTHENTICATION
+
+export function loginUser(data) {
+  return axiosClient.post("/api/v1/users/login", JSON.stringify(data));  
+}
+
+export function loginVendor(data) {
+  return axiosClient.post("/api/v1/users/vendors/login", JSON.stringify(data));  
+}
 
 // ACCOUNT MANAGEMENT 
 
@@ -47,7 +56,7 @@ export function getVendors() {
 }
 
 export function getUsersByType(userType) { // ADMIN, APPROVER
-  return axiosClient.get(`/api/v1/users/${userType}`);  
+  return axiosClient.get(`/api/v1/users/type/${userType}`);  
 }
 
 export function getVendorsByCompany(companyName) { // {companyName}

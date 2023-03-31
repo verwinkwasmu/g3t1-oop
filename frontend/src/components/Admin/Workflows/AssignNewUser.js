@@ -65,7 +65,7 @@ function AssignNewUser(props) {
 
     const handleQuestionnaires = async () => {
         console.log("HANDLE QUESTIONNAIRE")
-        
+
         let isConditionSettled = false;
         const output = []
 
@@ -73,6 +73,7 @@ function AssignNewUser(props) {
             createQuestionnaire(questionnaire)
                 .then(function (response) {
                     output.push(response.data.id)
+                    
                 })
                 .catch(function (error) {
                     console.log("ERROR CREATING QUESTIONNAIRE")
