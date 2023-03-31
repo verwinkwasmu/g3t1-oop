@@ -130,6 +130,7 @@ export function createWorkflowTemplate(data) {
 }
 
 export function createWorkflowAssigned(data) { 
+  console.log(JSON.stringify(data))
   return axiosClient.post("/api/v1/workflow/assigned", JSON.stringify(data));  
 }
 

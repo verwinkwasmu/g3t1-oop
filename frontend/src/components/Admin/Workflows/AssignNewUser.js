@@ -1,8 +1,9 @@
 import { AiOutlineUser } from "react-icons/ai";
 
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, Component } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import Select from 'react-select'
+import axios from 'axios'
 
 import { createWorkflowAssigned, createQuestionnaire, getVendors } from '../../../apiCalls';
 
@@ -62,99 +63,67 @@ function AssignNewUser(props) {
         setSelectedVendors(data);
     }
 
-    // const HandleQuestionnaires = () => {
-    //     const [condition, setCondition] = useState(false);
-
-    //     useEffect(() => {
-    //         let intervalId;
-
-    //         if (!condition) {
-    //             intervalId = setInterval(() => {
-    //                 if (condition) {
-    //                     clearInterval(intervalId);
-    //                 }
-    //             }, 1000); // Check every 1 second (1000ms)
-    //         }
-
-    //         return () => {
-    //             clearInterval(intervalId);
-    //         };
-    //     }, [condition]);
-    // }
-
-    const handleQuestionnaires = () => {
-
+    const handleQuestionnaires = async () => {
         console.log("HANDLE QUESTIONNAIRE")
+        
+        let isConditionSettled = false;
         const output = []
 
-        const timeoutId = setTimeout(() => {
-            for (const questionnaire of questionnairesInput) {
-                createQuestionnaire(questionnaire)
-                    .then(function (response) {
-                        output.push(response.data.id)
-                    })
-                    .catch(function (error) {
-                        console.log("ERROR CREATING QUESTIONNAIRE")
-                    })
-            }
-            console.log('ALL QUESTIONNAIRES CREATED');
-            return output
-        }, 5000); // Timeout for 5 seconds (5000ms)
+        for (const questionnaire of questionnairesInput) {
+            createQuestionnaire(questionnaire)
+                .then(function (response) {
+                    output.push(response.data.id)
+                })
+                .catch(function (error) {
+                    console.log("ERROR CREATING QUESTIONNAIRE")
+                })
+        }
 
-        const intervalId = setInterval(() => {
-            if (output.length != questionnairesInput.length) {
-                console.log("INSIDE INTERVAL ID")
-                clearTimeout(timeoutId);
-                clearInterval(intervalId);
-            }
-        }, 5000); // Check every 1 second (1000ms)
+        setTimeout(() => {
+            isConditionSettled = true;
+        }, 1500);
 
+        while (!isConditionSettled) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+        
+        return output
     };
 
-
-    // const HandleQuestionnaires = () => {
-
-    //     console.log("HANDLE QUESTIONNAIRE")
-    //     const output = []
-
-    //     const intervalId = setInterval(() => {
-    //         if (output.length != questionnairesInput.length) {
-    //             clearTimeout(timeoutId);
-    //             clearInterval(intervalId);
-    //         }
-    //     }, 1000);
-
-    //     for (const questionnaire of questionnairesInput) {
-    //         createQuestionnaire(questionnaire)
-    //             .then(function (response) {
-    //                 output.push(response.data.id)
-    //             })
-    //             .catch(function (error) {
-    //                 console.log("ERROR CREATING QUESTIONNAIRE")
-    //             })
-    //     }
-
-    //     return output
-    // }
-
-    // const handleQuestionnaires = () => {
-    //     console.log("HANDLE QUESTIONNAIRE")
-
-    //     const promises = questionnairesInput.map(questionnaire => createQuestionnaire(questionnaire));
-    //     return Promise.all(promises)
-    //         .then(responses => {
-    //             return responses.map(response => response.data.id)
-    //         })
-    //         .catch(error => {
-    //             console.log("ERROR CREATING QUESTIONNAIRE")
-    //             return [];
-    //         });
-    // }
-
-    const handleCreate = () => {
+    const handleCreate = async () => {
         console.log("INSIDE HANDLE CREATE");
 
-        const questionnaireIds = handleQuestionnaires()
+        let isCreatingConditionSettled = false;
+        let isResolvingConditionSettled = false;
+        let promises = handleQuestionnaires()
+        let questionnaireIds = []
+
+        setTimeout(() => {
+            isCreatingConditionSettled = true;
+        }, 3000);
+
+        while (!isCreatingConditionSettled) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+
+        console.log("THIS IS AFTER QUESTIONNAIREIDS HAS BEEN DECLARED")
+        console.log("RESOLVING PROMISE NOW")
+
+        promises.then(result => {
+            console.log(result); // Output: Promise resolved
+            questionnaireIds.push(result[0])
+          });
+
+        console.log("QUESTIONNAIRE IDS")
+        console.log(questionnaireIds)
+
+        setTimeout(() => {
+            isResolvingConditionSettled = true;
+        }, 3000);
+
+        while (!isResolvingConditionSettled) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
 
         createWorkflowAssigned({
             "workflowName": workflowName,
