@@ -62,39 +62,109 @@ function AssignNewUser(props) {
         setSelectedVendors(data);
     }
 
-    const handleQuestionnaires = () => {
-        console.log("HANDLE QUESTIONNAIRE")
+    // const HandleQuestionnaires = () => {
+    //     const [condition, setCondition] = useState(false);
 
+    //     useEffect(() => {
+    //         let intervalId;
+
+    //         if (!condition) {
+    //             intervalId = setInterval(() => {
+    //                 if (condition) {
+    //                     clearInterval(intervalId);
+    //                 }
+    //             }, 1000); // Check every 1 second (1000ms)
+    //         }
+
+    //         return () => {
+    //             clearInterval(intervalId);
+    //         };
+    //     }, [condition]);
+    // }
+
+    const handleQuestionnaires = () => {
+
+        console.log("HANDLE QUESTIONNAIRE")
         const output = []
 
-        for (const questionnaire of questionnairesInput) {
- 
-            createQuestionnaire(questionnaire)
-                .then(function (response) {
-                    output.push(response.data.id)
-                })
-                .catch(function (error) {
-                    console.log("ERROR CREATING QUESTIONNAIRE")
-                })
-        }
+        const timeoutId = setTimeout(() => {
+            for (const questionnaire of questionnairesInput) {
+                createQuestionnaire(questionnaire)
+                    .then(function (response) {
+                        output.push(response.data.id)
+                    })
+                    .catch(function (error) {
+                        console.log("ERROR CREATING QUESTIONNAIRE")
+                    })
+            }
+            console.log('ALL QUESTIONNAIRES CREATED');
+            return output
+        }, 5000); // Timeout for 5 seconds (5000ms)
 
-        return output
-    }
+        const intervalId = setInterval(() => {
+            if (output.length != questionnairesInput.length) {
+                console.log("INSIDE INTERVAL ID")
+                clearTimeout(timeoutId);
+                clearInterval(intervalId);
+            }
+        }, 5000); // Check every 1 second (1000ms)
+
+    };
+
+
+    // const HandleQuestionnaires = () => {
+
+    //     console.log("HANDLE QUESTIONNAIRE")
+    //     const output = []
+
+    //     const intervalId = setInterval(() => {
+    //         if (output.length != questionnairesInput.length) {
+    //             clearTimeout(timeoutId);
+    //             clearInterval(intervalId);
+    //         }
+    //     }, 1000);
+
+    //     for (const questionnaire of questionnairesInput) {
+    //         createQuestionnaire(questionnaire)
+    //             .then(function (response) {
+    //                 output.push(response.data.id)
+    //             })
+    //             .catch(function (error) {
+    //                 console.log("ERROR CREATING QUESTIONNAIRE")
+    //             })
+    //     }
+
+    //     return output
+    // }
+
+    // const handleQuestionnaires = () => {
+    //     console.log("HANDLE QUESTIONNAIRE")
+
+    //     const promises = questionnairesInput.map(questionnaire => createQuestionnaire(questionnaire));
+    //     return Promise.all(promises)
+    //         .then(responses => {
+    //             return responses.map(response => response.data.id)
+    //         })
+    //         .catch(error => {
+    //             console.log("ERROR CREATING QUESTIONNAIRE")
+    //             return [];
+    //         });
+    // }
 
     const handleCreate = () => {
         console.log("INSIDE HANDLE CREATE");
 
         const questionnaireIds = handleQuestionnaires()
-        
-        createWorkflowAssigned({ 
-            "workflowName": workflowName, 
-            "workflowDescription": workflowDescription, 
-            "questionnaireList": questionnaireIds, 
-            "assignedAdminId": "temp", 
-            "assignedVendorId": selectedVendors.value, 
-            "approvalRequestDate": null, 
-            "approverReviewStatus": null, 
-            "approvedAt": null 
+
+        createWorkflowAssigned({
+            "workflowName": workflowName,
+            "workflowDescription": workflowDescription,
+            "questionnaireList": questionnaireIds,
+            "assignedAdminId": "temp",
+            "assignedVendorId": selectedVendors.value,
+            "approvalRequestDate": null,
+            "approverReviewStatus": null,
+            "approvedAt": null
         })
             .then(function (response) {
                 console.log(response.data.id)
