@@ -56,7 +56,7 @@ export function getVendors() {
 }
 
 export function getUsersByType(userType) { // ADMIN, APPROVER
-  return axiosClient.get(`/api/v1/users/${userType}`);  
+  return axiosClient.get(`/api/v1/users/type/${userType}`);  
 }
 
 export function getVendorsByCompany(companyName) { // {companyName}

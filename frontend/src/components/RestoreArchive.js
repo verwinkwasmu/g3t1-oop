@@ -12,6 +12,7 @@ function RestoreArchived(props) {
     
     const handleRestore = () =>  {
         console.log("inside handlerestore")
+        console.log(item)
 
 
     }
@@ -28,6 +29,7 @@ function RestoreArchived(props) {
                 <label htmlFor="RestoreArchived" className="btn btn-sm btn-circle bg-red border-transparent absolute right-20 top-12">✕</label>
                 <div className="mb-3">
                     <h1 className="text-3xl font-semibold text-blue">Restore {itemType}?</h1>
+                    
                 </div>                
                 <form>                 
                     <div className="mt-6 flex justify-center">
