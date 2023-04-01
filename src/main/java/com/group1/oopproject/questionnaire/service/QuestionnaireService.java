@@ -12,7 +12,6 @@ import com.group1.oopproject.questionnaire.entity.QuestionnaireStatus;
 import com.group1.oopproject.questionnaire.repository.QuestionnaireRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.data.mongodb.UncategorizedMongoDbException;
 import com.group1.oopproject.exception.DatabaseCommunicationException;
 
 @Service
