@@ -105,10 +105,6 @@ export function getIndividualTemplateWorkflow(id) {
   return axiosClient.get(`/api/v1/workflow/${id}`);  
 }
 
-export function getIndividualAssignedWorkflow(id) {
-  return axiosClient.get(`/api/v1/workflow/assigned/${id}`);  
-}
-
 export function updateIndividualTemplateWorkflow(data) {
   return axiosClient.put("/api/v1/workflow", JSON.stringify(data));  
 }
