@@ -106,7 +106,7 @@ function FormDash() {
                                     <Link to={`/questionnaires/view-questionnaire-indiv/${q.id}`}>
                                     <button className="btn bg-blue hover:bg-cyan border-transparent hover:border-transparent">View</button>
                                     </Link>
-                                    {(userInfo.userType == "ADMIN" || userInfo.userType == "APPROVER") && (
+                                    {(user[1] == "ADMIN" || user[1] == "APPROVER") && (
                                         <>
                                         {console.log("PASSING ID"  + q.id)}
                                         <DeleteQuestionnaire

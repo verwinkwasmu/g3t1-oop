@@ -3,9 +3,10 @@ import { AiOutlineUser } from "react-icons/ai";
 import { React, useState, useEffect, Component } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import Select from 'react-select'
-import { createWorkflowAssigned, createQuestionnaire, getVendors } from '../../../apiCalls'
-import useToken from '../../../useToken';
-import axios from 'axios'
+import axios from "axios";
+import useToken from "../../../useToken";
+
+import { createWorkflowAssigned, createQuestionnaire, getVendors } from '../../../apiCalls';
 
 function AssignNewUser(props) {
     console.log("ASSIGN NEW USER")
@@ -37,8 +38,8 @@ function AssignNewUser(props) {
 
 
     // get current admin id
-    const user = localStorage.getItem('token');
-    const userInfo = JSON.parse(user)
+    const user = useToken().token;
+
 
 
     useEffect(() => {
@@ -121,7 +122,7 @@ function AssignNewUser(props) {
             // set the questionnaire object for PUT req
             updateQuestionnaire = {
               ...duplicatedQuestionnaire,
-              assignedAdminId: userInfo.userType,
+              assignedAdminId: user[0],
               assignedVendorId: selectedVendors.value
             };
           } catch (error) {
