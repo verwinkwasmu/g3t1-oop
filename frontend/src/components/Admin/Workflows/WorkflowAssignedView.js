@@ -29,7 +29,9 @@ function WorkflowAssignedView() {
     const handleViewClick = (questionnaireId) => {
         navigate(`/questionnaires/view-indiv-questionnaire/${questionnaireId}`, 
         { state: {   
-            workflowId: workflowId
+            workflowId: workflowId,
+            fromAssigned: "fromAssigned",
+            questionnaireId: questionnaireId
 
         }});    
     }
@@ -88,7 +90,7 @@ function WorkflowAssignedView() {
     return (
         <>
             <div className="rounded-t-3xl mx-10 mt-10 h-screen py-8 px-20 shadow-2xl">
-                <div className="bg-white">
+                <div className="bg-white h-full overflow-y-auto">
 
                     <div className="flex flex-wrap mt-10 mb-6">
                         <div className="mr-3">
@@ -128,7 +130,7 @@ function WorkflowAssignedView() {
                                                             questionnaireTitle[1]}
                                                             <span className={checkStatusBadge(questionnaireTitle[2])}>{questionnaireTitle[2]}</span>
                                                         </tr>
-                                                        <button onClick={() => handleViewClick(questionnaireTitle[0])}>VIEW QUESTIONNAIRE</button>
+                                                        <button className="btn btn-link" onClick={() => handleViewClick(questionnaireTitle[0])}>GO TO QUESTIONNAIRE</button>
 
                                                     </div>
                                                 )}

@@ -22,6 +22,9 @@ export default function ViewQuestionnaire() {
     if (!isLoading) {
         console.log(post);
         return (
+          // {(post == null) && (
+          //   <h1>You have no questionnaires to view! Add some questionnaires</h1>
+          // )}
         <div>
             {post.map((p) => (
             <div key={p.id}>

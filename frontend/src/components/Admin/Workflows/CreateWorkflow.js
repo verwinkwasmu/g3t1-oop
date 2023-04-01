@@ -28,7 +28,6 @@ function CreateWorkflow() {
     useEffect(() => {
         getQuestionnaires()
             .then(function (response) {
-                // console.log(response.data)
                 if (response.data.length > 0) {
                     const selectOptions = [];
                     for (const element of response.data) {
