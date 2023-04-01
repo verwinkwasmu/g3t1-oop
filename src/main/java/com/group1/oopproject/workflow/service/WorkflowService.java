@@ -15,6 +15,7 @@ import com.group1.oopproject.exception.WorkflowNotFoundException;
 import com.group1.oopproject.questionnaire.repository.QuestionnaireRepository;
 import com.group1.oopproject.workflow.entity.Workflow;
 import com.group1.oopproject.workflow.repository.WorkflowRepository;
+import com.group1.oopproject.workflow.entity.ApproverReviewStatus;
 import com.group1.oopproject.workflow.entity.AssignedWorkflow;
 import com.group1.oopproject.workflow.repository.AssignedWorkflowRepository;
 import com.group1.oopproject.questionnaire.entity.Questionnaire;
@@ -66,12 +67,14 @@ public class WorkflowService {
 
             for (AssignedWorkflow assignedWorkflow : assignedWorkflows) {
                 List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
-                for (String questionnaireId : assignedWorkflow.getQuestionnaireList()) {
-                    if (questionnaireId != null){
-                        Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
-                        Questionnaire questionnaire = optionalQuestionnaire.get();
-                        questionnaireList.add(questionnaire);
-                        assignedWorkflow.setQuestionnaires(questionnaireList);
+                if(assignedWorkflow.getQuestionnaireList()!= null){
+                    for (String questionnaireId : assignedWorkflow.getQuestionnaireList()) {
+                        if (questionnaireId != null){
+                            Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+                            Questionnaire questionnaire = optionalQuestionnaire.get();
+                            questionnaireList.add(questionnaire);
+                            assignedWorkflow.setQuestionnaires(questionnaireList);
+                        }
                     }
                 }
             }
@@ -79,7 +82,36 @@ public class WorkflowService {
         } catch (WorkflowNotFoundException e) {
             throw e;
         } catch (Exception e) {
-            throw new DatabaseCommunicationException("Error communicating with database for method findAllWorkflows" + e.getMessage(), e);
+            throw new DatabaseCommunicationException("Error communicating with database for method findAllAssignedWorkflows" + e.getMessage(), e);
+        }
+    }
+
+    public List<AssignedWorkflow> findAllAssignedWorkflowsByStatus(ApproverReviewStatus approverReviewStatus) {
+        try {
+            List<AssignedWorkflow> assignedWorkflows = assignedWorkflowRepository.findByApproverReviewStatus(approverReviewStatus);
+
+            if (assignedWorkflows.isEmpty()) {
+                throw new WorkflowNotFoundException("No workflows found in the database");
+            }
+
+            for (AssignedWorkflow assignedWorkflow : assignedWorkflows) {
+                List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
+                if(assignedWorkflow.getQuestionnaireList()!= null){
+                    for (String questionnaireId : assignedWorkflow.getQuestionnaireList()) {
+                        if (questionnaireId != null){
+                            Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+                            Questionnaire questionnaire = optionalQuestionnaire.get();
+                            questionnaireList.add(questionnaire);
+                            assignedWorkflow.setQuestionnaires(questionnaireList);
+                        }
+                    }
+                }
+            }
+            return assignedWorkflows;
+        } catch (WorkflowNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new DatabaseCommunicationException("Error communicating with database for method findAllAssignedWorkflows" + e.getMessage(), e);
         }
     }
 

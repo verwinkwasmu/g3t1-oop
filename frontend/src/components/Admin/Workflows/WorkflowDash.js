@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import CreateWorkflow from "./CreateWorkflow"
 import { getWorkflows, getAssignedWorkflows } from '../../../apiCalls';
+import useToken from '../../../useToken';
 
 function WorkflowDash() {
 
@@ -10,6 +11,9 @@ function WorkflowDash() {
 
     const [workflowsData, setWorkflowsData] = useState([]);
     const [render, setRender] = useState("");
+    const token = useToken().token
+    console.log("TOKEN")
+    console.log(token)
 
     useEffect(() => {
         document.title = 'Workflows Dashboard'
@@ -72,6 +76,14 @@ function WorkflowDash() {
         }
     }
 
+    const check = () => {
+        if (render=="Templates" && token.userType=="ADMIN") {
+            console.log("yes templates and yes admin")
+            return true
+        }
+        return false
+    }
+
     return (
         <>
             <div className="rounded-t-3xl mx-10 mt-10 h-screen py-8 px-20 shadow-2xl">
@@ -93,7 +105,7 @@ function WorkflowDash() {
                             </div>
                         </div>
                         <div className="flex">
-                            {render=="Templates" ? <CreateWorkflow></CreateWorkflow> : null}
+                            {render==check() ? <CreateWorkflow></CreateWorkflow> : null}
                         </div>
                     </div>
                     <div className="grid grid-rows-3 grid-cols-4 gap-x-4 gap-y-8 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">

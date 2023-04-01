@@ -34,10 +34,7 @@ public class Workflow {
     private List<String> questionnaireList = new ArrayList<String>();
 
     private List<Questionnaire> questionnaires;
-        
+
     @CreatedDate
     private LocalDateTime createdAt;
 }
-
-
-
