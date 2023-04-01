@@ -18,10 +18,8 @@ axiosClient.interceptors.response.use(
     return response;
   }, 
   function (error) {
-    console.log("error: ", error)
 
     let res = error.response;
-    console.log("res: ", res)
     if (res.status === 401) {
       window.location.href = "http://localhost:3000/";
     }
@@ -110,7 +108,6 @@ export function updateIndividualTemplateWorkflow(data) {
 }
 
 export function updateIndividualAssignedWorkflow(data) {
-  console.log(JSON.stringify(data))
   return axiosClient.put("/api/v1/workflow/assigned", JSON.stringify(data));  
 }
 
