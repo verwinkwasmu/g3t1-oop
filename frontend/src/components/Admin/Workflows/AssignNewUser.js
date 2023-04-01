@@ -200,6 +200,12 @@ function AssignNewUser(props) {
         });
         console.log(values)
     };
+
+    const handleAddUserClick =() => {
+        handleCreate();
+        updateQuestionnaireUserInfo();
+    }
+
     return (
         <>
             <label htmlFor="AssignNewUser" className="btn bg-cyan border-transparent outline-none rounded-full mr-2">
@@ -244,7 +250,7 @@ function AssignNewUser(props) {
                             </div>
                         )}
                         <div className="flex justify-center">
-                            <label onClick={() => handleCreate()} htmlFor="AssignNewUser" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" type="button" disabled={!validateForm()}>
+                            <label onClick={() => handleAddUserClick()} htmlFor="AssignNewUser" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" type="button" disabled={!validateForm()}>
                                 Assign New User
                             </label>
                         </div>
