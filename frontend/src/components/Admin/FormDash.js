@@ -103,7 +103,7 @@ function FormDash() {
                                 <h2 className="card-title">{q.title}</h2>
                                 <p className="text-base">Lorem Ipsum</p>
                                 <div className="card-actions justify-end">
-                                    <Link to={`/questionnaires/view-indiv-questionnaire/${q.id}`}>
+                                    <Link to={`/questionnaires/view-questionnaire-indiv/${q.id}`}>
                                     <button className="btn bg-blue hover:bg-cyan border-transparent hover:border-transparent">View</button>
                                     </Link>
                                     {(userInfo.userType == "ADMIN" || userInfo.userType == "APPROVER") && (
