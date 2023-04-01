@@ -8,6 +8,7 @@ import DeleteWorkflow from './DeleteWorkflow';
 import AssignNewUser from './AssignNewUser';
 import UpdateWorkflow from './UpdateWorkflow';
 import FlagApproval from './FlagApproval';
+import SubmitReview from '../../Approver/SubmitReview';
 import { getIndividualAssignedWorkflow } from '../../../apiCalls';
 
 function WorkflowAssignedView() {
@@ -101,6 +102,7 @@ function WorkflowAssignedView() {
                             <UpdateWorkflow workflow={workflowsData} render="assigned"></UpdateWorkflow>
                             <DeleteWorkflow workflow={workflowsData} assigned={true} render="assigned"></DeleteWorkflow>
                             <FlagApproval workflow={workflowsData} />
+                            <SubmitReview workflow={workflowsData}/>
                         </div>
                     </div>
                     <div className="grid grid-rows-1 grid-cols-4 gap-x-2 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">

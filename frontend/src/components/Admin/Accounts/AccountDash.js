@@ -194,7 +194,7 @@ function AccountDash() {
             }
             
             console.log("ending status: ", indivStatus)
-            setWorkflowStatus(currentWorkflowStatus => [...currentWorkflowStatus, indivStatus])
+            // setWorkflowStatus(currentWorkflowStatus => [...currentWorkflowStatus, indivStatus])
             return indivStatus;
 
           }
