@@ -102,7 +102,7 @@ function WorkflowDash() {
                                 <figure><img src="https://startinfinity.s3.us-east-2.amazonaws.com/production/blog/post/17/main/GeiehNbQ1t86Mg5zKnEgucWslfZXTckjj8mSDV2O.png" alt="workflow description" /></figure>
                                 <div className="card-body m-1.5">
                                     <h2 className="card-title">{workflow.workflowName}</h2>
-                                    <p className="text-base text-md">{workflow.workflowDescription}</p>
+                                    {render=="Templates" ? <p className="text-base text-md">{workflow.workflowDescription}</p> : <p className="text-base text-md">Assigned Vendor ID: {workflow.assignedVendorId}<br/>Assigned Admin ID: {workflow.assignedAdminId}</p>}
                                     <div className="card-actions justify-end">
                                         <button className="btn bg-blue hover:bg-cyan border-transparent hover:border-transparent" onClick={() => { toWorkflowView(workflow) }}>See Workflow</button>
                                     </div>
