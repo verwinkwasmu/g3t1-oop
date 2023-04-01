@@ -60,7 +60,7 @@ function AccountDash() {
     const [approversData, setApproversData] = useState([]);
     const [currentView, setCurrentView] = useState("VENDOR");
     const [selected, setSelected] = useState([]);
-    const [workflowStatus, setWorkflowStatus] = useState("INACTIVE");
+    const [workflowStatus, setWorkflowStatus] = useState([]);
     const [itemToEdit, setItemToEdit] = useState({data: "default"});
 
     const [vendorId, setVendorId] = useState("");
@@ -93,7 +93,9 @@ function AccountDash() {
 
         return true;
     }
-
+    useEffect(()=>{
+        console.log("workflowStatus: ", workflowStatus)
+    },[workflowStatus])
     const handleSave = () => {
         console.log("INSIDE HANDLE SAVE");
         if (currentView == "VENDOR") {
@@ -161,34 +163,43 @@ function AccountDash() {
 
     }
 
-    function checkActiveWorkflows(id) {
+    const checkActiveWorkflows = async (id) => {
+        var indivStatus = "INACTIVE"
+        console.log("checking new id: ", id)
+        console.log("initial status: ", indivStatus)
 
-        getAssignedWorkflowsByVendorId(id)
-        .then(function(response1){
+        const response1 = await getAssignedWorkflowsByVendorId(id)
           if (response1.data.length > 0) {
               for (var workflow in response1.data) {
                   if (workflow.approvalRequestDate == null) {
-                    setWorkflowStatus("ACTIVE");
+                    // setWorkflowStatus("ACTIVE");
+                    indivStatus = "ACTIVE";
+                    console.log("prelim status: ", indivStatus)
                     break;
-                  }
+                  } 
               }
           } else {
-            getAssignedWorkflowsByAdminId(id)
-            .then(function(response2){
+            const response2 = await getAssignedWorkflowsByAdminId(id)
               if (response2.data.length > 0) {
-                for (var workflow in response1.data) {
+                for (var workflow in response2.data) {
                     if (workflow.approvalRequestDate == null) {
-                      setWorkflowStatus("ACTIVE");
+                    //   setWorkflowStatus("ACTIVE");
+                      indivStatus = "ACTIVE";
+                      console.log("prelim2 status: ", indivStatus)
                       break;
-                    }
+                    } 
                 }
             } 
-            })
-          }
-        })
 
-        return workflowStatus;
-    }
+            }
+            
+            console.log("ending status: ", indivStatus)
+            setWorkflowStatus(currentWorkflowStatus => [...currentWorkflowStatus, indivStatus])
+            return indivStatus;
+
+          }
+
+
 
     const toAccountView = (account) => {
         navigate(`/accounts/${account.id}`, { state: { account: account, origin: "ACCOUNTDASH" } });
@@ -246,7 +257,7 @@ function AccountDash() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-700">
-                            {(currentView == "VENDOR" ? vendorsData : adminsData ).map(account =>
+                            {(currentView == "VENDOR" ? vendorsData : adminsData ).map((account,idx) =>
                                 <tr key={account.id}>
                                 {/* <td className="p-2">
                                     <input id={account.id} type="checkbox" onChange={() => {handleSelect(account)}} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
@@ -254,7 +265,7 @@ function AccountDash() {
                                 <td className="id p-2">{account.id}</td>
                                 <td className="name">{account.name}</td>
                                 <td className="company" hidden={currentView == "VENDOR" ? false : true}>{account.companyName}</td>
-                                <td className="status"><span className={checkActiveWorkflows(account.id) == "ACTIVE" ? "badge bg-blue-500" : "badge"}>{checkActiveWorkflows(account.id)}</span></td>
+                                <td className="status"><span className={checkActiveWorkflows(account.id) == "ACTIVE" ? "badge bg-blue-500" : "badge"}>{workflowStatus[idx]}</span></td>
                                 <td className="actions text-right">
                                     <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75" onClick={() => {toAccountView(account)}}><MdRemoveRedEye></MdRemoveRedEye></button>
                                     <span hidden={currentView == "VENDOR" ? false : true}>
@@ -431,7 +442,7 @@ function AccountDash() {
                 </div>
                                         
                     <div className="mt-6 flex justify-center">
-                        {validateForm()}
+                        {() => {validateForm()}}
                         <label onClick={() => {handleSave()}} htmlFor="EditUserAccount" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full" type="button" disabled={(validateForm() == false) ? true : false}>
                             Save Changes
                         </label>

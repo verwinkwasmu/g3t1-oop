@@ -3,9 +3,7 @@ import { MdRemoveRedEye, MdRestoreFromTrash } from 'react-icons/md';
 
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { getArchiveByCollection } from '../apiCalls';
-
-import RestoreArchived from './RestoreArchive';
+import { getArchiveByCollection, restoreFromArchive } from '../apiCalls';
 
 function Archive() {
 
@@ -44,9 +42,20 @@ function Archive() {
         getArchiveByCollection('users')
         .then(function(response){
           if (response.data.length > 0) {
-            setArchivedAccountsData(response.data)
+            setArchivedUsersData(response.data)
+            console.log(response.data)
           } else {
-            setArchivedAccountsData([])
+            setArchivedUsersData([])
+          }
+        })
+
+        getArchiveByCollection('vendors')
+        .then(function(response){
+          if (response.data.length > 0) {
+            setArchivedVendorsData(response.data)
+            console.log(response.data)
+          } else {
+            setArchivedVendorsData([])
           }
         })
 
@@ -56,7 +65,9 @@ function Archive() {
 
     const [archivedWorkflowsData, setArchivedWorkflowsData] = useState([]);
     const [archivedAssignedWorkflowsData, setArchivedAssignedWorkflowsData] = useState([]);
-    const [archivedAccountsData, setArchivedAccountsData] = useState([]);
+    const [archivedUsersData, setArchivedUsersData] = useState([]);
+    const [archivedVendorsData, setArchivedVendorsData] = useState([]);
+    const [archivedAccountsData, setArchivedAccountsData] = useState(archivedVendorsData.concat(archivedUsersData));
     const [archivedQuestionnairesData, setArchivedQuestionnairesData] = useState([]);
 
     const [currentView, setCurrentView] = useState("WORKFLOWS");
@@ -95,10 +106,19 @@ function Archive() {
         navigate(`/accounts/${account.id}`, { state: { account: account, origin: 'ARCHIVE' } });
     }
 
-    const restoreArchived = (item, itemType) => {
+    const restoreArchived = (item) => {
+        console.log("inside restore")
         console.log(item)
-        setItemToRestore(item)
-        setItemTypeToRestore(item)
+
+        restoreFromArchive(item.id)
+        .then(function(response){
+            window.location.reload();
+        })
+        .catch(function(error) {
+            console.log(error)
+        })
+
+
     }
 
     return (
@@ -212,7 +232,7 @@ function Archive() {
                     </div>
 
                     <div id="accountsView" className="grid text-left">
-                        <table hidden={currentView == "ACCOUNTS" && archivedAccountsData.length != 0 ? false : true} className="flex-auto table-fixed divide-y-2 divide-slate-700">
+                        <table hidden={currentView == "ACCOUNTS" && archivedVendorsData.length != 0 ? false : true} className="flex-auto table-fixed divide-y-2 divide-slate-700">
                             <thead>
                                 <tr>
                                     {/* <th className="p-2">[]</th> */}
@@ -225,7 +245,7 @@ function Archive() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-700">
-                            {(archivedAccountsData).map(account =>
+                            {(archivedVendorsData).map(account =>
                                 <tr key={account.id}>
                                 {/* <td className="p-2">
                                     <input id={account.id} type="checkbox" onChange={() => {handleSelect(account)}} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
@@ -245,7 +265,42 @@ function Archive() {
                                 </tr>)}
                             </tbody>
                         </table>
-                        <h2 hidden={currentView == "ACCOUNTS" && archivedAccountsData.length == 0 ? false : true} className="text-center mt-5 text-gray-300 text-base font-semibold italic text-blue mr-5">No archived accounts.</h2>
+
+                        <table hidden={currentView == "ACCOUNTS" && archivedUsersData.length != 0 ? false : true} className="flex-auto table-fixed divide-y-2 divide-slate-700">
+                            <thead>
+                                <tr>
+                                    {/* <th className="p-2">[]</th> */}
+                                    <th className="p-2">ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Type</th>
+                                    <th>Deleted At</th>
+                                    <th>Deleted By</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-700">
+                            {(archivedUsersData).map(account =>
+                                <tr key={account.id}>
+                                {/* <td className="p-2">
+                                    <input id={account.id} type="checkbox" onChange={() => {handleSelect(account)}} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                                </td> */}
+                                <td className="id p-2">{account.data.id}</td>
+                                <td className="name">{account.data.name}</td>
+                                <td className="company">{account.data.email}</td>
+                                <td className="type"><span className={account.data.userType == "VENDOR" ? "badge bg-blue-500" : "badge"}>{account.data.userType}</span></td>
+                                <td className="deletedOn">{account.deletedAt}</td>
+                                <td className="deletedBy">{account.deletedBy}</td>
+                                <td className="actions text-right">
+                                    <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75" onClick={() => {toAccountView(account.data)}}><MdRemoveRedEye></MdRemoveRedEye></button>
+                                    <label onClick={() => {setItemToRestore(account); setItemTypeToRestore("Account")}} htmlFor="RestoreArchived" className="btn btn-xs btn-link text-lg text-blue hover:opacity-75">
+                                        <MdRestoreFromTrash></MdRestoreFromTrash>            
+                                    </label>
+                                </td>
+                                </tr>)}
+                            </tbody>
+                        </table>
+
+                        <h2 hidden={currentView == "ACCOUNTS" && archivedVendorsData.length + archivedUsersData.length == 0 ? false : true} className="text-center mt-5 text-gray-300 text-base font-semibold italic text-blue mr-5">No archived accounts.</h2>
                     </div>
                     
             </div>
@@ -308,7 +363,7 @@ function Archive() {
                 </div>                
                 <form>                 
                     <div className="mt-6 flex justify-center">
-                        <label htmlFor="RestoreArchived" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full" type="button" >
+                        <label htmlFor="RestoreArchived" onClick={() => restoreArchived(itemToRestore)} className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full" type="button" >
                             Yes, Restore
                         </label>
                     </div>

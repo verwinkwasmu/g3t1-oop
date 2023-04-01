@@ -22,6 +22,7 @@ function AccountView() {
     const account = location.state.account;
     const origin = location.state.origin;
 
+    console.log("account: ", account);
     console.log("origin: ", origin);
 
     const toAccountDash = () => {
@@ -48,6 +49,9 @@ function AccountView() {
                 setAssignedWorkflowsData([])
               }
             })
+            .catch(function(error) {
+                console.log("Not a vendor")
+            })
         } else {
             getAssignedWorkflowsByAdminId(account.id)
             .then(function(response){
@@ -57,6 +61,9 @@ function AccountView() {
               } else {
                 setAssignedWorkflowsData([])
               }
+            })
+            .catch(function(error) {
+                console.log("Not an admin")
             })
         }
 
@@ -134,7 +141,7 @@ function AccountView() {
                         </div>                      
                     </div>
                     <div hidden={origin != "ARCHIVE" ? true : false}>
-                        <RestoreArchived></RestoreArchived>
+                        <RestoreArchived item={account} itemType={userType}></RestoreArchived>
                     </div>
                 </div>
                 <div className={userType == "VENDOR" ? "grid grid-cols-3 gap-10" : ""}>

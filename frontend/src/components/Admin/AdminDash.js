@@ -72,7 +72,7 @@ function AdminDash() {
 
     const toWorkflowView = (workflow) => {
         console.log("===== INSIDE toWorkflowView =====")
-        navigate(`/workflow-assigned/${workflow.id}`, { state: { workflow: workflow } });
+        navigate(`/workflow-assigned/${workflow.id}`, { state: { workflowId: workflow.id } });
     }
 
     const getWorkflowCompletion = (questionnaires) => {
