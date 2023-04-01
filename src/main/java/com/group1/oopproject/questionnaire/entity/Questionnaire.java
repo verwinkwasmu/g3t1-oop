@@ -23,6 +23,7 @@ public class Questionnaire {
     private String title;
     private String assignedVendorId;
     private String assignedAdminId;
+    private AssignedTo assignedTo;
     private QuestionnaireStatus status;
     private LocalDateTime submissionDate;
     private LocalDateTime submissionDeadline;

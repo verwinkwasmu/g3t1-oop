@@ -7,6 +7,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import DeleteWorkflow from './DeleteWorkflow';
 import AssignNewUser from './AssignNewUser';
 import UpdateWorkflow from './UpdateWorkflow';
+import FlagApproval from './FlagApproval';
 import { getIndividualAssignedWorkflow } from '../../../apiCalls';
 
 function WorkflowAssignedView() {
@@ -98,7 +99,8 @@ function WorkflowAssignedView() {
                         </div>
                         <div className="flex mt-5">
                             <UpdateWorkflow workflow={workflowsData} render="assigned"></UpdateWorkflow>
-                            <DeleteWorkflow workflow={workflowsData} render="assigned"></DeleteWorkflow>
+                            <DeleteWorkflow workflow={workflowsData} assigned={true} render="assigned"></DeleteWorkflow>
+                            <FlagApproval workflow={workflowsData} />
                         </div>
                     </div>
                     <div className="grid grid-rows-1 grid-cols-4 gap-x-2 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
