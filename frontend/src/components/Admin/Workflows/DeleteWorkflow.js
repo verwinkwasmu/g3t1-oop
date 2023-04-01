@@ -26,7 +26,6 @@ function DeleteWorkflow(props) {
             deleteWorkflow(workflow.id, "admin2")
                 .then(function(response){
                     navigate("/workflows")
-                    
                 })
                 .catch(function(error){
                     console.log("ERROR DELETING WORKFLOW")
