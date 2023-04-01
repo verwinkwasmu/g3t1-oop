@@ -71,7 +71,8 @@ const CreateQuestionnaire = () => {
       assignedVendor: vendor,
       assignedAdmin: admin, 
       status: status,
-      questionsAndAnswers: questions
+      questionsAndAnswers: questions,
+      assignedTo: assignedTo
     }
     console.log(questionnaireData);
     axios.post('http://localhost:8080/api/v1/questionnaire/create', questionnaireData)
@@ -85,6 +86,7 @@ const CreateQuestionnaire = () => {
           setVendor("");
           setAdmin("");
           setStatus("NOT_STARTED");
+          setAssignedTo("")
 
         }, 2000);
       })
