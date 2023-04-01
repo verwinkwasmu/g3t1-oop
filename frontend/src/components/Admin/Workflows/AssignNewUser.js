@@ -16,24 +16,22 @@ function AssignNewUser(props) {
     const workflowName = workflowData.workflowName
     const workflowDescription = workflowData.workflowDescription
     const questionnaireList = workflowData.questionnaireList
-    // console.log(questionnaireList)
     const questionnaires = workflowData.questionnaires
     var questionnairesInput = []
 
     for (var index in questionnaires) {
-        // console.log(questionnaires[index])
-        // console.log("BEFORE DELETE")
-        // console.log(questionnaires[index])
         delete questionnaires[index].id
         delete questionnaires[index].createdAt
-        // console.log("AFTER DELETE")
-        // console.log(questionnaires[index])
         questionnairesInput.push(questionnaires[index])
     }
 
     const [vendors, setVendors] = useState([]);
     const [vendorOptions, setVendorOptions] = useState();
     const [selectedVendors, setSelectedVendors] = useState("");
+    const [questionnaireTitles, setQuestionnaireTitles] = useState([]);
+    const [questionnaireDeadlines, setQuestionnaireDeadlines] = useState([]);
+    const [values, setValues] = useState([]);
+
     // const [questionnaireIds, setQuestionnaireIds] = useState([])
 
     useEffect(() => {
@@ -53,6 +51,14 @@ function AssignNewUser(props) {
                 setVendorOptions(selectOptions)
             })
         // eslint-disable-next-line
+
+        const temp = [];
+        for (const index in questionnaires) {
+            temp.push([questionnaires[index].id, questionnaires[index].title]);
+        }
+        setQuestionnaireTitles(temp);
+        console.log("questionnaireTitles")
+        console.log(questionnaireTitles)
     }, [])
 
     const validateForm = () => {
@@ -73,7 +79,7 @@ function AssignNewUser(props) {
             createQuestionnaire(questionnaire)
                 .then(function (response) {
                     output.push(response.data.id)
-                    
+
                 })
                 .catch(function (error) {
                     console.log("ERROR CREATING QUESTIONNAIRE")
@@ -87,7 +93,7 @@ function AssignNewUser(props) {
         while (!isConditionSettled) {
             await new Promise(resolve => setTimeout(resolve, 100));
         }
-        
+
         return output
     };
 
@@ -107,13 +113,10 @@ function AssignNewUser(props) {
             await new Promise(resolve => setTimeout(resolve, 100));
         }
 
-        console.log("THIS IS AFTER QUESTIONNAIREIDS HAS BEEN DECLARED")
-        console.log("RESOLVING PROMISE NOW")
-
         promises.then(result => {
-            console.log(result); // Output: Promise resolved
-            questionnaireIds.push(result[0])
-          });
+            console.log(result);
+            questionnaireIds.push(result[0]);
+        });
 
         console.log("QUESTIONNAIRE IDS")
         console.log(questionnaireIds)
@@ -145,6 +148,15 @@ function AssignNewUser(props) {
             })
     }
 
+    const handleDeadlines = (event, index) => {
+        const { value } = event.target;
+        setValues((prevValues) => {
+            const newValues = [...prevValues];
+            newValues[index] = value;
+            return newValues;
+        });
+        console.log(values)
+    };
     return (
         <>
             <label htmlFor="AssignNewUser" className="btn bg-cyan border-transparent outline-none rounded-full mr-2">
@@ -171,6 +183,23 @@ function AssignNewUser(props) {
                                 className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             />
                         </div>
+                        {(questionnaireTitles).map((questionnaireInfo) =>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 text-md font-thin" htmlFor="deadline" key={questionnaireInfo[0]}>
+                                    {questionnaireInfo[1]}
+                                </label>
+                                <label className="block text-gray-700 text-xs font-thin mb-2" htmlFor="deadline" key={questionnaireInfo[0]}>
+                                    Please input deadline in DD/MM/YYYY format.
+                                </label>
+                                <input 
+                                    key={questionnaireInfo[0]}
+                                    onChange={(event) => handleDeadlines(event, index)}
+                                    id="questionnairedeadline" 
+                                    type="text"
+                                    className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                                />
+                            </div>
+                        )}
                         <div className="flex justify-center">
                             <label onClick={() => handleCreate()} htmlFor="AssignNewUser" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" type="button" disabled={!validateForm()}>
                                 Assign New User
