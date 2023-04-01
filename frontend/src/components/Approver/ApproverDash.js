@@ -1,59 +1,32 @@
 import { React, useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 
-import { getWorkflows, getAssignedWorkflows } from '../../apiCalls';
+import { getWorkflows, getAssignedWorkflowsByStatus } from '../../apiCalls';
 
 
 function ApproverDash() {
 
     const navigate = useNavigate();
+    const [workflowsData, setWorkflowsData] = useState([]);
 
     useEffect(() => {
         document.title = 'Workflows Dashboard'
-
-        getWorkflows()
+            getAssignedWorkflowsByStatus("FLAGGED")
             .then(function (response) {
                 // console.log(response.data)
-                if (response.data.length > 0) {
                     setWorkflowsData(response.data)
-                } else {
-                    setWorkflowsData([])
-                }
+                
+            }).catch(error =>{
+                console.log("FAIL")
+                setWorkflowsData([])
             })
-
+        
         // eslint-disable-next-line
     }, [])
 
-    const [workflowsData, setWorkflowsData] = useState([]);
 
     console.log("WORKFLOWSDATA")
     console.log(workflowsData)
-
-    const renderTemplates = () => {
-        console.log("RENDER TEMPLATES")
-        getWorkflows()
-            .then(function (response) {
-                // console.log(response.data)
-                if (response.data.length > 0) {
-                    setWorkflowsData(response.data)
-                } else {
-                    setWorkflowsData([])
-                }
-            })
-    }
-
-    // const renderAssigned = () => {
-    //     console.log("RENDER ASSIGNED")
-    //     getAssignedWorkflows()
-    //         .then(function (response) {
-    //             // console.log(response.data)
-    //             if (response.data.length > 0) {
-    //                 setWorkflowsData(response.data)
-    //             } else {
-    //                 setWorkflowsData([])
-    //             }
-    //         })
-    // }
 
     const toWorkflowView = (workflow) => {
         console.log("===== INSIDE toWorkflowView =====")

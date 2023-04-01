@@ -3,26 +3,36 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import { AiOutlineDelete } from "react-icons/ai";
 
-import { deleteWorkflow } from '../../../apiCalls';
+import { deleteWorkflow, deleteAssignedWorkflow } from '../../../apiCalls';
 
 function DeleteWorkflow(props) {
-
     const navigate = useNavigate();
-    const location = useLocation();
 
-    const workflowsData = location.state.workflow;
-    console.log(workflowsData)
+    const workflow = props.workflow
 
     const handleDelete = () => {
-        console.log("INSIDE DELETE WORKFLOW");
-        deleteWorkflow(workflowsData.id)
+        if (props.assigned){
+            console.log("INSIDE DELETE ASSIGNED WORKFLOW");
+        deleteAssignedWorkflow(workflow.id, "admin2")
             .then(function(response){
                 navigate("/workflows")
                 
             })
             .catch(function(error){
-                console.log("ERROR DELETING WORKFLOW")
+                console.log("ERROR DELETING ASSIGNED WORKFLOW")
             })
+        }else{
+            console.log("INSIDE DELETE WORKFLOW");
+            deleteWorkflow(workflow.id, "admin2")
+                .then(function(response){
+                    navigate("/workflows")
+                    
+                })
+                .catch(function(error){
+                    console.log("ERROR DELETING WORKFLOW")
+                })
+        }
+        
     }
 
     return (

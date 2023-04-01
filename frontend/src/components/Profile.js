@@ -7,27 +7,17 @@ import RemoveAccount  from './Admin/Accounts/RemoveAccount';
 import EditVendorAccount from './Admin/Accounts/EditVendorAccount';
 import EditUserAccount from './Admin/Accounts/EditUserAccount';
 
-import { getAssignedWorkflowsByVendorId, getAssignedWorkflowsByAdminId } from '../apiCalls';
+import { getAssignedWorkflowsByVendorId, getAssignedWorkflowsByAdminId, getUserById, getVendorById } from '../apiCalls';
+
+import useToken from '../useToken';
 
 function Profile() {
 
     const navigate = useNavigate();
     const location = useLocation();
 
-    const account = {
-        "id": "vendor1",
-        "name": "Harry Styles <3",
-        "email": "harrystyles@lovetour.com",
-        "password": "watermelonsugar",
-        "userType": "VENDOR",
-        "createdAt": null,
-        "companyName": "Love",
-        "regNumber": "4567",
-        "bizNature": "Love",
-        "contactNum": "12345678",
-        "country": null,
-        "gstnumber": "GST456"
-    }
+    const accountId = useToken().token[0];
+    const accountType = useToken().token[1];
 
     const toAccountDash = () => {
         console.log("===== INSIDE TOACCOUNTDASH =====")
@@ -39,9 +29,9 @@ function Profile() {
     
         // setAccountsData(getUsers());
 
-        if (account.userType == "VENDOR") {
+        if (accountType == "VENDOR") {
             console.log("HI")
-            getAssignedWorkflowsByVendorId(account.id)
+            getAssignedWorkflowsByVendorId(accountId)
             .then(function(response){
                 console.log(response.data)
               if (response.data.length > 0) {
@@ -50,15 +40,41 @@ function Profile() {
                 setAssignedWorkflowsData([])
               }
             })
+
+            getVendorById(accountId)
+            .then(function(response) {
+                // setAccount(response.data)
+                setId(response.data.id)
+                setName(response.data.name)
+                setEmail(response.data.email)
+                setUserType(accountType)
+                setContactNum(response.data.contactNum)
+                setPassword(response.data.password)
+                setCompanyName(response.data.companyName)
+                setCountry(response.data.country)
+                setRegNumber(response.data.regNumber)
+                setBizNature(response.data.bizNature)
+                setGstNumber(response.data.gstnumber)
+            })
         } else {
-            getAssignedWorkflowsByAdminId(account.id)
+            getAssignedWorkflowsByAdminId(accountId)
             .then(function(response){
-                console.log(response.data)
               if (response.data.length > 0) {
                 setAssignedWorkflowsData(response.data)
               } else {
                 setAssignedWorkflowsData([])
               }
+            })
+
+            getUserById(accountId)
+            .then(function(response) {
+                // setAccount(response.data)
+                setId(response.data.id)
+                setName(response.data.name)
+                setEmail(response.data.email)
+                setUserType(accountType)
+                setPassword(response.data.password)
+
             })
         }
 
@@ -66,18 +82,19 @@ function Profile() {
 
       }, [])
 
-        const [id, setId] = useState(account.id);
-        const [name, setName] = useState(account.name);
-        const [email, setEmail] = useState(account.email);
-        const [userType, setUserType] = useState(account.userType);
-        const [contactNum, setContactNum] = useState(account.contactNum);
-        const [password, setPassword] = useState(account.password);
+        // const [account, setAccount] = useState();
+        const [id, setId] = useState();
+        const [name, setName] = useState();
+        const [email, setEmail] = useState();
+        const [userType, setUserType] = useState();
+        const [contactNum, setContactNum] = useState();
+        const [password, setPassword] = useState();
 
-        const [companyName, setCompanyName] = useState(account.companyName);
-        const [country, setCountry] = useState(account.country);
-        const [regNumber, setRegNumber] = useState(account.regNumber);
-        const [bizNature, setBizNature] = useState(account.bizNature);
-        const [gstNumber, setGstNumber] = useState(account.gstnumber);
+        const [companyName, setCompanyName] = useState();
+        const [country, setCountry] = useState();
+        const [regNumber, setRegNumber] = useState();
+        const [bizNature, setBizNature] = useState();
+        const [gstNumber, setGstNumber] = useState();
     
       const [assignedWorkflowsData, setAssignedWorkflowsData] = useState([]);
 
@@ -106,19 +123,19 @@ function Profile() {
                         <img className="rounded-full w-32 h-32" src="https://img.freepik.com/free-photo/headshot-charismatic-pleasant-friendly-european-woman-short-chestnut-haircut-smiling-positive-feeling-happy-upbeat-enjoying-lifes-casually-talking-friends-amused-cheerful-standing-white-background_176420-34680.jpg?w=2000" alt="image description"/>
                     </div>
                     <div className="flex-auto font-thin">
-                        <p >ID: {account.id}</p>
-                        <h1 className="text-3xl font-semibold text-blue">{account.name}</h1>
-                        <p className="font-thin mb-2 italic">{account.email}</p>
-                        <p><span className={account.userType == "VENDOR" ? "font-normal badge bg-blue-500" : "font-normal badge"}>{account.userType}</span></p>
+                        <p >ID: {id}</p>
+                        <h1 className="text-3xl font-semibold text-blue">{name}</h1>
+                        <p className="font-thin mb-2 italic">{email}</p>
+                        <p><span className={userType == "VENDOR" ? "font-normal badge bg-blue-500" : "font-normal badge"}>{userType}</span></p>
                     </div>
                     <div className="flex grid grid-rows-2 justify-items-end">
                         <div>
-                            <span hidden={userType == "VENDOR" ? false : true}>
+                            {/* <span hidden={userType == "VENDOR" ? false : true}>
                                 <EditVendorAccount account={account}></EditVendorAccount>
-                            </span>
-                            <span hidden={userType != "VENDOR" ? false : true}>
+                            </span> */}
+                            {/* <span hidden={userType != "VENDOR" ? false : true}>
                                 <EditUserAccount account={account}></EditUserAccount>
-                            </span>
+                            </span> */}
 
                         </div>                      
                     </div>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
-import { getUserById, getVendorById } from '../apiCalls';
+import { loginUser, loginVendor } from '../apiCalls';
 
 import Logo from "../assets/QL-Logo-Full.png";
 
@@ -12,13 +12,11 @@ function Login({ setToken }) {
     const [password, setPassword] = useState("");
     const [idStatus, setIdStatus] = useState();
     const [passwordStatus, setPasswordStatus] = useState();
+    const [loginStatus, setLoginStatus] = useState();
 
 
     useEffect(() => {
         document.title = 'VMS Login'
-    
-        // setAccountsData(getUsers());
-
 
       }, [])
 
@@ -41,17 +39,18 @@ function Login({ setToken }) {
     }
 
     const handleLogin = () => {
-        getVendorById(id)
+        loginVendor({ id: id, password: password })
             .then(function(response){
-                checkPassword(response.data);
+                setToken(response.data);
             })
             .catch(function(error){
-                getUserById(id)
+                loginUser({ id: id, password: password })
                     .then(function(response) {
-                        checkPassword(response.data);
+                        setToken(response.data);
                     })
                 .catch(function(error) {
-                    setIdStatus(false)
+                    console.log("CAUGHT")
+                    setLoginStatus(false)
                 })
             })
 
@@ -64,25 +63,25 @@ function Login({ setToken }) {
             <h1 className="my-5 text-3xl font-semibold text-blue">Vendor Management System</h1>
             <div className="">
                 <form>
-                    <div id="userDetails">
+                    <div id="userDetails" className="mb-4">
                         <div className="mb-4">
                             <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="email">
                                 ID
                             </label>
-                            <input onChange={e => setId(e.target.value)} className={idStatus == false ? "shadow appearance-none border-red-500 bg-red-50 rounded-full w-full py-2 px-3 text-grey-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" : "shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"} id="email" type="text"/>
+                            <input onChange={e => setId(e.target.value)} className={loginStatus == false ? "shadow appearance-none border-red-500 bg-red-50 rounded-full w-full py-2 px-3 text-grey-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" : "shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"} id="email" type="text"/>
                             <div hidden={ idStatus == false ? false : true }>
                                 <p class="mt-2 text-sm text-red-600 dark:text-red-500">This user ID does not exist.</p>
                             </div>
                         </div>
-                        <div className="mb-6">
+                        <div className="mb-4">
                             <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="password">
                                 Password
                             </label>
-                            <input onChange={e => setPassword(e.target.value)} className={passwordStatus == false ? "shadow appearance-none border-red-500 bg-red-50 rounded-full w-full py-2 px-3 text-grey-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" : "shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"} id="password" type="password" placeholder="******************"/>
-                            <div hidden={ passwordStatus == false ? false : true }>
-                                <p class="mt-2 text-sm text-red-600 dark:text-red-500">Incorrect password.</p>
-                            </div>
-                        </div>                    
+                            <input onChange={e => setPassword(e.target.value)} className={loginStatus == false ? "shadow appearance-none border-red-500 bg-red-50 rounded-full w-full py-2 px-3 text-grey-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" : "shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"} id="password" type="password" placeholder="******************"/>
+                        </div>     
+                        <div hidden={ loginStatus == false ? false : true }>
+                            <p class="text-center mt-2 text-sm text-red-600 dark:text-red-500">Incorrect username or password.</p>
+                        </div>               
                     </div>
                 <div className="flex justify-center">
                     {validateForm()}

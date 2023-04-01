@@ -18,10 +18,8 @@ axiosClient.interceptors.response.use(
     return response;
   }, 
   function (error) {
-    console.log("error: ", error)
 
     let res = error.response;
-    console.log("res: ", res)
     if (res.status === 401) {
       window.location.href = "http://localhost:3000/";
     }
@@ -35,6 +33,15 @@ export default {
   axiosClient
 };
 
+// AUTHENTICATION
+
+export function loginUser(data) {
+  return axiosClient.post("/api/v1/users/login", JSON.stringify(data));  
+}
+
+export function loginVendor(data) {
+  return axiosClient.post("/api/v1/users/vendors/login", JSON.stringify(data));  
+}
 
 // ACCOUNT MANAGEMENT 
 
@@ -47,7 +54,7 @@ export function getVendors() {
 }
 
 export function getUsersByType(userType) { // ADMIN, APPROVER
-  return axiosClient.get(`/api/v1/users/${userType}`);  
+  return axiosClient.get(`/api/v1/users/type/${userType}`);  
 }
 
 export function getVendorsByCompany(companyName) { // {companyName}
@@ -101,7 +108,6 @@ export function updateIndividualTemplateWorkflow(data) {
 }
 
 export function updateIndividualAssignedWorkflow(data) {
-  console.log(JSON.stringify(data))
   return axiosClient.put("/api/v1/workflow/assigned", JSON.stringify(data));  
 }
 
@@ -111,6 +117,10 @@ export function getAssignedWorkflows() {
 
 export function getIndividualAssignedWorkflow(id) {
   return axiosClient.get(`/api/v1/workflow/assigned/${id}`);  
+}
+
+export function getAssignedWorkflowsByStatus(data){
+  return axiosClient.get(`/api/v1/workflow/assigned/status/${data}`)
 }
 
 export function getWorkflowsByVendor(id) {
@@ -133,11 +143,13 @@ export function createWorkflowAssigned(data) {
   return axiosClient.post("/api/v1/workflow/assigned", JSON.stringify(data));  
 }
 
-export function deleteWorkflow(id) { // unique ID
-  return axiosClient.delete(`/api/v1/workflow/${id}`);  
+export function deleteWorkflow(id, userId) { // unique ID
+  return axiosClient.delete(`/api/v1/workflow/delete/${id}/${userId}`);  
 }
 
-
+export function deleteAssignedWorkflow(id, userId) { // unique ID
+  return axiosClient.delete(`/api/v1/workflow/assigned/delete/${id}/${userId}`);  
+}
 
 // QUESTIONNAIRE MANAGEMENT
 

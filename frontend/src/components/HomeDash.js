@@ -12,7 +12,7 @@ function HomeDash() {
         document.title = 'VMS Home'
       }, [])
 
-    const [userType, setUserType] = useState(useToken().token.userType); 
+    const [userType, setUserType] = useState(useToken().token[1]); 
 
     if (userType == "ADMIN") {
         return (<AdminDash></AdminDash>)

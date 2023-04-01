@@ -3,9 +3,7 @@ import { MdRemoveRedEye, MdRestoreFromTrash } from 'react-icons/md';
 
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { getArchiveByCollection } from '../apiCalls';
-
-import RestoreArchived from './RestoreArchive';
+import { getArchiveByCollection, restoreFromArchive } from '../apiCalls';
 
 function Archive() {
 
@@ -44,24 +42,37 @@ function Archive() {
         getArchiveByCollection('users')
         .then(function(response){
           if (response.data.length > 0) {
-            setArchivedAccountsData(response.data)
+            setArchivedUsersData(response.data)
+            console.log(response.data)
           } else {
-            setArchivedAccountsData([])
+            setArchivedUsersData([])
           }
         })
-    
+
+        getArchiveByCollection('vendors')
+        .then(function(response){
+          if (response.data.length > 0) {
+            setArchivedVendorsData(response.data)
+            console.log(response.data)
+          } else {
+            setArchivedVendorsData([])
+          }
+        })
+
         // eslint-disable-next-line
     }, [])
 
 
     const [archivedWorkflowsData, setArchivedWorkflowsData] = useState([]);
     const [archivedAssignedWorkflowsData, setArchivedAssignedWorkflowsData] = useState([]);
-    const [archivedAccountsData, setArchivedAccountsData] = useState([]);
+    const [archivedUsersData, setArchivedUsersData] = useState([]);
+    const [archivedVendorsData, setArchivedVendorsData] = useState([]);
+    const [archivedAccountsData, setArchivedAccountsData] = useState(archivedVendorsData.concat(archivedUsersData));
     const [archivedQuestionnairesData, setArchivedQuestionnairesData] = useState([]);
 
     const [currentView, setCurrentView] = useState("WORKFLOWS");
     const [selected, setSelected] = useState();
-    const [itemToRestore, setItemToRestore] = useState();
+    const [itemToRestore, setItemToRestore] = useState({data: "default"});
     const [itemTypeToRestore, setItemTypeToRestore] = useState();
 
 
@@ -95,8 +106,19 @@ function Archive() {
         navigate(`/accounts/${account.id}`, { state: { account: account, origin: 'ARCHIVE' } });
     }
 
-    const restoreArchived = (item, itemType) => {
+    const restoreArchived = (item) => {
+        console.log("inside restore")
         console.log(item)
+
+        restoreFromArchive(item.id)
+        .then(function(response){
+            window.location.reload();
+        })
+        .catch(function(error) {
+            console.log(error)
+        })
+
+
     }
 
     return (
@@ -136,7 +158,7 @@ function Archive() {
                     </div>
 
                     <div id="questionnairesView" className="grid">
-                        <table hidden={currentView == "QUESTIONNAIRES" && archivedQuestionnairesData.length != 0 ? false : true} className="flex-auto table-fixed divide-y-2 divide-slate-700 text-left">
+                        <table hidden={currentView == "QUESTIONNAIRES" && archivedQuestionnairesData.length != 0 ? false : true} className="flex-auto w-full divide-y-2 divide-slate-700 text-left">
                             <thead>
                                 <tr>
                                     {/* <th className="p-2">[]</th> */}
@@ -157,12 +179,12 @@ function Archive() {
                                 <td className="id p-2">{qnnaire.data.id}</td>
                                 <td className="title">{qnnaire.data.title}</td>
                                 <td className="assignedVendor">{qnnaire.data.assignedVendorId}</td>
-                                <td className="assignedAdmin">{qnnaire.data.assignedVendorId}</td>
+                                <td className="assignedAdmin">{qnnaire.data.assignedAdminId}</td>
                                 <td className="deletedOn">{qnnaire.deletedAt}</td>
                                 <td className="deletedBy">{qnnaire.deletedBy}</td>
                                 <td className="actions text-right">
                                     <button onClick={() => {toQuestionnaireView(qnnaire)}} className="btn btn-xs btn-link text-lg text-blue hover:opacity-75"><MdRemoveRedEye></MdRemoveRedEye></button>
-                                    <label onClick={() => {restoreArchived(qnnaire, "Questionnaire")}} htmlFor="RestoreArchived" className="btn btn-xs btn-link text-lg text-blue hover:opacity-75">
+                                    <label onClick={() => {setItemToRestore(qnnaire); setItemTypeToRestore("Questionnaire")}} htmlFor="RestoreArchived" className="btn btn-xs btn-link text-lg text-blue hover:opacity-75">
                                         <MdRestoreFromTrash></MdRestoreFromTrash>            
                                     </label>
                                 </td>
@@ -180,6 +202,7 @@ function Archive() {
                                     <th className="p-2">ID</th>
                                     <th>Name</th>
                                     <th>Assigned Vendor</th>
+                                    <th>Assigned Admin</th>
                                     <th>Deleted At</th>
                                     <th>Deleted By</th>
                                 </tr>
@@ -193,11 +216,14 @@ function Archive() {
                                 <td className="id p-2">{workflow.data.id}</td>
                                 <td className="title">{workflow.data.workflowName}</td>
                                 <td className="assignedVendor">{workflow.data.assignedVendorId}</td>
+                                <td className="assignedAdmin">{workflow.data.assignedAdminId}</td>
                                 <td className="deletedOn">{workflow.deletedAt}</td>
                                 <td className="deletedBy">{workflow.deletedBy}</td>
                                 <td className="actions text-right">
                                     <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75" onClick={() => {toWorkflowView(workflow)}}><MdRemoveRedEye></MdRemoveRedEye></button>
-                                    <RestoreArchived item={workflow} itemType="Assigned Workflow"></RestoreArchived>
+                                    <label onClick={() => {setItemToRestore(workflow); setItemTypeToRestore("Workflow")}} htmlFor="RestoreArchived" className="btn btn-xs btn-link text-lg text-blue hover:opacity-75">
+                                        <MdRestoreFromTrash></MdRestoreFromTrash>            
+                                    </label>
                                 </td>
                                 </tr>)}
                             </tbody>
@@ -206,7 +232,7 @@ function Archive() {
                     </div>
 
                     <div id="accountsView" className="grid text-left">
-                        <table hidden={currentView == "ACCOUNTS" && archivedAccountsData.length != 0 ? false : true} className="flex-auto table-fixed divide-y-2 divide-slate-700">
+                        <table hidden={currentView == "ACCOUNTS" && archivedVendorsData.length != 0 ? false : true} className="flex-auto table-fixed divide-y-2 divide-slate-700">
                             <thead>
                                 <tr>
                                     {/* <th className="p-2">[]</th> */}
@@ -219,7 +245,7 @@ function Archive() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-700">
-                            {(archivedAccountsData).map(account =>
+                            {(archivedVendorsData).map(account =>
                                 <tr key={account.id}>
                                 {/* <td className="p-2">
                                     <input id={account.id} type="checkbox" onChange={() => {handleSelect(account)}} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
@@ -232,25 +258,112 @@ function Archive() {
                                 <td className="deletedBy">{account.deletedBy}</td>
                                 <td className="actions text-right">
                                     <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75" onClick={() => {toAccountView(account.data)}}><MdRemoveRedEye></MdRemoveRedEye></button>
-                                    <RestoreArchived item={account} itemType="Account"></RestoreArchived>
+                                    <label onClick={() => {setItemToRestore(account); setItemTypeToRestore("Account")}} htmlFor="RestoreArchived" className="btn btn-xs btn-link text-lg text-blue hover:opacity-75">
+                                        <MdRestoreFromTrash></MdRestoreFromTrash>            
+                                    </label>
                                 </td>
                                 </tr>)}
                             </tbody>
                         </table>
-                        <h2 hidden={currentView == "ACCOUNTS" && archivedAccountsData.length == 0 ? false : true} className="text-center mt-5 text-gray-300 text-base font-semibold italic text-blue mr-5">No archived accounts.</h2>
+
+                        <table hidden={currentView == "ACCOUNTS" && archivedUsersData.length != 0 ? false : true} className="flex-auto table-fixed divide-y-2 divide-slate-700">
+                            <thead>
+                                <tr>
+                                    {/* <th className="p-2">[]</th> */}
+                                    <th className="p-2">ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Type</th>
+                                    <th>Deleted At</th>
+                                    <th>Deleted By</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-700">
+                            {(archivedUsersData).map(account =>
+                                <tr key={account.id}>
+                                {/* <td className="p-2">
+                                    <input id={account.id} type="checkbox" onChange={() => {handleSelect(account)}} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+                                </td> */}
+                                <td className="id p-2">{account.data.id}</td>
+                                <td className="name">{account.data.name}</td>
+                                <td className="company">{account.data.email}</td>
+                                <td className="type"><span className={account.data.userType == "VENDOR" ? "badge bg-blue-500" : "badge"}>{account.data.userType}</span></td>
+                                <td className="deletedOn">{account.deletedAt}</td>
+                                <td className="deletedBy">{account.deletedBy}</td>
+                                <td className="actions text-right">
+                                    <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75" onClick={() => {toAccountView(account.data)}}><MdRemoveRedEye></MdRemoveRedEye></button>
+                                    <label onClick={() => {setItemToRestore(account); setItemTypeToRestore("Account")}} htmlFor="RestoreArchived" className="btn btn-xs btn-link text-lg text-blue hover:opacity-75">
+                                        <MdRestoreFromTrash></MdRestoreFromTrash>            
+                                    </label>
+                                </td>
+                                </tr>)}
+                            </tbody>
+                        </table>
+
+                        <h2 hidden={currentView == "ACCOUNTS" && archivedVendorsData.length + archivedUsersData.length == 0 ? false : true} className="text-center mt-5 text-gray-300 text-base font-semibold italic text-blue mr-5">No archived accounts.</h2>
                     </div>
                     
             </div>
             <input type="checkbox" id="RestoreArchived" className="modal-toggle" />
             <div className="modal text-left">
-            <div className="modal-box max-w-2xl relative py-12 px-20">
+            <div className="modal-box max-w-4xl relative py-12 px-20">
                 <label htmlFor="RestoreArchived" className="btn btn-sm btn-circle bg-red border-transparent absolute right-20 top-12">✕</label>
                 <div className="mb-3">
-                    <h1 className="text-3xl font-semibold text-blue">Restore {itemTypeToRestore}?</h1>
+                    <h1 className="text-3xl font-semibold text-blue mb-4">Restore {itemTypeToRestore}?</h1>
+                    <table hidden={itemTypeToRestore == "Questionnaire" ? false : true } className="flex-auto w-full divide-y-2 divide-slate-700">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Assigned Vendor</th>
+                                <th>Assigned Admin</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-700">
+                            <tr key={itemToRestore.data.id}>
+                                <td className="title">{itemToRestore.data.title}</td>
+                                <td className="assignedVendor">{itemToRestore.data.assignedVendorId}</td>
+                                <td className="assignedAdmin" >{itemToRestore.data.assignedAdminId}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table hidden={itemTypeToRestore == "Workflow" ? false : true } className="flex-auto w-full divide-y-2 divide-slate-700">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Assigned Vendor</th>
+                                <th>Assigned Admin</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-700">
+                            <tr key={itemToRestore.data.id}>
+                                <td className="name">{itemToRestore.data.workflowName}</td>
+                                <td className="assignedVendor">{itemToRestore.data.assignedVendorId}</td>
+                                <td className="assignedAdmin" >{itemToRestore.data.assignedAdminId}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table hidden={itemTypeToRestore == "Account" ? false : true } className="flex-auto w-full divide-y-2 divide-slate-700">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th hidden={itemTypeToRestore != null && itemToRestore.data.userType == "VENDOR" ? false : true}>Company</th>
+                                <th>Type</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-700">
+                            <tr key={itemToRestore.data.id}>
+                                <td className="name">{itemToRestore.data.name}</td>
+                                <td className="email">{itemToRestore.data.email}</td>
+                                <td className="company" hidden={itemTypeToRestore != null && itemToRestore.data.userType == "VENDOR" ? false : true}>{itemToRestore.data.companyName}</td>
+                                <td className="type"><span className={itemToRestore.data.userType == "VENDOR" ? "badge bg-blue-500" : "badge"}>{itemToRestore.data.userType}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>                
                 <form>                 
                     <div className="mt-6 flex justify-center">
-                        <label htmlFor="RestoreArchived" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full" type="button" >
+                        <label htmlFor="RestoreArchived" onClick={() => restoreArchived(itemToRestore)} className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full" type="button" >
                             Yes, Restore
                         </label>
                     </div>
