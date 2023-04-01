@@ -10,6 +10,7 @@ import com.group1.oopproject.exception.QuestionnaireNotFoundException;
 import com.group1.oopproject.questionnaire.entity.Questionnaire;
 import com.group1.oopproject.questionnaire.entity.QuestionnaireStatus;
 import com.group1.oopproject.questionnaire.repository.QuestionnaireRepository;
+import com.group1.oopproject.workflow.service.WorkflowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.group1.oopproject.exception.DatabaseCommunicationException;
@@ -22,6 +23,9 @@ public class QuestionnaireService {
 
     @Autowired
     private ArchiveService archiveService;
+
+    @Autowired
+    private WorkflowService workflowService;
 
     public List<Questionnaire> findAllQuestionnaire() {
         try {
@@ -90,6 +94,15 @@ public class QuestionnaireService {
         try {
             Questionnaire questionnaire = questionnaireRepository.findById(id)
                     .orElseThrow(() -> new QuestionnaireNotFoundException("No questionnaire found in the database with id: " + id));
+
+            // checks if questionnaire is inside a workflow
+            // if true: send error
+            // else: delete safely
+
+            if (workflowService.checkQuestionnaireInWorkflows(id)){
+                throw new Exception("Questionnaire still exist in workflow!");
+            }
+
             questionnaireRepository.deleteById(questionnaire.getId());
 
             // archive this document

@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import com.group1.oopproject.archive.entity.ArchiveDocument;
 import com.group1.oopproject.archive.service.ArchiveService;
+import com.group1.oopproject.exception.QuestionnaireNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.mongodb.UncategorizedMongoDbException;
@@ -314,6 +315,31 @@ public class WorkflowService {
             e); 
         }
     }
+
+    public boolean checkQuestionnaireInWorkflows(String qnId) {
+        try {
+            List<Workflow> workflows = workflowRepository.findAll();
+            if (workflows.isEmpty()) {
+                throw new WorkflowNotFoundException("No workflows found in the database");
+            }
+
+            for (Workflow workflow : workflows) {
+                for (String questionnaireId : workflow.getQuestionnaireList()) {
+                    if (questionnaireId.equals(qnId)){
+                        throw new QuestionnaireNotFoundException("Questionnaire exists in workflow!");
+                    }
+                }
+            }
+            return false;
+        } catch (WorkflowNotFoundException | QuestionnaireNotFoundException e) {
+            return true;
+//            throw e;
+        } catch (Exception e) {
+            return true;
+//            throw new DatabaseCommunicationException("Error communicating with database for method findAllWorkflows", e);
+        }
+    }
+
 
 
 }
