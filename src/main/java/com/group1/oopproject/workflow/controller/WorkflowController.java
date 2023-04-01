@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.annotation.RequestScope;
 
 import com.group1.oopproject.exception.DatabaseCommunicationException;
 import com.group1.oopproject.exception.WorkflowNotFoundException;
 import com.group1.oopproject.workflow.entity.Workflow;
+import com.group1.oopproject.workflow.entity.ApproverReviewStatus;
 import com.group1.oopproject.workflow.entity.AssignedWorkflow;
 import com.group1.oopproject.workflow.service.WorkflowService;
 
@@ -54,6 +56,19 @@ public class WorkflowController {
     public ResponseEntity<List<AssignedWorkflow>> findAllAssignedWorkflows() {
         try {
             return ResponseEntity.ok(workflowService.findAllAssignedWorkflows());
+        } catch (WorkflowNotFoundException e) {
+            logger.error("WorkflowNotFoundException: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
+        } catch (DatabaseCommunicationException e) {
+            logger.error("Error communicating with database: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/assigned/status/{approverReviewStatus}")
+    public ResponseEntity<List<AssignedWorkflow>> findAllAssignedWorkflowsByStatus(@PathVariable ApproverReviewStatus approverReviewStatus) {
+        try {
+            return ResponseEntity.ok(workflowService.findAllAssignedWorkflowsByStatus(approverReviewStatus));
         } catch (WorkflowNotFoundException e) {
             logger.error("WorkflowNotFoundException: {}", e.getMessage());
             return ResponseEntity.notFound().build();
