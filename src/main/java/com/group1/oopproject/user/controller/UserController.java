@@ -132,9 +132,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> loginUser(@RequestBody String userId, @RequestBody String password) {
+    public ResponseEntity<String[]> loginUser(@RequestBody User user) {
         try {
-            return ResponseEntity.ok(userService.loginUser(userId, password));
+            return ResponseEntity.ok(userService.loginUser(user));
         } catch (DatabaseCommunicationException e) {
             logger.error("Error communicating with database: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -142,9 +142,9 @@ public class UserController {
     }
 
     @PostMapping("/vendors/login")
-    public ResponseEntity<Vendor> loginVendor(@RequestBody String vendorId, @RequestBody String password) {
+    public ResponseEntity<String[]> loginVendor(@RequestBody Vendor vendor) {
         try {
-            return ResponseEntity.ok(userService.loginVendor(vendorId, password));
+            return ResponseEntity.ok(userService.loginVendor(vendor));
         } catch (DatabaseCommunicationException e) {
             logger.error("Error communicating with database: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

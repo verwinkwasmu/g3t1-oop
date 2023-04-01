@@ -33,6 +33,7 @@
     "title" : "1st questionnaire",
     "assignedVendorId": "jack-1",
     "assignedAdminId": "not-jack-1",
+    "assignedTo": "VENDOR", (must be VENDOR or ADMIN)
     "status": "SUBMITTED", (status must be: INITIAL_DRAFT, SUBMITTED, ADMIN_APPROVED, RETURNED, APPROVER_APPROVED)
     "submissionDeadline": "2023-03-22T09:16:28.866",
     "questionsAndAnswers": {
@@ -55,6 +56,7 @@
     "title" : "1st questionnaireeeeeeeee",
     "assignedVendorId": "jack-1",
     "assignedAdminId": "not-jack-1",
+    "assignedTo": "VENDOR"
     "status": "SUBMITTED",
     "submissionDate": "2023-03-22T09:16:28.866",
     "submissionDeadline": "2023-03-22T09:16:28.866",
@@ -186,11 +188,21 @@
 ``[POST] /api/v1/users/vendors/login``
 ``[POST] /api/v1/users/login``
 
+=> please pass the user/vendor object in with id and password
+- other fields will be treated as `null`
+
 ```
-[STRING] userId
-[STRING] password
+{
+    "id":"vendor1",
+    "password": "watermelonsugar",
+}
 ```
 
+will return the following output
+- List of Strings
+- format: `userId` and `userType`
+
+`["adminyl","ADMIN"]`
 
 ---
 
