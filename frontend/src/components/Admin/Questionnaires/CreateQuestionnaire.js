@@ -14,7 +14,6 @@ const CreateQuestionnaire = () => {
   const [vendor, setVendor] = useState("DEFAULT");
   const [admin, setAdmin] = useState("DEFAULT");
   const [status, setStatus] = useState("NOT_STARTED");
-  const [assignedTo, setAssignedTo] = useState("");
 
   useEffect(() => {
     localStorage.setItem('questions', JSON.stringify(questions));
@@ -63,16 +62,16 @@ const CreateQuestionnaire = () => {
   },[])
 
 
-// 1/04/23 ADD ASSIGNED TO FIELD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
   const saveQuestionnaire = () => {
+    // Send the questions data to a server or save it to a file
     console.log(questions);
     const questionnaireData = {
       title: title,
       assignedVendor: vendor,
       assignedAdmin: admin, 
       status: status,
-      questionsAndAnswers: questions,
-      assignedTo: assignedTo
+      questionsAndAnswers: questions
     }
     console.log(questionnaireData);
     axios.post('http://localhost:8080/api/v1/questionnaire/create', questionnaireData)
@@ -86,7 +85,6 @@ const CreateQuestionnaire = () => {
           setVendor("");
           setAdmin("");
           setStatus("NOT_STARTED");
-          setAssignedTo("")
 
         }, 2000);
       })
@@ -280,12 +278,6 @@ const updateTextInput = (questionId, value) => {
     });
   };
 
-  const handleAssignedTo = (event) => {
-    setAssignedTo(event.target.value);
-    console.log("i like barbie~!!!!!")
-    console.log(assignedTo)
-  };
-
   return (
 
     <>
@@ -315,60 +307,6 @@ const updateTextInput = (questionId, value) => {
                     <Button onClick={saveQuestionnaire} className="btn" >Submit</Button>
                   </div>
               </div>
-
-              <div className="form-control">
-                <label className="label cursor-pointer">
-                  <span className="label-text">Admin</span> 
-                  <input  
-                  type= "checkbox"
-                  id = "admin"
-                  name = "assignedTo"
-                  value = "ADMIN"
-                  checked = {assignedTo == "ADMIN"}
-                  onChange={handleAssignedTo}
-                  className = "checkbox"
-                />
-                </label>
-              </div>
-              
-              <div className="form-control">
-                <label className="label cursor-pointer">
-                  <span className="label-text">Vendor</span> 
-                  <input  
-                  type= "checkbox"
-                  id = "vendor"
-                  name = "assignedTo"
-                  value = "VENDOR"
-                  checked = {assignedTo == "VENDOR"}
-                  onChange={handleAssignedTo}
-                  className = "checkbox"
-                />
-                </label>
-              </div>
-              {/* <div className="btn-group btn-group-vertical lg:btn-group-horizontal" >
-                <input  
-                  type= "checkbox"
-                  id = "vendor"
-                  name = "assignedTo"
-                  value = "VENDOR"
-                  checked = {assignedTo == "VENDOR"}
-                  onChange={handleAssignedTo}
-                />
-                <label htmlFor="vendor">Vendor</label>
-
-              </div> */}
-{/* 
-              <div className="btn-group btn-group-vertical lg:btn-group-horizontal">
-              <input  
-                  type= "checkbox"
-                  id = "vendor"
-                  name = "assignedTo"
-                  value = "ADMIN"
-                  checked = {assignedTo == "ADMIN"}
-                  onChange={handleAssignedTo}
-                />
-                <label htmlFor="admin">Admin</label>
-              </div> */}
               <div className='flex'>
                 <label htmlFor='questionnaire-title' className="label"  >Questionnaire TItle: </label>
                 <input type ="text" value={title} id='questionnaire-title' name='questionnaire-title' onChange={(event) => setTitle(event.target.value)} className="input-group" ></input>

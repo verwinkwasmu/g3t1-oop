@@ -40,7 +40,7 @@ function WorkflowTemplateView() {
     return (
         <>
             <div className="rounded-t-3xl mx-10 mt-10 h-screen py-8 px-20 shadow-2xl">
-                <div className="bg-white h-full overflow-y-auto">
+                <div className="bg-white">
 
                     <div className="flex flex-wrap mt-10 mb-6">
                         <div className="mr-3">
