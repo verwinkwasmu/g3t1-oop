@@ -96,6 +96,10 @@ export function getIndividualTemplateWorkflow(id) {
   return axiosClient.get(`/api/v1/workflow/${id}`);  
 }
 
+export function getIndividualAssignedWorkflow(id) {
+  return axiosClient.get(`/api/v1/workflow/assigned/${id}`);  
+}
+
 export function updateIndividualTemplateWorkflow(data) {
   return axiosClient.put("/api/v1/workflow", JSON.stringify(data));  
 }
@@ -107,6 +111,10 @@ export function updateIndividualAssignedWorkflow(data) {
 
 export function getAssignedWorkflows() {
   return axiosClient.get("/api/v1/workflow/assigned");  
+}
+
+export function getAssignedWorkflowsByStatus(data){
+  return axiosClient.get(`/api/v1/workflow/assigned/status/${data}`)
 }
 
 export function getWorkflowsByVendor(id) {
@@ -129,8 +137,12 @@ export function createWorkflowAssigned(data) {
   return axiosClient.post("/api/v1/workflow/assigned", JSON.stringify(data));  
 }
 
-export function deleteWorkflow(id) { // unique ID
-  return axiosClient.delete(`/api/v1/workflow/${id}`);  
+export function deleteWorkflow(id, userId) { // unique ID
+  return axiosClient.delete(`/api/v1/workflow/delete/${id}/${userId}`);  
+}
+
+export function deleteAssignedWorkflow(id, userId) { // unique ID
+  return axiosClient.delete(`/api/v1/workflow/assigned/delete/${id}/${userId}`);  
 }
 
 // QUESTIONNAIRE MANAGEMENT
