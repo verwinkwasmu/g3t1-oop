@@ -5,8 +5,7 @@ import { IoGitPullRequestOutline } from 'react-icons/io5';
 import { getIndividualAssignedWorkflow } from '../../../apiCalls';
 import { Link } from "react-router-dom";
 
-
-
+// VIEWS ASSIGNED QUESTIONNAIRES FROM ASSIGNED WORKFLOWS 
 
 const baseURL = "http://localhost:8080/api/v1/questionnaire";
 const updateBaseURL = "http://localhost:8080/api/v1/workflow/assigned"

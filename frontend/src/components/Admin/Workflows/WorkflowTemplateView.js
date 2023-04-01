@@ -80,7 +80,7 @@ function WorkflowTemplateView() {
                                                 {(questionnaireTitles).map(questionnaireTitle =>
                                                     <div key={questionnaireTitle[0]}>
                                                         <tr className="card-title mb-2 font-normal">{questionnaireTitle[1]}</tr>
-                                                        <Link to={`/questionnaires/view-indiv-questionnaire/${questionnaireTitle[0]}`}>
+                                                        <Link to={`/questionnaires/view-questionnaire-indiv/${questionnaireTitle[0]}`}>
                                                             View Questionnaire
                                                         </Link>
                                                         {/* <Link to={`/questionnaires/view-indiv-questionnaire/${questionnaireTitle[0]}`}>

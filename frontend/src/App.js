@@ -23,6 +23,9 @@ import EditQuestionnaire from "./components/Admin/Questionnaires/EditQuestionnai
 import ViewIndivQuestionnaire from "./components/Admin/Questionnaires/ViewIndivQuestionnaire";
 
 import VendorEditQuestionnaire from "./components/Vendor/Questionnaires/VendorEditQuestionnaire";
+import ViewQuestionnaireIndiv from "./components/Admin/Questionnaires/ViewQuestionnaireIndiv";
+
+
 
 import Profile from "./components/Profile";
 
@@ -89,9 +92,16 @@ function App() {
           />
 
           <Route
-            path="/approver/questionnaires/edit-questionnaire/:id"
+            path="/questionnaires/edit-questionnaire/:id"
             element={<VendorEditQuestionnaire />}
           />
+
+          <Route
+            path="/questionnaires/view-questionnaire-indiv/:id"
+            element={<ViewQuestionnaireIndiv />}
+          />
+
+          
 
           <Route path="/approver/:id/userId" element={<ViewWorkflow />} />
         </Route>

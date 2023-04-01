@@ -4,6 +4,7 @@ import axios from "axios";
 import useToken from "../../useToken";
 
 import DeleteQuestionnaire from "./Questionnaires/DeleteQuestionnaire";
+import EditQuestionnaire from "./Questionnaires/EditQuestionnaire";
 
 
 const baseURL = "http://localhost:8080/api/v1/questionnaire";
@@ -14,6 +15,8 @@ function FormDash() {
     const [questionnaires, setQuestionnaireData] = useState([]);
     const [isLoading, setIsLoading] = useState(true)
     const [viewMode, setViewMode] = useState("templates");
+    const [questionToDelete, setQuestionToDelete] = useState(null);
+    const [questionToEdit, setQuestionToEdit] = useState(null);
     const user = localStorage.getItem('token');    
     const userInfo = JSON.parse(user)
 
@@ -36,8 +39,10 @@ function FormDash() {
         }
         return false;
       });
-    
-    
+
+
+    //   const handleEditClick 
+
 
       if(! filteredQuestionnaires || !questionnaires){
         return(
@@ -98,13 +103,35 @@ function FormDash() {
                                 <h2 className="card-title">{q.title}</h2>
                                 <p className="text-base">Lorem Ipsum</p>
                                 <div className="card-actions justify-end">
-                                    <Link to={`/questionnaires/view-indiv-questionnaire/${q.id}`}>
-                                    <button className="btn bg-blue hover:bg-cyan border-transparent hover:border-transparent">See Questionnaire</button>
+                                    <Link to={`/questionnaires/view-questionnaire-indiv/${q.id}`}>
+                                    <button className="btn bg-blue hover:bg-cyan border-transparent hover:border-transparent">View</button>
                                     </Link>
-                                    {userInfo.userType === "ADMIN" ||
-                                    userInfo.userType === "APPROVER" ? (
-                                        <button className="btn bg-red hover:bg-cyan border-transparent hover:border-transparent" onClick={() => <DeleteQuestionnaire questionnaireId={q.id} />}>Delete Questionnaire</button>
-                                        ) : null}
+                                    {(userInfo.userType == "ADMIN" || userInfo.userType == "APPROVER") && (
+                                        <>
+                                        {console.log("PASSING ID"  + q.id)}
+                                        <DeleteQuestionnaire
+                                        questionnaireId={q.id}
+                                        onClose={() => setQuestionToDelete(null)}
+                                        onDeleted={() => {
+                                        setQuestionToDelete(null);
+                                        axios.get(baseURL).then((response) => {
+                                            setQuestionnaireData(response.data);
+                                        });
+                                        }}
+                                        />
+
+                                        <Link to={`/questionnaires/edit-questionnaire/${q.id}`}>
+                                                <button className="btn bg-blue hover:bg-cyan border-transparent hover:border-transparent">Edit</button>                                 
+                                        </Link>
+                                        </>
+                                        
+
+                                    )}
+                                    {/* {(userInfo.userType == "ADMIN" || userInfo.userType == "APPROVER") && (
+                                        <button className="btn bg-red hover:bg-cyan border-transparent hover:border-transparent" onClick={() => setQuestionToEdit(q.id)}>Edit</button>
+                                    )} */}
+                                                            
+                                        
                                 </div>
                                 </div>
                             </div>
