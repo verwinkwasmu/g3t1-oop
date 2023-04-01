@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import useToken from "../../useToken";
 
+import DeleteQuestionnaire from "./Questionnaires/DeleteQuestionnaire";
+
 
 const baseURL = "http://localhost:8080/api/v1/questionnaire";
 
@@ -11,9 +13,8 @@ function FormDash() {
 
     const [questionnaires, setQuestionnaireData] = useState([]);
     const [isLoading, setIsLoading] = useState(true)
-    const user = localStorage.getItem('token');
-
-    console.log("USER " + user)
+    const user = localStorage.getItem('token');    
+    const userInfo = JSON.parse(user)
 
 
     useEffect(() => {
@@ -22,7 +23,34 @@ function FormDash() {
           setIsLoading(false)
         });
       }, []);
+    
 
+      if(! questionnaires){
+        return(
+            <div className="rounded-t-3xl mx-10 mt-10 h-screen py-8 px-20 shadow-2xl">
+                <div className="bg-white h-full overflow-y-auto">
+                    <div className="flex flex-wrap mb-5">
+                        <div className="flex-auto">
+                        <p className="text-3xl font-semibold text-blue">Questionnaires</p>
+                        </div>
+                        <div className="flex ">
+                            <Link to="/questionnaires/create-questionnaire">
+                                <button className="btn btn-primary">Create Questionnaire</button>
+                            </Link>
+                         </div>
+                    </div>
+                    <div className="flex flex-wrap mb-5">
+                        <div className="flex-auto">
+                            <h1>You have no questionnaires! Create one by clicking on "Create Questionnaire"!</h1>
+                        </div>
+
+                    </div>
+
+                </div>
+                
+            </div>
+        )
+      }
 
 
     // get all created questionnaire templates 
@@ -56,6 +84,10 @@ function FormDash() {
                                     <Link to={`/questionnaires/view-indiv-questionnaire/${q.id}`}>
                                     <button className="btn bg-blue hover:bg-cyan border-transparent hover:border-transparent">See Questionnaire</button>
                                     </Link>
+                                    {userInfo.userType === "ADMIN" ||
+                                    userInfo.userType === "APPROVER" ? (
+                                        <button className="btn bg-red hover:bg-cyan border-transparent hover:border-transparent" onClick={() => <DeleteQuestionnaire questionnaireId={q.id} />}>Delete Questionnaire</button>
+                                        ) : null}
                                 </div>
                                 </div>
                             </div>

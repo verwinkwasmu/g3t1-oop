@@ -27,7 +27,9 @@ function WorkflowAssignedView() {
     const handleViewClick = (questionnaireId) => {
         navigate(`/questionnaires/view-indiv-questionnaire/${questionnaireId}`, 
         { state: {   
-            workflowId: workflowId
+            workflowId: workflowId,
+            fromAssigned: "fromAssigned",
+            questionnaireId: questionnaireId
 
         }});    
     }
@@ -124,7 +126,7 @@ function WorkflowAssignedView() {
                                                             questionnaireTitle[1]}
                                                             <span className={checkStatusBadge(questionnaireTitle[2])}>{questionnaireTitle[2]}</span>
                                                         </tr>
-                                                        <button onClick={() => handleViewClick(questionnaireTitle[0])}>VIEW QUESTIONNAIRE</button>
+                                                        <button className="btn btn-link" onClick={() => handleViewClick(questionnaireTitle[0])}>GO TO QUESTIONNAIRE</button>
 
                                                     </div>
                                                 )}

@@ -3,6 +3,7 @@ import { AiOutlineUser } from "react-icons/ai";
 import { React, useState, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import Select from 'react-select'
+import axios from "axios";
 
 import { createWorkflowAssigned, createQuestionnaire, getVendors } from '../../../apiCalls';
 
@@ -34,6 +35,13 @@ function AssignNewUser(props) {
     const [vendorOptions, setVendorOptions] = useState();
     const [selectedVendors, setSelectedVendors] = useState("");
     // const [questionnaireIds, setQuestionnaireIds] = useState([])
+    const [duplicatedQuestionnaire, setDuplicatedQuestionnaire] = useState([])
+
+
+    // get current admin id
+    const user = localStorage.getItem('token');
+    const userInfo = JSON.parse(user)
+
 
     useEffect(() => {
         getVendors()
@@ -82,20 +90,89 @@ function AssignNewUser(props) {
         return output
     }
 
-    // const handleQuestionnaires = () => {
-    //     console.log("HANDLE QUESTIONNAIRE")
-    
-    //     const promises = questionnairesInput.map(questionnaire => createQuestionnaire(questionnaire));
-    //     return Promise.all(promises)
-    //         .then(responses => responses.map(response => response.data.id),
+    // add vendor if and admin id into questionnaires inside workflow 
+    // make sure questionnaire id is the copied one 
+    // const updateQuestionnaireUserInfo = async () => {
+    //     console.log("I AM ADDING I AM DYING")
 
-    //         )
+    //     const questionnaireIds = handleQuestionnaires()
 
-    //         .catch(error => {
-    //             console.log("ERROR CREATING QUESTIONNAIRE")
-    //             return [];
-    //         });
+    //     for( let id of questionnaireIds){
+
+    //         // get the duplicated questoinnaire first 
+    //         try {
+                
+    //             const response = await axios.get(`http://localhost:8080/api/v1/questionnaire/${id}`);
+    //             const duplicatedQuestionnaire = response.data
+    //             console.log(duplicatedQuestionnaire)
+    //             // set the questionnaire object for PUT req 
+    //             const updateQuestionnaire = {
+    //                 ...duplicatedQuestionnaire,
+    //                 assignedAdminId: userInfo.userType,
+    //                 assignedVendorId: selectedVendors.value
+    //             };
+            
+    //         } catch (error) {
+    //             console.log("SOMETHING IS WORNG ")
+    //             console.log(error)
+                
+    //         }
+        
+            
+    //         // update the questionnaire object 
+    //         try {
+    //             const response = await axios.put(`http://localhost:8080/api/v1/questionnaire/`, updateQuestionnaire);
+    //             console.log(response.data)
+
+
+                
+    //         } catch (error) {
+    //             console.log("SIAN")
+    //             console.log(error)
+                
+    //         }
+
+    //     }
+   
     // }
+
+    const updateQuestionnaireUserInfo = async () => {
+        console.log("I AM ADDING I AM DYING")
+      
+        const questionnaireIds = handleQuestionnaires()
+      
+        for (let id of questionnaireIds) {
+          let updateQuestionnaire;
+      
+          // get the duplicated questionnaire first
+          try {
+            const response = await axios.get(`http://localhost:8080/api/v1/questionnaire/${id}`);
+            const duplicatedQuestionnaire = response.data
+            console.log(duplicatedQuestionnaire)
+      
+            // set the questionnaire object for PUT req
+            updateQuestionnaire = {
+              ...duplicatedQuestionnaire,
+              assignedAdminId: userInfo.userType,
+              assignedVendorId: selectedVendors.value
+            };
+          } catch (error) {
+            console.log("SOMETHING IS WRONG ")
+            console.log(error)
+          }
+      
+          // update the questionnaire object
+          try {
+            const response = await axios.put(`http://localhost:8080/api/v1/questionnaire/`, updateQuestionnaire);
+            console.log(response.data)
+          } catch (error) {
+            console.log("SIAN")
+            console.log(error)
+          }
+        }
+      }
+      
+
 
 
     
