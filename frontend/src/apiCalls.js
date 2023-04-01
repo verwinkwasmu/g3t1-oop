@@ -18,10 +18,8 @@ axiosClient.interceptors.response.use(
     return response;
   }, 
   function (error) {
-    console.log("error: ", error)
 
     let res = error.response;
-    console.log("res: ", res)
     if (res.status === 401) {
       window.location.href = "http://localhost:3000/";
     }

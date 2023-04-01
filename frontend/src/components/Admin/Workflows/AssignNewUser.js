@@ -38,8 +38,8 @@ function AssignNewUser(props) {
 
 
     // get current admin id
-    const user = localStorage.getItem('token');
-    const userInfo = JSON.parse(user)
+    const user = useToken().token;
+
 
 
     useEffect(() => {
@@ -122,7 +122,7 @@ function AssignNewUser(props) {
             // set the questionnaire object for PUT req
             updateQuestionnaire = {
               ...duplicatedQuestionnaire,
-              assignedAdminId: userInfo.userType,
+              assignedAdminId: user[0],
               assignedVendorId: selectedVendors.value
             };
           } catch (error) {
@@ -201,6 +201,12 @@ function AssignNewUser(props) {
         });
         console.log(values)
     };
+
+    const handleAddUserClick =() => {
+        handleCreate();
+        updateQuestionnaireUserInfo();
+    }
+
     return (
         <>
             <label htmlFor="AssignNewUser" className="btn bg-cyan border-transparent outline-none rounded-full mr-2">
@@ -245,7 +251,7 @@ function AssignNewUser(props) {
                             </div>
                         )}
                         <div className="flex justify-center">
-                            <label onClick={() => handleCreate()} htmlFor="AssignNewUser" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" type="button" disabled={!validateForm()}>
+                            <label onClick={() => handleAddUserClick()} htmlFor="AssignNewUser" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" type="button" disabled={!validateForm()}>
                                 Assign New User
                             </label>
                         </div>

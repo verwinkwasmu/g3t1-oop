@@ -4,9 +4,9 @@ import { useParams, useLocation, useNavigate, withRouter} from "react-router-dom
 import { IoGitPullRequestOutline } from 'react-icons/io5';
 import { getIndividualAssignedWorkflow } from '../../../apiCalls';
 import { Link } from "react-router-dom";
+import useToken from "../../../useToken";
 
-
-
+// VIEWS ASSIGNED QUESTIONNAIRES FROM ASSIGNED WORKFLOWS 
 
 const baseURL = "http://localhost:8080/api/v1/questionnaire";
 const updateBaseURL = "http://localhost:8080/api/v1/workflow/assigned"
@@ -16,7 +16,8 @@ export default function ViewIndivQuestionnaire(props) {
     console.log("IN INDIV QUESTIONNAIRE VIEW")
 
 
-    const user = localStorage.getItem('token');
+    // const user = localStorage.getItem('token');
+    const user = useToken().token;
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -30,7 +31,6 @@ export default function ViewIndivQuestionnaire(props) {
     const workflowId = location.state.workflowId
     const fromAssigned = location.state.fromAssigned
     const questionnaireId = location.state.questionnaireId
-    const userInfo = JSON.parse(user)
 
     // console.log(userInfo)
 
@@ -141,7 +141,7 @@ export default function ViewIndivQuestionnaire(props) {
 
                     {/* for vendor and for assigned to show edit button and workflow name */}
                     {/* if there are already answers, i want an update button, if not i want edit button */}
-                    {userInfo.userType == "VENDOR" && (
+                    {user[1] == "VENDOR" && (
                         <div className="flex flex-wrap mt-10 mb-6">
                             <div className="mr-3">
                                 <IoGitPullRequestOutline size={70} color="3278AE" />
@@ -215,7 +215,7 @@ export default function ViewIndivQuestionnaire(props) {
                         </div>   
                     )}
                     {/* for admin view, add approve button  */}
-                    {userInfo.userType == "ADMIN" && (
+                    {user[1] == "ADMIN" && (
                         <div className="flex flex-wrap mt-10 mb-6">
                             <div className="mr-3">
                                 <IoGitPullRequestOutline size={70} color="3278AE" />
