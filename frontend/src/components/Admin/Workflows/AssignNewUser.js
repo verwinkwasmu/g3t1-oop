@@ -3,8 +3,6 @@ import { AiOutlineUser } from "react-icons/ai";
 import { React, useState, useEffect, Component } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import Select from 'react-select'
-import axios from 'axios'
-
 import { createWorkflowAssigned, createQuestionnaire, getVendors } from '../../../apiCalls';
 
 function AssignNewUser(props) {
@@ -33,6 +31,13 @@ function AssignNewUser(props) {
     const [values, setValues] = useState([]);
 
     // const [questionnaireIds, setQuestionnaireIds] = useState([])
+    const [duplicatedQuestionnaire, setDuplicatedQuestionnaire] = useState([])
+
+
+    // get current admin id
+    const user = localStorage.getItem('token');
+    const userInfo = JSON.parse(user)
+
 
     useEffect(() => {
         getVendors()
@@ -97,7 +102,43 @@ function AssignNewUser(props) {
         return output
     };
 
-    const handleCreate = async () => {
+    const updateQuestionnaireUserInfo = async () => {
+        console.log("I AM ADDING I AM DYING")
+      
+        const questionnaireIds = handleQuestionnaires()
+      
+        for (let id of questionnaireIds) {
+          let updateQuestionnaire;
+      
+          // get the duplicated questionnaire first
+          try {
+            const response = await axios.get(`http://localhost:8080/api/v1/questionnaire/${id}`);
+            const duplicatedQuestionnaire = response.data
+            console.log(duplicatedQuestionnaire)
+      
+            // set the questionnaire object for PUT req
+            updateQuestionnaire = {
+              ...duplicatedQuestionnaire,
+              assignedAdminId: userInfo.userType,
+              assignedVendorId: selectedVendors.value
+            };
+          } catch (error) {
+            console.log("SOMETHING IS WRONG ")
+            console.log(error)
+          }
+      
+          // update the questionnaire object
+          try {
+            const response = await axios.put(`http://localhost:8080/api/v1/questionnaire/`, updateQuestionnaire);
+            console.log(response.data)
+          } catch (error) {
+            console.log("SIAN")
+            console.log(error)
+          }
+        }
+      }
+
+    const handleCreate = () => {
         console.log("INSIDE HANDLE CREATE");
 
         let isCreatingConditionSettled = false;
