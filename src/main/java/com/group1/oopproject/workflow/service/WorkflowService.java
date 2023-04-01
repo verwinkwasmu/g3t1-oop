@@ -7,10 +7,12 @@ import java.util.Optional;
 
 import com.group1.oopproject.archive.entity.ArchiveDocument;
 import com.group1.oopproject.archive.service.ArchiveService;
+import com.group1.oopproject.exception.QuestionnaireNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.mongodb.UncategorizedMongoDbException;
 import com.group1.oopproject.exception.DatabaseCommunicationException;
+import com.group1.oopproject.exception.QuestionnaireNotFoundException;
 import com.group1.oopproject.exception.WorkflowNotFoundException;
 import com.group1.oopproject.questionnaire.repository.QuestionnaireRepository;
 import com.group1.oopproject.workflow.entity.Workflow;
@@ -42,11 +44,17 @@ public class WorkflowService {
             for (Workflow workflow : workflows) {
                 List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
                 for (String questionnaireId : workflow.getQuestionnaireList()) {
-                    if (questionnaireId != null){
-                    Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
-                    Questionnaire questionnaire = optionalQuestionnaire.get();
-                    questionnaireList.add(questionnaire);
-                    workflow.setQuestionnaires(questionnaireList);
+                    try{
+                        if (questionnaireId != null){
+                            Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+                            Questionnaire questionnaire = optionalQuestionnaire.get();
+                            questionnaireList.add(questionnaire);
+                            workflow.setQuestionnaires(questionnaireList);    
+                    }
+
+                    }catch(Exception e){
+                        List<String> newQuestionnaireList = workflow.getQuestionnaireList();
+                        while(newQuestionnaireList.remove(questionnaireId));
                     }
                 }
             }
@@ -69,11 +77,16 @@ public class WorkflowService {
                 List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
                 if(assignedWorkflow.getQuestionnaireList()!= null){
                     for (String questionnaireId : assignedWorkflow.getQuestionnaireList()) {
-                        if (questionnaireId != null){
-                            Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
-                            Questionnaire questionnaire = optionalQuestionnaire.get();
-                            questionnaireList.add(questionnaire);
-                            assignedWorkflow.setQuestionnaires(questionnaireList);
+                        try{
+                            if (questionnaireId != null){
+                                Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+                                Questionnaire questionnaire = optionalQuestionnaire.get();
+                                questionnaireList.add(questionnaire);
+                                assignedWorkflow.setQuestionnaires(questionnaireList);
+                            }
+                        }catch(Exception e){
+                            List<String> newQuestionnaireList = assignedWorkflow.getQuestionnaireList();
+                            while(newQuestionnaireList.remove(questionnaireId));
                         }
                     }
                 }
@@ -98,11 +111,16 @@ public class WorkflowService {
                 List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
                 if(assignedWorkflow.getQuestionnaireList()!= null){
                     for (String questionnaireId : assignedWorkflow.getQuestionnaireList()) {
-                        if (questionnaireId != null){
-                            Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
-                            Questionnaire questionnaire = optionalQuestionnaire.get();
-                            questionnaireList.add(questionnaire);
-                            assignedWorkflow.setQuestionnaires(questionnaireList);
+                        try{
+                            if (questionnaireId != null){
+                                Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+                                Questionnaire questionnaire = optionalQuestionnaire.get();
+                                questionnaireList.add(questionnaire);
+                                assignedWorkflow.setQuestionnaires(questionnaireList);
+                            }
+                        }catch(Exception e){
+                            List<String> newQuestionnaireList = assignedWorkflow.getQuestionnaireList();
+                            while(newQuestionnaireList.remove(questionnaireId));
                         }
                     }
                 }
@@ -125,10 +143,17 @@ public class WorkflowService {
             Workflow workflow = optionalWorkflow.get();
             List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
             for (String questionnaireId : workflow.getQuestionnaireList()) {
+                try{
+                    if (questionnaireId != null){
+
                 Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
                 Questionnaire questionnaire = optionalQuestionnaire.get();
                 questionnaireList.add(questionnaire);
                 workflow.setQuestionnaires(questionnaireList);
+                    }}catch(Exception e){
+                        List<String> newQuestionnaireList = workflow.getQuestionnaireList();
+                            while(newQuestionnaireList.remove(questionnaireId));
+                    }
             }
 
             return workflow;
@@ -146,10 +171,19 @@ public class WorkflowService {
             AssignedWorkflow assignedWorkflow = optionalAssignedWorkflow.get();
             List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
             for (String questionnaireId : assignedWorkflow.getQuestionnaireList()) {
-                Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
-                Questionnaire questionnaire = optionalQuestionnaire.get();
-                questionnaireList.add(questionnaire);
-                assignedWorkflow.setQuestionnaires(questionnaireList);
+                if(questionnaireId != null){
+                    try{
+                        Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+                        Questionnaire questionnaire = optionalQuestionnaire.get();
+                        questionnaireList.add(questionnaire);
+                        assignedWorkflow.setQuestionnaires(questionnaireList);
+                    }catch(Exception e){
+                        List<String> newQuestionnaireList = assignedWorkflow.getQuestionnaireList();
+                        while(newQuestionnaireList.remove(questionnaireId));
+                    }
+                    
+                }
+               
             }
 
             return assignedWorkflow;
@@ -281,6 +315,31 @@ public class WorkflowService {
             e); 
         }
     }
+
+    public boolean checkQuestionnaireInWorkflows(String qnId) {
+        try {
+            List<Workflow> workflows = workflowRepository.findAll();
+            if (workflows.isEmpty()) {
+                throw new WorkflowNotFoundException("No workflows found in the database");
+            }
+
+            for (Workflow workflow : workflows) {
+                for (String questionnaireId : workflow.getQuestionnaireList()) {
+                    if (questionnaireId.equals(qnId)){
+                        throw new QuestionnaireNotFoundException("Questionnaire exists in workflow!");
+                    }
+                }
+            }
+            return false;
+        } catch (WorkflowNotFoundException | QuestionnaireNotFoundException e) {
+            return true;
+//            throw e;
+        } catch (Exception e) {
+            return true;
+//            throw new DatabaseCommunicationException("Error communicating with database for method findAllWorkflows", e);
+        }
+    }
+
 
 
 }
