@@ -58,7 +58,11 @@ function CreateWorkflow() {
             temp.push(element.value);
         }
 
-        createWorkflowTemplate({ workflowName: workflowName, workflowDescription: workflowDescription, questionnaireList: temp })
+        createWorkflowTemplate({ 
+            workflowName: workflowName, 
+            workflowDescription: workflowDescription, 
+            questionnaireList: temp 
+        })
             .then(function (response) {
                 window.location.reload(false)
             })

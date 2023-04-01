@@ -67,7 +67,7 @@ function App() {
           <Route path="/forms" element={<FormDash />} />
           <Route path="/accounts" element={<AccountDash />} />
           <Route path="/accounts/:id" element={<AccountView />} />
-          
+
           <Route path="/questionnaires" element={<FormDash />} />
           <Route
             path="/questionnaires/create-questionnaire"
@@ -101,7 +101,7 @@ function App() {
             element={<ViewQuestionnaireIndiv />}
           />
 
-          
+
 
           <Route path="/approver/:id/userId" element={<ViewWorkflow />} />
         </Route>

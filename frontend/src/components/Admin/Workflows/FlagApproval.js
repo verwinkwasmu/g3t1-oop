@@ -12,7 +12,6 @@ export default function FlagApproval(props) {
       console.log("TRUE");
       setChecker(true);
       workflow.questionnaires.map((questionnaire, index) => {
-        console.log("yoyoyo", questionnaire.status);
         if (questionnaire.status != "ADMIN_APPROVED") {
           setChecker(false);
         }
@@ -30,10 +29,7 @@ export default function FlagApproval(props) {
 
   return (
     <>
-      <label
-        htmlFor="updateWorkflow"
-        className="btn bg-red border-transparent rounded-full mr-2"
-      >
+      <label htmlFor="updateWorkflow" className="btn bg-red border-transparent rounded-full mr-2">
         <AiOutlineFlag size={20} className="mr-3"></AiOutlineFlag>
         Flag Approval
       </label>
@@ -41,10 +37,7 @@ export default function FlagApproval(props) {
       <input type="checkbox" id="updateWorkflow" className="modal-toggle" />
       <div className="modal">
         <div className="modal-box max-w-2xl relative py-12 px-20">
-          <label
-            htmlFor="updateWorkflow"
-            className="btn btn-sm btn-circle bg-red border-transparent absolute right-20 top-12"
-          >
+          <label htmlFor="updateWorkflow" className="btn btn-sm btn-circle bg-red border-transparent absolute right-20 top-12">
             ✕
           </label>
           <h1 className="text-3xl mb-3 font-semibold text-blue">
@@ -53,19 +46,13 @@ export default function FlagApproval(props) {
           <form>
             {checker ? (
               <div className="mb-4">
-                <label
-                  className="block text-gray-700 text-lg font-thin my-7 text-center"
-                  htmlFor="userid"
-                >
+                <label className="block text-gray-700 text-lg font-thin my-7 text-center" htmlFor="userid">
                   Are you sure you want to flag this workflow for approval?
                 </label>
               </div>
             ) : (
               <div className="mb-4">
-                <label
-                  className="block text-gray-700 text-lg font-thin my-7 text-center"
-                  htmlFor="userid"
-                >
+                <label className="block text-gray-700 text-lg font-thin my-7 text-center" htmlFor="userid">
                   All questionnaires must be admin approved to be flagged!
                 </label>
               </div>

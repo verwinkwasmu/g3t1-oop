@@ -30,8 +30,10 @@ function WorkflowTemplateView() {
 
                 const temp = [];
                 for (const index in response.data.questionnaires) {
-                    temp.push([response.data.questionnaires[index].id, response.data.questionnaires[index].title]);
-                    console.log("HI HELP")
+                    temp.push(
+                        [response.data.questionnaires[index].id, 
+                        response.data.questionnaires[index].title]
+                    );
                 }
                 setQuestionnaireTitles(temp);
                 // console.log(questionnaireTitles[0])
@@ -83,9 +85,6 @@ function WorkflowTemplateView() {
                                                         <Link to={`/questionnaires/view-questionnaire-indiv/${questionnaireTitle[0]}`}>
                                                             View Questionnaire
                                                         </Link>
-                                                        {/* <Link to={`/questionnaires/view-indiv-questionnaire/${questionnaireTitle[0]}`}>
-                                                            Edit Questionnaire
-                                                        </Link> */}
                                                     </div>
                                                 )}
                                             </tbody>

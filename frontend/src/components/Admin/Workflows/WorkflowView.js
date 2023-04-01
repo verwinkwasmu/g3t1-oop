@@ -16,22 +16,6 @@ function WorkflowView() {
     const workflow = location.state.workflow;
     const [workflowAssignedUsers, setWorkflowAssignedUsers] = useState([]);
 
-    console.log("in indiv workflow assigned view?")
-
-    // useEffect(() => {
-    //     getIndividualAssignedWorkflow(workflow.id)
-    //         .then(function (response) {
-    //             // console.log(response.data)
-    //             if (response.data.length > 0) {
-    //                 setWorkflowAssignedUsers(response.data)
-    //             } else {
-    //                 setWorkflowAssignedUsers([])
-    //             }
-    //         })
-
-    //     // eslint-disable-next-line
-    // }, [])
-
     return (
         <>
             <div className="rounded-t-3xl mx-10 mt-10 h-screen py-8 px-20 shadow-2xl">

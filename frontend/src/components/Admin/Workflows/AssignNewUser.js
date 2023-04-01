@@ -33,14 +33,9 @@ function AssignNewUser(props) {
     const [questionnaireDeadlines, setQuestionnaireDeadlines] = useState([]);
     const [values, setValues] = useState([]);
 
-    // const [questionnaireIds, setQuestionnaireIds] = useState([])
     const [duplicatedQuestionnaire, setDuplicatedQuestionnaire] = useState([])
 
-
-    // get current admin id
     const user = useToken().token;
-
-
 
     useEffect(() => {
         getVendors()
@@ -174,14 +169,14 @@ function AssignNewUser(props) {
         }
 
         createWorkflowAssigned({
-            "workflowName": workflowName,
-            "workflowDescription": workflowDescription,
-            "questionnaireList": questionnaireIds,
-            "assignedAdminId": token[0],
-            "assignedVendorId": selectedVendors.value,
-            "approvalRequestDate": null,
-            "approverReviewStatus": "INITIAL_DRAFT",
-            "approvedAt": null
+            workflowName: workflowName,
+            workflowDescription: workflowDescription,
+            questionnaireList: questionnaireIds,
+            assignedAdminId: token[0],
+            assignedVendorId: selectedVendors.value,
+            approvalRequestDate: null,
+            approverReviewStatus: "INITIAL_DRAFT",
+            approvedAt: null
         })
             .then(function (response) {
                 console.log(response.data.id)

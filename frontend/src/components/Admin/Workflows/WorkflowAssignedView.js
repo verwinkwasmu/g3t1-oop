@@ -45,7 +45,11 @@ function WorkflowAssignedView() {
 
                 const temp = [];
                 for (const index in response.data.questionnaires) {
-                    temp.push([response.data.questionnaires[index].id, response.data.questionnaires[index].title, response.data.questionnaires[index].status]);
+                    temp.push(
+                        [response.data.questionnaires[index].id, 
+                        response.data.questionnaires[index].title, 
+                        response.data.questionnaires[index].status]
+                    );
                 }
                 setQuestionnaireTitles(temp);
             })
@@ -92,7 +96,6 @@ function WorkflowAssignedView() {
         <>
             <div className="rounded-t-3xl mx-10 mt-10 h-screen py-8 px-20 shadow-2xl">
                 <div className="bg-white h-full overflow-y-auto">
-
                     <div className="flex flex-wrap mt-10 mb-6">
                         <div className="mr-3">
                             <IoGitPullRequestOutline size={70} color="3278AE" />
@@ -103,7 +106,7 @@ function WorkflowAssignedView() {
                         </div>
                         <div className="flex mt-5">
                             <span hidden={token[1] == "ADMIN" ? false : true}>
-                                <AssignNewUser workflow={workflowsData} render="assigned"></AssignNewUser>
+                                <UpdateWorkflow workflow={workflowsData} render="assigned"></UpdateWorkflow>
                                 <FlagApproval workflow={workflowsData}></FlagApproval>
                                 <DeleteWorkflow workflow={workflowsData} render="assigned"></DeleteWorkflow>
                             </span>
