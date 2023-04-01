@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 
 import CreateWorkflow from "./CreateWorkflow"
-import { getWorkflows, getAssignedWorkflows } from '../../../apiCalls';
+import { getWorkflows, getAssignedWorkflows, getAssignedWorkflowsByVendorId } from '../../../apiCalls';
 import useToken from '../../../useToken';
 
 function WorkflowDash() {
@@ -12,8 +12,6 @@ function WorkflowDash() {
     const [workflowsData, setWorkflowsData] = useState([]);
     const [render, setRender] = useState("");
     const token = useToken().token
-    console.log("TOKEN")
-    console.log(token)
 
     useEffect(() => {
         document.title = 'Workflows Dashboard'
@@ -54,15 +52,28 @@ function WorkflowDash() {
         console.log("RENDER ASSIGNED")
         setRender("Assigned");
 
-        getAssignedWorkflows()
-            .then(function (response) {
-                // console.log(response.data)
-                if (response.data.length > 0) {
-                    setWorkflowsData(response.data)
-                } else {
-                    setWorkflowsData([])
-                }
-            })
+        if (token[1] == "ADMIN") {
+            getAssignedWorkflows()
+                .then(function (response) {
+                    // console.log(response.data)
+                    if (response.data.length > 0) {
+                        setWorkflowsData(response.data)
+                    } else {
+                        setWorkflowsData([])
+                    }
+                })
+        }
+        else {
+            getAssignedWorkflowsByVendorId(token[0])
+                .then(function (response) {
+                    // console.log(response.data)
+                    if (response.data.length > 0) {
+                        setWorkflowsData(response.data)
+                    } else {
+                        setWorkflowsData([])
+                    }
+                })
+        }
     }
 
     const toWorkflowView = (workflow) => {
@@ -74,14 +85,6 @@ function WorkflowDash() {
         else {
             navigate(`/workflow-assigned/${workflow.id}`, { state: { workflowId: workflow.id } });
         }
-    }
-
-    const check = () => {
-        if (render=="Templates" && token.userType=="ADMIN") {
-            console.log("yes templates and yes admin")
-            return true
-        }
-        return false
     }
 
     return (
@@ -105,7 +108,9 @@ function WorkflowDash() {
                             </div>
                         </div>
                         <div className="flex">
-                            {render==check() ? <CreateWorkflow></CreateWorkflow> : null}
+                            <span hidden={token[1] == "ADMIN" && render == "Templates" ? false : true}>
+                                <CreateWorkflow></CreateWorkflow>
+                            </span>
                         </div>
                     </div>
                     <div className="grid grid-rows-3 grid-cols-4 gap-x-4 gap-y-8 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
@@ -114,7 +119,7 @@ function WorkflowDash() {
                                 <figure><img src="https://startinfinity.s3.us-east-2.amazonaws.com/production/blog/post/17/main/GeiehNbQ1t86Mg5zKnEgucWslfZXTckjj8mSDV2O.png" alt="workflow description" /></figure>
                                 <div className="card-body m-1.5">
                                     <h2 className="card-title">{workflow.workflowName}</h2>
-                                    {render=="Templates" ? <p className="text-base text-md">{workflow.workflowDescription}</p> : <p className="text-base text-md">Assigned Vendor ID: {workflow.assignedVendorId}<br/>Assigned Admin ID: {workflow.assignedAdminId}</p>}
+                                    {render == "Templates" ? <p className="text-base text-md">{workflow.workflowDescription}</p> : <p className="text-base text-md">Assigned Vendor ID: {workflow.assignedVendorId}<br />Assigned Admin ID: {workflow.assignedAdminId}</p>}
                                     <div className="card-actions justify-end">
                                         <button className="btn bg-blue hover:bg-cyan border-transparent hover:border-transparent" onClick={() => { toWorkflowView(workflow) }}>See Workflow</button>
                                     </div>
@@ -124,7 +129,7 @@ function WorkflowDash() {
                     </div>
                 </div>
             </div>
-            
+
         </>
 
     )

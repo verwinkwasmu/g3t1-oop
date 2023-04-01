@@ -97,6 +97,7 @@ export function updateVendor(data) {
 
 // WORKFLOW MANAGEMENT
 
+// TEMPLATES
 export function getWorkflows() {
   return axiosClient.get("/api/v1/workflow");  
 }
@@ -105,19 +106,19 @@ export function getIndividualTemplateWorkflow(id) {
   return axiosClient.get(`/api/v1/workflow/${id}`);  
 }
 
-export function getIndividualAssignedWorkflow(id) {
-  return axiosClient.get(`/api/v1/workflow/assigned/${id}`);  
+export function createWorkflowTemplate(data) { 
+  return axiosClient.post("/api/v1/workflow", JSON.stringify(data));  
 }
 
 export function updateIndividualTemplateWorkflow(data) {
   return axiosClient.put("/api/v1/workflow", JSON.stringify(data));  
 }
 
-export function updateIndividualAssignedWorkflow(data) {
-  console.log(JSON.stringify(data))
-  return axiosClient.put("/api/v1/workflow/assigned", JSON.stringify(data));  
+export function deleteWorkflow(id, userId) { // unique ID
+  return axiosClient.delete(`/api/v1/workflow/delete/${id}/${userId}`);  
 }
 
+// ASSIGNED
 export function getAssignedWorkflows() {
   return axiosClient.get("/api/v1/workflow/assigned");  
 }
@@ -130,10 +131,6 @@ export function getAssignedWorkflowsByStatus(data){
   return axiosClient.get(`/api/v1/workflow/assigned/status/${data}`)
 }
 
-export function getWorkflowsByVendor(id) {
-  return axiosClient.get(`/api/v1/workflow/assigned/vendor/${id}`);  
-}
-
 export function getAssignedWorkflowsByAdminId(id) {
   return axiosClient.get(`/api/v1/workflow/assigned/admin/${id}`);  
 }
@@ -142,17 +139,14 @@ export function getAssignedWorkflowsByVendorId(id) {
   return axiosClient.get(`/api/v1/workflow/assigned/vendor/${id}`);  
 }
 
-export function createWorkflowTemplate(data) { 
-  return axiosClient.post("/api/v1/workflow", JSON.stringify(data));  
-}
-
 export function createWorkflowAssigned(data) { 
   console.log(JSON.stringify(data))
   return axiosClient.post("/api/v1/workflow/assigned", JSON.stringify(data));  
 }
 
-export function deleteWorkflow(id, userId) { // unique ID
-  return axiosClient.delete(`/api/v1/workflow/delete/${id}/${userId}`);  
+export function updateIndividualAssignedWorkflow(data) {
+  console.log(JSON.stringify(data))
+  return axiosClient.put("/api/v1/workflow/assigned", JSON.stringify(data));  
 }
 
 export function deleteAssignedWorkflow(id, userId) { // unique ID

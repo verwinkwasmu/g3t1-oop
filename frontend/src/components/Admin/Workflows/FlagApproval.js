@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import { AiOutlineDelete } from "react-icons/ai";
+import { AiOutlineDelete, AiOutlineFlag } from "react-icons/ai";
 
 import { updateIndividualAssignedWorkflow } from "../../../apiCalls";
 
@@ -34,7 +34,7 @@ export default function FlagApproval(props) {
         htmlFor="updateWorkflow"
         className="btn bg-red border-transparent rounded-full mr-2"
       >
-        <AiOutlineDelete size={20} className="mr-3"></AiOutlineDelete>
+        <AiOutlineFlag size={20} className="mr-3"></AiOutlineFlag>
         Flag Approval
       </label>
 

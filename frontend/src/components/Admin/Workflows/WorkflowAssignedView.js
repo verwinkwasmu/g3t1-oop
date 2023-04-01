@@ -9,30 +9,32 @@ import AssignNewUser from './AssignNewUser';
 import UpdateWorkflow from './UpdateWorkflow';
 import FlagApproval from './FlagApproval';
 import { getIndividualAssignedWorkflow } from '../../../apiCalls';
+import useToken from '../../../useToken';
 
 function WorkflowAssignedView() {
     console.log("IN ASSIGNED VIEW?")
 
     const navigate = useNavigate();
     const location = useLocation();
+    const token = useToken().token
 
     const workflowId = location.state.workflowId;
     const [workflowsData, setWorkflowsData] = useState([]);
     const [questionnaireTitles, setQuestionnaireTitles] = useState([]);
     const [workflowAssignedUsers, setWorkflowAssignedUsers] = useState([]);
 
-
-    console.log('I WANT MY STATE TO WORK')
     console.log(workflowId)
 
     const handleViewClick = (questionnaireId) => {
-        navigate(`/questionnaires/view-indiv-questionnaire/${questionnaireId}`, 
-        { state: {   
-            workflowId: workflowId,
-            fromAssigned: "fromAssigned",
-            questionnaireId: questionnaireId
+        navigate(`/questionnaires/view-indiv-questionnaire/${questionnaireId}`,
+            {
+                state: {
+                    workflowId: workflowId,
+                    fromAssigned: "fromAssigned",
+                    questionnaireId: questionnaireId
 
-        }});    
+                }
+            });
     }
 
     useEffect(() => {
@@ -51,16 +53,16 @@ function WorkflowAssignedView() {
     }, [])
 
     const checkStatusSteps = (status) => {
-        if (status=="SUBMITTED") {
+        if (status == "SUBMITTED") {
             return "step step-primary"
         }
-        else if (status=="ADMIN_APPROVED") {
+        else if (status == "ADMIN_APPROVED") {
             return "step step-secondary"
         }
-        else if (status=="RETURNED") {
+        else if (status == "RETURNED") {
             return "step step-error"
         }
-        else if (status=="APPROVER_APPROVED") {
+        else if (status == "APPROVER_APPROVED") {
             return "step step-accent"
         }
         else {
@@ -69,16 +71,16 @@ function WorkflowAssignedView() {
     }
 
     const checkStatusBadge = (status) => {
-        if (status=="SUBMITTED") {
+        if (status == "SUBMITTED") {
             return "badge badge-primary"
         }
-        else if (status=="ADMIN_APPROVED") {
+        else if (status == "ADMIN_APPROVED") {
             return "badge badge-secondary"
         }
-        else if (status=="RETURNED") {
+        else if (status == "RETURNED") {
             return "badge badge-error"
         }
-        else if (status=="APPROVER_APPROVED") {
+        else if (status == "APPROVER_APPROVED") {
             return "badge badge-accent"
         }
         else {
@@ -100,9 +102,11 @@ function WorkflowAssignedView() {
                             <h2 className="text-3xl font-semibold text-blue">{workflowsData.workflowName}</h2>
                         </div>
                         <div className="flex mt-5">
-                            <UpdateWorkflow workflow={workflowsData} render="assigned"></UpdateWorkflow>
-                            <DeleteWorkflow workflow={workflowsData} assigned={true} render="assigned"></DeleteWorkflow>
-                            <FlagApproval workflow={workflowsData} />
+                            <span hidden={token[1] == "ADMIN" ? false : true}>
+                                <AssignNewUser workflow={workflowsData} render="assigned"></AssignNewUser>
+                                <FlagApproval workflow={workflowsData}></FlagApproval>
+                                <DeleteWorkflow workflow={workflowsData} render="assigned"></DeleteWorkflow>
+                            </span>
                         </div>
                     </div>
                     <div className="grid grid-rows-1 grid-cols-4 gap-x-2 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
@@ -147,8 +151,8 @@ function WorkflowAssignedView() {
                                     <div className="text-left text-blue">
                                         <table>
                                             <tbody>
-                                                <tr className="card-title mb-2 text-lg font-normal">Vendor ID: {workflowsData.assignedVendorId!=null ? workflowsData.assignedVendorId : "Not Assigned"}</tr>
-                                                <tr className="card-title mb-2 text-lg font-normal">Admin ID: {workflowsData.assignedAdminId!=null ? workflowsData.assignedAdminId : "Not Assigned"}</tr>
+                                                <tr className="card-title mb-2 text-lg font-normal">Vendor ID: {workflowsData.assignedVendorId != null ? workflowsData.assignedVendorId : "Not Assigned"}</tr>
+                                                <tr className="card-title mb-2 text-lg font-normal">Admin ID: {workflowsData.assignedAdminId != null ? workflowsData.assignedAdminId : "Not Assigned"}</tr>
                                             </tbody>
                                         </table>
                                     </div>
