@@ -18,6 +18,7 @@ function AssignNewUser(props) {
     const questionnaireList = workflowData.questionnaireList
     const questionnaires = workflowData.questionnaires
     var questionnairesInput = []
+    const token = useToken().token
 
     for (var index in questionnaires) {
         delete questionnaires[index].id
@@ -176,10 +177,10 @@ function AssignNewUser(props) {
             "workflowName": workflowName,
             "workflowDescription": workflowDescription,
             "questionnaireList": questionnaireIds,
-            "assignedAdminId": "temp",
+            "assignedAdminId": token[0],
             "assignedVendorId": selectedVendors.value,
             "approvalRequestDate": null,
-            "approverReviewStatus": null,
+            "approverReviewStatus": "INITIAL_DRAFT",
             "approvedAt": null
         })
             .then(function (response) {
