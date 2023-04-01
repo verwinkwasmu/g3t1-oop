@@ -53,7 +53,7 @@ function CreateVendorAccount() {
             <div className="modal">
                 <div className="modal-box max-w-5xl relative py-12 px-20">
                 <label htmlFor="CreateVendorAccount" className="btn btn-sm btn-circle bg-red border-transparent absolute right-20 top-12">✕</label>
-                    <h1 className="text-3xl mb-3 font-semibold text-blue">Add New Account</h1>
+                    <h1 className="text-3xl mb-3 font-semibold text-blue">Add New Vendor</h1>
                     <form>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div id="userDetails">

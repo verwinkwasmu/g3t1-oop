@@ -60,6 +60,9 @@ function App() {
           />
 
           <Route path="/accounts" element={<AccountDash />} />
+          <Route path="/workflows/:id" element={<WorkflowView />} />
+          <Route path="/forms" element={<FormDash />} />
+          <Route path="/accounts" element={<AccountDash />} />
           <Route path="/accounts/:id" element={<AccountView />} />
           
           <Route path="/questionnaires" element={<FormDash />} />

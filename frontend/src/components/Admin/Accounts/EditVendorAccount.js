@@ -18,6 +18,7 @@ function EditVendorAccount(props) {
     const [password, setPassword] = useState(props.account.password);
 
     const [companyName, setCompanyName] = useState(props.account.companyName);
+    const [country, setCountry] = useState(props.account.country);
     const [regNumber, setRegNumber] = useState(props.account.regNumber);
     const [bizNature, setBizNature] = useState(props.account.bizNature);
     const [gstNumber, setGstNumber] = useState(props.account.gstnumber);
@@ -105,6 +106,17 @@ function EditVendorAccount(props) {
                                 Company Name
                             </label>
                             <input defaultValue={companyName} onChange={e => setCompanyName(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="companyName" type="text"/>
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="companyName">
+                                Country of Operation
+                            </label>
+                            <select onChange={e => setCountry(e.target.value)} className="select select-bordered shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                <option selected={country == "Singapore" ? true : false}>Singapore</option>
+                                <option selected={country == "USA" ? true : false}>USA</option>
+                                <option selected={country == "China" ? true : false}>China</option>
+                                <option selected={country == "Russia" ? true : false}>Russia</option>
+                            </select>     
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="regNumber">

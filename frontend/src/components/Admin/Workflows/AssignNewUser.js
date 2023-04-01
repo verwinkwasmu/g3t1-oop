@@ -4,18 +4,40 @@ import { React, useState, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import Select from 'react-select'
 
-import { createWorkflowAssigned, getVendors } from '../../../apiCalls';
+import { createWorkflowAssigned, createQuestionnaire, getVendors } from '../../../apiCalls';
 
 function AssignNewUser(props) {
-    console.log(props)
+    console.log("ASSIGN NEW USER")
+
+    const navigate = useNavigate();
+
+    const workflowData = props.workflow
+    const workflowName = workflowData.workflowName
+    const workflowDescription = workflowData.workflowDescription
+    const questionnaireList = workflowData.questionnaireList
+    // console.log(questionnaireList)
+    const questionnaires = workflowData.questionnaires
+    var questionnairesInput = []
+
+    for (var index in questionnaires) {
+        // console.log(questionnaires[index])
+        // console.log("BEFORE DELETE")
+        // console.log(questionnaires[index])
+        delete questionnaires[index].id
+        delete questionnaires[index].createdAt
+        // console.log("AFTER DELETE")
+        // console.log(questionnaires[index])
+        questionnairesInput.push(questionnaires[index])
+    }
+
     const [vendors, setVendors] = useState([]);
     const [vendorOptions, setVendorOptions] = useState();
     const [selectedVendors, setSelectedVendors] = useState("");
+    // const [questionnaireIds, setQuestionnaireIds] = useState([])
 
     useEffect(() => {
         getVendors()
             .then(function (response) {
-                console.log(response.data)
                 setVendors(response.data)
 
                 const selectOptions = [];
@@ -40,22 +62,67 @@ function AssignNewUser(props) {
         setSelectedVendors(data);
     }
 
-    // const handleCreate = () => {
-    //     console.log("INSIDE HANDLE CREATE");
+    const handleQuestionnaires = () => {
+        console.log("HANDLE QUESTIONNAIRE")
 
-    //     const temp = [];
-    //     for (const element of selectedVendors) {
-    //         temp.push(element.value);
-    //     }
+        const output = []
 
-    //     createWorkflowAssigned({ workflowName: props.workflowName, workflowList: temp })
-    //         .then(function (response) {
-    //             navigate('/workflows');
-    //         })
-    //         .catch(function (error) {
-    //             console.log("ERROR CREATING WORKFLOW")
-    //         })
+        for (const questionnaire of questionnairesInput) {
+ 
+            createQuestionnaire(questionnaire)
+                .then(function (response) {
+                    output.push(response.data.id)
+                    
+                })
+                .catch(function (error) {
+                    console.log("ERROR CREATING QUESTIONNAIRE")
+                })
+        }
+
+        return output
+    }
+
+    // const handleQuestionnaires = () => {
+    //     console.log("HANDLE QUESTIONNAIRE")
+    
+    //     const promises = questionnairesInput.map(questionnaire => createQuestionnaire(questionnaire));
+    //     return Promise.all(promises)
+    //         .then(responses => responses.map(response => response.data.id),
+
+    //         )
+
+    //         .catch(error => {
+    //             console.log("ERROR CREATING QUESTIONNAIRE")
+    //             return [];
+    //         });
     // }
+
+
+    
+
+    const handleCreate = () => {
+        console.log("INSIDE HANDLE CREATE");
+
+        const questionnaireIds = handleQuestionnaires()
+        
+        createWorkflowAssigned({ 
+            "workflowName": workflowName, 
+            "workflowDescription": workflowDescription, 
+            "questionnaireList": questionnaireIds, 
+            "assignedAdminId": "temp", 
+            "assignedVendorId": selectedVendors.value, 
+            "approvalRequestDate": null, 
+            "approverReviewStatus": null, 
+            "approvedAt": null 
+        })
+            .then(function (response) {
+                console.log(response.data.id)
+                navigate(`/workflow-assigned/${response.data.id}`, { state: { workflowId: response.data.id } });
+            })
+            .catch(function (error) {
+                console.log("ERROR CREATING WORKFLOW")
+            })
+    }
 
     return (
         <>
@@ -72,9 +139,8 @@ function AssignNewUser(props) {
                     <form>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="userid">
-                                User ID
+                                Vendor
                             </label>
-                            {/* <input className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="userid" type="text" /> */}
                             <Select
                                 options={vendorOptions}
                                 placeholder={"Choose Vendor"}
@@ -85,7 +151,7 @@ function AssignNewUser(props) {
                             />
                         </div>
                         <div className="flex justify-center">
-                            <label htmlFor="AssignNewUser" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" type="button" disabled={!validateForm()}>
+                            <label onClick={() => handleCreate()} htmlFor="AssignNewUser" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" type="button" disabled={!validateForm()}>
                                 Assign New User
                             </label>
                         </div>

@@ -93,7 +93,7 @@ function WorkflowDash() {
                             </div>
                         </div>
                         <div className="flex">
-                            <CreateWorkflow></CreateWorkflow>
+                            {render=="Templates" ? <CreateWorkflow></CreateWorkflow> : null}
                         </div>
                     </div>
                     <div className="grid grid-rows-3 grid-cols-4 gap-x-4 gap-y-8 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">

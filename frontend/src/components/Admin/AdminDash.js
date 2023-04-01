@@ -5,14 +5,19 @@ import { MdRemoveRedEye, MdEdit } from 'react-icons/md';
 
 import { getWorkflows, getAssignedWorkflowsByAdminId, getQuestionnaires } from '../../apiCalls';
 
+import useToken from '../../useToken';
+
 function AdminDash() {
 
     const navigate = useNavigate();
 
+    const accountId = useToken().token[0];
+    const accountType = useToken().token[1];
+
     useEffect(() => {
         document.title = 'Admin Dashboard'
 
-        getAssignedWorkflowsByAdminId('admin1')
+        getAssignedWorkflowsByAdminId(accountId)
             .then(function (response) {
                 // console.log(response.data)
                 if (response.data.length > 0) {
@@ -67,7 +72,7 @@ function AdminDash() {
 
     const toWorkflowView = (workflow) => {
         console.log("===== INSIDE toWorkflowView =====")
-        navigate(`/workflow-assigned/${workflow.id}`, { state: { workflow: workflow } });
+        navigate(`/workflow-assigned/${workflow.id}`, { state: { workflowId: workflow.id } });
     }
 
     const getWorkflowCompletion = (questionnaires) => {

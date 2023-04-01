@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import useToken from "../../useToken";
 
 
 const baseURL = "http://localhost:8080/api/v1/questionnaire";
@@ -10,6 +11,9 @@ function FormDash() {
 
     const [questionnaires, setQuestionnaireData] = useState([]);
     const [isLoading, setIsLoading] = useState(true)
+    const user = localStorage.getItem('token');
+
+    console.log("USER " + user)
 
 
     useEffect(() => {

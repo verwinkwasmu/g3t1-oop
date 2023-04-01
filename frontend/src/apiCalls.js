@@ -35,6 +35,15 @@ export default {
   axiosClient
 };
 
+// AUTHENTICATION
+
+export function loginUser(data) {
+  return axiosClient.post("/api/v1/users/login", JSON.stringify(data));  
+}
+
+export function loginVendor(data) {
+  return axiosClient.post("/api/v1/users/vendors/login", JSON.stringify(data));  
+}
 
 // ACCOUNT MANAGEMENT 
 
@@ -47,7 +56,7 @@ export function getVendors() {
 }
 
 export function getUsersByType(userType) { // ADMIN, APPROVER
-  return axiosClient.get(`/api/v1/users/${userType}`);  
+  return axiosClient.get(`/api/v1/users/type/${userType}`);  
 }
 
 export function getVendorsByCompany(companyName) { // {companyName}
@@ -96,10 +105,6 @@ export function getIndividualTemplateWorkflow(id) {
   return axiosClient.get(`/api/v1/workflow/${id}`);  
 }
 
-export function getIndividualAssignedWorkflow(id) {
-  return axiosClient.get(`/api/v1/workflow/assigned/${id}`);  
-}
-
 export function updateIndividualTemplateWorkflow(data) {
   return axiosClient.put("/api/v1/workflow", JSON.stringify(data));  
 }
@@ -111,6 +116,10 @@ export function updateIndividualAssignedWorkflow(data) {
 
 export function getAssignedWorkflows() {
   return axiosClient.get("/api/v1/workflow/assigned");  
+}
+
+export function getIndividualAssignedWorkflow(id) {
+  return axiosClient.get(`/api/v1/workflow/assigned/${id}`);  
 }
 
 export function getAssignedWorkflowsByStatus(data){
@@ -155,6 +164,9 @@ export function getIndividualQuestionnaire(id) {
   return axiosClient.get(`/api/v1/questionnaire/${id}`);  
 }
 
+export function createQuestionnaire(data) { 
+  return axiosClient.post("/api/v1/questionnaire/create", JSON.stringify(data));  
+}
 // ARCHIVE MANAGEMENT
 
 export function getArchiveByCollection(collection) {

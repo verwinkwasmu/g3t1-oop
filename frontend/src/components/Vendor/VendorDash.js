@@ -5,14 +5,19 @@ import { MdRemoveRedEye, MdEdit } from 'react-icons/md';
 
 import { getWorkflows, getAssignedWorkflowsByVendorId, getQuestionnaires } from '../../apiCalls';
 
+import useToken from '../../useToken';
+
 function VendorDash() {
 
     const navigate = useNavigate();
 
+    const accountId = useToken().token[0];
+    const accountType = useToken().token[1];
+
     useEffect(() => {
         document.title = 'User Dashboard'
 
-        getAssignedWorkflowsByVendorId('vendor1')
+        getAssignedWorkflowsByVendorId(accountId)
             .then(function (response) {
                 // console.log(response.data)
                 if (response.data.length > 0) {
