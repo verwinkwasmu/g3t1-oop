@@ -10,7 +10,6 @@ import {
 } from "../../../apiCalls";
 import useToken from "../../../useToken";
 import axios from "axios";
-import CreationSuccess from "./CreationSuccess";
 
 function AssignNewUser(props) {
   console.log("ASSIGN NEW USER");
@@ -222,7 +221,6 @@ function AssignNewUser(props) {
                 Assign New User
               </label>
             </div>
-            <CreationSuccess workflowName={workflowName}></CreationSuccess>
           </form>
         </div>
       </div>

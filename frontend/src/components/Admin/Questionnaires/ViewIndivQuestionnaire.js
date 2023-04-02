@@ -5,6 +5,8 @@ import { IoGitPullRequestOutline } from 'react-icons/io5';
 import { getIndividualAssignedWorkflow } from '../../../apiCalls';
 import { Link } from "react-router-dom";
 import useToken from "../../../useToken";
+import { MdHomeFilled, MdChecklist, MdDescription, MdGroup } from "react-icons/md";
+
 
 // VIEWS ASSIGNED QUESTIONNAIRES FROM ASSIGNED WORKFLOWS 
 
@@ -185,8 +187,10 @@ export default function ViewIndivQuestionnaire(props) {
                             </div>
 
 
-                            <div className="card w-[35rem] bg-base-100 ml-3 drop-shadow-xl">
-                                <div>
+                            <div className="card w-full h-full bg-base-100 drop-shadow-xl flex justify-center">
+                                <div class="flex-col text-center">
+
+                                <div >
                                     <div>
                                         <h2 className="text-xl font-semibold text-blue">{questionnaire.title}</h2>
                                         <span className={checkStatusBadge(questionnaire.status)}>{questionnaire.status}</span>
@@ -206,7 +210,7 @@ export default function ViewIndivQuestionnaire(props) {
                                         const hasAnswers = question.answers && question.answers.length > 0;
                                         return (
                                             <li key={questionId}>
-                                            <p>Question: {question.prompt}</p>
+                                            <h2 className="text-2xl text-blue" style={{ lineHeight: '1.5' }}>{question.prompt}</h2>
                                             {question.options.length > 0 && (
                                                 <ul>
                                                 {question.options.map((option, index) => (
@@ -258,6 +262,9 @@ export default function ViewIndivQuestionnaire(props) {
                                 </div>
                             </div>
                         </div>   
+
+                    </div>
+                                
                     )}
                     {(user[1] == "ADMIN" || user[1] == "APPROVER")  && (
                         <div className="flex flex-wrap mt-10 mb-6">

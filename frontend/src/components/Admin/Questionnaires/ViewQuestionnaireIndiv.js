@@ -82,15 +82,15 @@ const ViewQuestionnaireIndiv = () => {
         <div className="rounded-t-3xl mx-10 mt-10 h-screen py-8 px-20 shadow-2xl">
             <div className="bg-white">
             <div className="flex flex-wrap mt-10 mb-6">
-            <div className="mr-3">
-                <MdDescription size={50} color="3278AE" />
-            </div>
-            <div className="flex-auto">
-                {/* <p className="font-thin mt-1">ID: {workflowId}</p> */}
-                <h2 className="text-3xl font-semibold text-blue">{questionnaire.title}</h2>
-                <span className={checkStatusBadge(questionnaire.status)}>{questionnaire.status}</span>
+                <div className="mr-3">
+                    <MdDescription size={50} color="3278AE" />
+                </div>
+                <div className="flex-auto">
+                    {/* <p className="font-thin mt-1">ID: {workflowId}</p> */}
+                    <h2 className="text-3xl font-semibold text-blue">{questionnaire.title}</h2>
+                    <span className={checkStatusBadge(questionnaire.status)}>{questionnaire.status}</span>
 
-            </div>
+                </div>
 
             <div className="card w-[35rem] bg-base-100 ml-3">
                 <div className="card w-150 px-10">
