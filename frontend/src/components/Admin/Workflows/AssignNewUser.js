@@ -3,9 +3,10 @@ import { AiOutlineUser } from "react-icons/ai";
 import { React, useState, useEffect, Component } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import Select from 'react-select'
-import { createWorkflowAssigned, createQuestionnaire, getVendors } from '../../../apiCalls'
-import useToken from '../../../useToken';
-import axios from 'axios'
+import axios from "axios";
+import useToken from "../../../useToken";
+
+import { createWorkflowAssigned, createQuestionnaire, getVendors } from '../../../apiCalls';
 
 function AssignNewUser(props) {
     console.log("ASSIGN NEW USER")

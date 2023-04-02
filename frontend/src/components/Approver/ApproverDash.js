@@ -30,7 +30,7 @@ function ApproverDash() {
 
     const toWorkflowView = (workflow) => {
         console.log("===== INSIDE toWorkflowView =====")
-        navigate(`/workflow-assigned/${workflow.id}`, { state: { workflow: workflow } });
+        navigate(`/workflow-assigned/${workflow.id}`, { state: { workflowId: workflow.id } });
     }
 
     return (
@@ -56,7 +56,11 @@ function ApproverDash() {
                                 <div className="card-body m-1.5">
                                     <h2 className="card-title">{workflow.workflowName}</h2>
                                     <p className="text-base">
-                                        Lorem Ipsum
+                                        Vendor: {workflow.assignedVendorId}
+                                        <br/>
+                                        Admin: {workflow.assignedAdminId}
+                                        <br/>
+                                        Flagged on: {workflow.approvalRequestDate}
                                     
                                     </p>
                                     <div className="card-actions justify-end">

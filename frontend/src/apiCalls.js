@@ -161,6 +161,14 @@ export function getIndividualQuestionnaire(id) {
   return axiosClient.get(`/api/v1/questionnaire/${id}`);  
 }
 
+export function getQuestionnairesByVendorId(id) {
+  return axiosClient.get(`/api/v1/questionnaire/vendor/${id}`)
+}
+
+export function getQuestionnairesByAdminId(id) {
+  return axiosClient.get(`/api/v1/questionnaire/admin/${id}`)
+}
+
 export function createQuestionnaire(data) { 
   return axiosClient.post("/api/v1/questionnaire/create", JSON.stringify(data));  
 }

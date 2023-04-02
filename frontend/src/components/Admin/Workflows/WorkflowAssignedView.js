@@ -8,6 +8,7 @@ import DeleteWorkflow from './DeleteWorkflow';
 import AssignNewUser from './AssignNewUser';
 import UpdateWorkflow from './UpdateWorkflow';
 import FlagApproval from './FlagApproval';
+import SubmitReview from '../../Approver/SubmitReview';
 import SaveWorkflowAsPDF from './SaveWorkflowAsPDF';
 import { getIndividualAssignedWorkflow } from '../../../apiCalls';
 
@@ -118,6 +119,9 @@ function WorkflowAssignedView() {
                                 <FlagApproval workflow={workflowsData}></FlagApproval>
                                 <SaveWorkflowAsPDF workflow={workflowsData}></SaveWorkflowAsPDF>
                                 {approverReviewStatus != "FLAGGED" ? <DeleteWorkflow workflow={workflowsData} render="assigned"></DeleteWorkflow> : null}
+                            </span>
+                            <span hidden={token[1] == "APPROVER" ? false : true}>
+                                <SubmitReview workflow={workflowsData}/>
                             </span>
                         </div>
                     </div>
