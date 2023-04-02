@@ -9,11 +9,13 @@ import DeleteWorkflow from './DeleteWorkflow';
 import AssignNewUser from './AssignNewUser';
 import UpdateWorkflow from './UpdateWorkflow';
 import { getIndividualTemplateWorkflow } from '../../../apiCalls';
+import useToken from '../../../useToken';
 
 function WorkflowTemplateView() {
 
     const navigate = useNavigate();
     const location = useLocation();
+    const token = useToken().token
 
     const workflowId = location.state.workflowId;
     const [workflowsData, setWorkflowsData] = useState([]);
@@ -28,8 +30,10 @@ function WorkflowTemplateView() {
 
                 const temp = [];
                 for (const index in response.data.questionnaires) {
-                    temp.push([response.data.questionnaires[index].id, response.data.questionnaires[index].title]);
-                    console.log("HI HELP")
+                    temp.push(
+                        [response.data.questionnaires[index].id, 
+                        response.data.questionnaires[index].title]
+                    );
                 }
                 setQuestionnaireTitles(temp);
                 // console.log(questionnaireTitles[0])
@@ -40,7 +44,7 @@ function WorkflowTemplateView() {
     return (
         <>
             <div className="rounded-t-3xl mx-10 mt-10 h-screen py-8 px-20 shadow-2xl">
-                <div className="bg-white">
+                <div className="bg-white h-full overflow-y-auto">
 
                     <div className="flex flex-wrap mt-10 mb-6">
                         <div className="mr-3">
@@ -51,9 +55,11 @@ function WorkflowTemplateView() {
                             <h2 className="text-3xl font-semibold text-blue">{workflowsData.workflowName}</h2>
                         </div>
                         <div className="flex mt-5">
-                            <AssignNewUser workflow={workflowsData}></AssignNewUser>
-                            <UpdateWorkflow workflow={workflowsData} render="templates"></UpdateWorkflow>
-                            <DeleteWorkflow workflow={workflowsData} render="templates"></DeleteWorkflow>
+                            <span hidden={token[1] == "ADMIN" ? false : true}>
+                                <AssignNewUser workflow={workflowsData}></AssignNewUser>
+                                <UpdateWorkflow workflow={workflowsData} render="templates"></UpdateWorkflow>
+                                <DeleteWorkflow workflow={workflowsData} render="templates"></DeleteWorkflow>
+                            </span>
                         </div>
                     </div>
                     <div className="grid grid-rows-1 grid-cols-4 gap-x-2 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
@@ -76,12 +82,9 @@ function WorkflowTemplateView() {
                                                 {(questionnaireTitles).map(questionnaireTitle =>
                                                     <div key={questionnaireTitle[0]}>
                                                         <tr className="card-title mb-2 font-normal">{questionnaireTitle[1]}</tr>
-                                                        <Link to={`/questionnaires/view-indiv-questionnaire/${questionnaireTitle[0]}`}>
+                                                        <Link to={`/questionnaires/view-questionnaire-indiv/${questionnaireTitle[0]}`}>
                                                             View Questionnaire
                                                         </Link>
-                                                        {/* <Link to={`/questionnaires/view-indiv-questionnaire/${questionnaireTitle[0]}`}>
-                                                            Edit Questionnaire
-                                                        </Link> */}
                                                     </div>
                                                 )}
                                             </tbody>

@@ -1,10 +1,11 @@
 import { AiOutlineUser } from "react-icons/ai";
 
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, Component } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import Select from 'react-select'
-
-import { createWorkflowAssigned, createQuestionnaire, getVendors } from '../../../apiCalls';
+import { createWorkflowAssigned, createQuestionnaire, getVendors } from '../../../apiCalls'
+import useToken from '../../../useToken';
+import axios from 'axios'
 
 function AssignNewUser(props) {
     console.log("ASSIGN NEW USER")
@@ -15,25 +16,26 @@ function AssignNewUser(props) {
     const workflowName = workflowData.workflowName
     const workflowDescription = workflowData.workflowDescription
     const questionnaireList = workflowData.questionnaireList
-    // console.log(questionnaireList)
     const questionnaires = workflowData.questionnaires
     var questionnairesInput = []
+    const token = useToken().token
 
     for (var index in questionnaires) {
-        // console.log(questionnaires[index])
-        // console.log("BEFORE DELETE")
-        // console.log(questionnaires[index])
         delete questionnaires[index].id
         delete questionnaires[index].createdAt
-        // console.log("AFTER DELETE")
-        // console.log(questionnaires[index])
         questionnairesInput.push(questionnaires[index])
     }
 
     const [vendors, setVendors] = useState([]);
     const [vendorOptions, setVendorOptions] = useState();
     const [selectedVendors, setSelectedVendors] = useState("");
-    // const [questionnaireIds, setQuestionnaireIds] = useState([])
+    const [questionnaireTitles, setQuestionnaireTitles] = useState([]);
+    const [questionnaireDeadlines, setQuestionnaireDeadlines] = useState([]);
+    const [values, setValues] = useState([]);
+
+    const [duplicatedQuestionnaire, setDuplicatedQuestionnaire] = useState([])
+
+    const user = useToken().token;
 
     useEffect(() => {
         getVendors()
@@ -52,6 +54,14 @@ function AssignNewUser(props) {
                 setVendorOptions(selectOptions)
             })
         // eslint-disable-next-line
+
+        const temp = [];
+        for (const index in questionnaires) {
+            temp.push([questionnaires[index].id, questionnaires[index].title]);
+        }
+        setQuestionnaireTitles(temp);
+        console.log("questionnaireTitles")
+        console.log(questionnaireTitles)
     }, [])
 
     const validateForm = () => {
@@ -62,58 +72,111 @@ function AssignNewUser(props) {
         setSelectedVendors(data);
     }
 
-    const handleQuestionnaires = () => {
+    const handleQuestionnaires = async () => {
         console.log("HANDLE QUESTIONNAIRE")
 
+        let isConditionSettled = false;
         const output = []
 
         for (const questionnaire of questionnairesInput) {
- 
             createQuestionnaire(questionnaire)
                 .then(function (response) {
                     output.push(response.data.id)
-                    
+
                 })
                 .catch(function (error) {
                     console.log("ERROR CREATING QUESTIONNAIRE")
                 })
         }
 
+        setTimeout(() => {
+            isConditionSettled = true;
+        }, 1500);
+
+        while (!isConditionSettled) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+
         return output
-    }
+    };
 
-    // const handleQuestionnaires = () => {
-    //     console.log("HANDLE QUESTIONNAIRE")
-    
-    //     const promises = questionnairesInput.map(questionnaire => createQuestionnaire(questionnaire));
-    //     return Promise.all(promises)
-    //         .then(responses => responses.map(response => response.data.id),
+    const updateQuestionnaireUserInfo = async () => {
+        console.log("I AM ADDING I AM DYING")
+      
+        const questionnaireIds = handleQuestionnaires()
+      
+        for (let id of questionnaireIds) {
+          let updateQuestionnaire;
+      
+          // get the duplicated questionnaire first
+          try {
+            const response = await axios.get(`http://localhost:8080/api/v1/questionnaire/${id}`);
+            const duplicatedQuestionnaire = response.data
+            console.log(duplicatedQuestionnaire)
+      
+            // set the questionnaire object for PUT req
+            updateQuestionnaire = {
+              ...duplicatedQuestionnaire,
+              assignedAdminId: user[0],
+              assignedVendorId: selectedVendors.value
+            };
+          } catch (error) {
+            console.log("SOMETHING IS WRONG ")
+            console.log(error)
+          }
+      
+          // update the questionnaire object
+          try {
+            const response = await axios.put(`http://localhost:8080/api/v1/questionnaire/`, updateQuestionnaire);
+            console.log(response.data)
+          } catch (error) {
+            console.log("SIAN")
+            console.log(error)
+          }
+        }
+      }
 
-    //         )
-
-    //         .catch(error => {
-    //             console.log("ERROR CREATING QUESTIONNAIRE")
-    //             return [];
-    //         });
-    // }
-
-
-    
-
-    const handleCreate = () => {
+    const handleCreate = async () => {
         console.log("INSIDE HANDLE CREATE");
 
-        const questionnaireIds = handleQuestionnaires()
-        
-        createWorkflowAssigned({ 
-            "workflowName": workflowName, 
-            "workflowDescription": workflowDescription, 
-            "questionnaireList": questionnaireIds, 
-            "assignedAdminId": "temp", 
-            "assignedVendorId": selectedVendors.value, 
-            "approvalRequestDate": null, 
-            "approverReviewStatus": null, 
-            "approvedAt": null 
+        let isCreatingConditionSettled = false;
+        let isResolvingConditionSettled = false;
+        let promises = handleQuestionnaires()
+        let questionnaireIds = []
+
+        setTimeout(() => {
+            isCreatingConditionSettled = true;
+        }, 3000);
+
+        while (!isCreatingConditionSettled) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+
+        promises.then(result => {
+            console.log(result);
+            questionnaireIds.push(result[0]);
+        });
+
+        console.log("QUESTIONNAIRE IDS")
+        console.log(questionnaireIds)
+
+        setTimeout(() => {
+            isResolvingConditionSettled = true;
+        }, 3000);
+
+        while (!isResolvingConditionSettled) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+
+        createWorkflowAssigned({
+            workflowName: workflowName,
+            workflowDescription: workflowDescription,
+            questionnaireList: questionnaireIds,
+            assignedAdminId: token[0],
+            assignedVendorId: selectedVendors.value,
+            approvalRequestDate: null,
+            approverReviewStatus: "INITIAL_DRAFT",
+            approvedAt: null
         })
             .then(function (response) {
                 console.log(response.data.id)
@@ -122,6 +185,21 @@ function AssignNewUser(props) {
             .catch(function (error) {
                 console.log("ERROR CREATING WORKFLOW")
             })
+    }
+
+    const handleDeadlines = (event, index) => {
+        const { value } = event.target;
+        setValues((prevValues) => {
+            const newValues = [...prevValues];
+            newValues[index] = value;
+            return newValues;
+        });
+        console.log(values)
+    };
+
+    const handleAddUserClick =() => {
+        handleCreate();
+        updateQuestionnaireUserInfo();
     }
 
     return (
@@ -150,8 +228,25 @@ function AssignNewUser(props) {
                                 className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             />
                         </div>
+                        {(questionnaireTitles).map((questionnaireInfo) =>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 text-md font-thin" htmlFor="deadline" key={questionnaireInfo[0]}>
+                                    {questionnaireInfo[1]}
+                                </label>
+                                <label className="block text-gray-700 text-xs font-thin mb-2" htmlFor="deadline" key={questionnaireInfo[0]}>
+                                    Please input deadline in DD/MM/YYYY format.
+                                </label>
+                                <input 
+                                    key={questionnaireInfo[0]}
+                                    onChange={(event) => handleDeadlines(event, index)}
+                                    id="questionnairedeadline" 
+                                    type="text"
+                                    className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                                />
+                            </div>
+                        )}
                         <div className="flex justify-center">
-                            <label onClick={() => handleCreate()} htmlFor="AssignNewUser" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" type="button" disabled={!validateForm()}>
+                            <label onClick={() => handleAddUserClick()} htmlFor="AssignNewUser" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" type="button" disabled={!validateForm()}>
                                 Assign New User
                             </label>
                         </div>

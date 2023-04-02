@@ -14,6 +14,7 @@ const CreateQuestionnaire = () => {
   const [vendor, setVendor] = useState("DEFAULT");
   const [admin, setAdmin] = useState("DEFAULT");
   const [status, setStatus] = useState("NOT_STARTED");
+  const [assignedTo, setAssignedTo] = useState("");
 
   useEffect(() => {
     localStorage.setItem('questions', JSON.stringify(questions));
@@ -62,16 +63,16 @@ const CreateQuestionnaire = () => {
   },[])
 
 
-
+// 1/04/23 ADD ASSIGNED TO FIELD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   const saveQuestionnaire = () => {
-    // Send the questions data to a server or save it to a file
     console.log(questions);
     const questionnaireData = {
       title: title,
       assignedVendor: vendor,
       assignedAdmin: admin, 
       status: status,
-      questionsAndAnswers: questions
+      questionsAndAnswers: questions,
+      assignedTo: assignedTo
     }
     console.log(questionnaireData);
     axios.post('http://localhost:8080/api/v1/questionnaire/create', questionnaireData)
@@ -85,6 +86,7 @@ const CreateQuestionnaire = () => {
           setVendor("");
           setAdmin("");
           setStatus("NOT_STARTED");
+          setAssignedTo("")
 
         }, 2000);
       })
@@ -170,8 +172,6 @@ const CreateQuestionnaire = () => {
       };
     });
   };
-
-
 
 const onDragEnd = (result) => {
   console.log("DRAGGING");
@@ -265,8 +265,6 @@ const updateTextInput = (questionId, value) => {
   });
 };
 
-
-
   const deleteOption = (questionId, optionId) => {
     setQuestions(prevQuestionsState => {
       const question = prevQuestionsState[questionId];
@@ -276,6 +274,12 @@ const updateTextInput = (questionId, value) => {
       }
       return prevQuestionsState;
     });
+  };
+
+  const handleAssignedTo = (event) => {
+    setAssignedTo(event.target.value);
+    console.log("i like barbie~!!!!!")
+    console.log(assignedTo)
   };
 
   return (
@@ -306,6 +310,36 @@ const updateTextInput = (questionId, value) => {
                     <button onClick={handleSaveAsPDF} className="btn" >Save as PDF</button>
                     <Button onClick={saveQuestionnaire} className="btn" >Submit</Button>
                   </div>
+              </div>
+
+              <div className="form-control">
+                <label className="label cursor-pointer">
+                  <span className="label-text">Admin</span> 
+                  <input  
+                  type= "checkbox"
+                  id = "admin"
+                  name = "assignedTo"
+                  value = "ADMIN"
+                  checked = {assignedTo == "ADMIN"}
+                  onChange={handleAssignedTo}
+                  className = "checkbox"
+                />
+                </label>
+              </div>
+              
+              <div className="form-control">
+                <label className="label cursor-pointer">
+                  <span className="label-text">Vendor</span> 
+                  <input  
+                  type= "checkbox"
+                  id = "vendor"
+                  name = "assignedTo"
+                  value = "VENDOR"
+                  checked = {assignedTo == "VENDOR"}
+                  onChange={handleAssignedTo}
+                  className = "checkbox"
+                />
+                </label>
               </div>
               <div className='flex'>
                 <label htmlFor='questionnaire-title' className="label"  >Questionnaire TItle: </label>
@@ -437,28 +471,6 @@ const updateTextInput = (questionId, value) => {
     
     </>
   );
-
-  //       <div className="form-control">
-  //         <label htmlFor='questionnaire-title' className="label"  >Questionnaire TItle: </label>
-  //         <input type ="text" value={title} id='questionnaire-title' name='questionnaire-title' onChange={(event) => setTitle(event.target.value)} className="input-group" ></input>
-
-  //         <label htmlFor='assigned-vendor' className="label" >Assigned Vendor: </label>
-  //         <input type ="text" id='assigned-vendor' name='assigned-vendor' defaultValue="DEFAULT" className="input-group"  ></input>
-        
-  //         <div>
-  //          
-  //         </div>
-          
-  //       </div>
-  //     </div>
-
-  //     <div className="divider"></div> 
-
-
-
-  
-  //   </div>
-  // );
 
 };
 export default CreateQuestionnaire;
