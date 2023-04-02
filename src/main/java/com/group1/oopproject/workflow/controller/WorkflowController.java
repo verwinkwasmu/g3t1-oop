@@ -102,8 +102,8 @@ public class WorkflowController {
             logger.error("Error communicating with database: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-    }
-
+    }   
+    
     @GetMapping("/assigned/admin/{id}")
     public ResponseEntity <List<AssignedWorkflow>> findAssignedByAdminId(@PathVariable String id) {
         try {
