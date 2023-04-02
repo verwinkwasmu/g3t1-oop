@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate, useParams, useNavigate, useLocation } from 'react-router';
 import axios from 'axios';
+import { MdHomeFilled, MdChecklist, MdDescription, MdGroup } from "react-icons/md";
+
 
 
 
@@ -123,8 +125,7 @@ export default function VendorEditQuestionnaire(){
   console.log(questionsAndAnswers)
 
   return (
-    <div>
-
+    <>
       {submitSuccess && (
                   <div className="toast toast-top toast-start">
                     <div className="alert alert-success">
@@ -136,58 +137,80 @@ export default function VendorEditQuestionnaire(){
                       </div>
                     </div>
                   </div>
-        )}
+      )}
+
+      <div className="rounded-t-3xl mx-10 mt-10 h-screen py-8 px-20 shadow-2xl">
+        <div className="bg-white">
+          <div className="flex flex-wrap mt-10 mb-6"> 
+            <div className="mr-3">
+                    <MdDescription size={50} color="3278AE" />
+                </div>
+                <div className="flex-auto">
+                    {/* <p className="font-thin mt-1">ID: {workflowId}</p> */}
+                    <h2 className="text-3xl font-semibold text-blue">{title}</h2>
+                </div>
 
 
-      <form onSubmit={handleSubmit}>
-          <h1>{title}</h1>
+          <form onSubmit={handleSubmit}>
           {Object.values(questionsAndAnswers).map((question) => {
             const { id, type, prompt, options, answer } = question;
             return (
-              <div key={id}>
-                <label htmlFor={id}>{prompt}</label>
-                {type === 'text' && (
-                  <input type="text" id={id} value={answer} onChange={(e) => handleChange(e, id)} />
-                )}
-                {type === 'radio' && (
-                  <>
-                    {options.map((option) => (
-                      <label key={option.id}>
-                        <input
-                          type="radio"
-                          name={id}
-                          value={option.value}
-                          checked={option.value == answer}
-                          onChange={(e) => handleChange(e, id)}
-                        />
-                        {option.value}
-                      </label>
-                    ))}
-                  </>
-                )}
-                {type === 'checkbox' && (
-                  <>
-                    {options.map((option) => (
-                      <label key={option.id}>
-                        <input
-                          type="checkbox"
-                          name={id}
-                          value={option.value}
-                          onChange={(e) => handleChange(e, id)}
-                          checked={option.value == answer}
-                        />
-                        {option.value}
-                      </label>
-                    ))}
-                  </>
-                )}
+              <div key={id} className='p-4'>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <label htmlFor={id} className="text-xl text-blue mr-4">{prompt}</label>
+                  {type === 'text' && (
+                    <input type="text" className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline" id={id} value={answer} onChange={(e) => handleChange(e, id)} />
+                    
+                  )}
+
+                  {type === 'radio' && (
+                   <>
+                     {options.map((option) => (
+                       <label className='p-5' key={option.id}>
+                         <input
+                           type="radio"
+                           name={id}
+                           value={option.value}
+                           defaultChecked={option.value == answer}
+                           onChange={(e) => handleChange(e, id)}
+                         />
+                         {option.value}
+                       </label>
+                     ))}
+                   </>
+                 )}
+                 {type === 'checkbox' && (
+                   <>
+                     {options.map((option) => (
+                       <label className='p-10' key={option.id}>
+                         <input
+                           type="checkbox"
+                           name={id}
+                           value={option.value}
+                           onChange={(e) => handleChange(e, id)}
+                           defaultChecked={option.value == answer}
+                         />
+                         {option.value}
+                       </label>
+                     ))}
+                   </>
+                 )}
+                </div>
+                
               </div>
             );
           })}
-          <button type="submit">Submit</button>
+          <button type="submit" className="btn btn-primary">Submit</button>
       </form>
+          </div>
+      
 
-    </div>
+        </div>
+      </div>
+      
+      
+
+    </>
    
   );
 };
