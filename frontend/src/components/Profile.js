@@ -103,7 +103,7 @@ function Profile() {
     },[account])
 
       const toWorkflowView = (workflow) => {
-        navigate(`/workflows/${workflow.id}`, { state: { workflow: workflow } });
+        navigate(`/workflow-assigned/${workflow.id}`, { state: { workflowId: workflow.id } });
     }
 
       const getWorkflowCompletion = (questionnaires) => {
@@ -144,6 +144,7 @@ function Profile() {
                         </div>                      
                     </div>
                 </div>
+                <div hidden={userType == "APPROVER" ? true : false}>
                 <div className={userType == "VENDOR" ? "grid grid-cols-3 gap-10" : ""}>
                     <div id="workflows" className="col-span-2">
                     <div className="mb-10">
@@ -248,6 +249,9 @@ function Profile() {
                         </table>
                     </div>
                 </div>
+                    
+                </div>
+                
                 
 
             </div>

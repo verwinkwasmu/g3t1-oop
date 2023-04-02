@@ -3,7 +3,6 @@ import { MdKeyboardArrowLeft } from 'react-icons/md';
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 
-import FollowUpUser from './FollowUpAccount';
 import RemoveAccount  from './RemoveAccount';
 import EditVendorAccount from './EditVendorAccount';
 import EditUserAccount from './EditUserAccount';
@@ -127,7 +126,6 @@ function AccountView() {
                     </div>
                     <div className="flex grid grid-rows-2 justify-items-end">
                         <div hidden={origin == "ARCHIVE" ? true : false}>
-                            {/* <FollowUpUser></FollowUpUser> */}
                             <RemoveAccount accounts={[account]}></RemoveAccount> 
                         </div>
                         <div hidden={origin == "ARCHIVE" ? true : false}>

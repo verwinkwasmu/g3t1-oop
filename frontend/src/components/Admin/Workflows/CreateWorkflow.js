@@ -88,13 +88,13 @@ function CreateWorkflow() {
                             <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="workflowname">
                                 Workflow Name
                             </label>
-                            <input onChange={e => setWorkflowName(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="workflowname" type="text" />
+                            <input onChange={e => setWorkflowName(e.target.value)} className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline" id="workflowname" type="text" />
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="workflowdescription">
                                 Workflow Description
                             </label>
-                            <input onChange={e => setWorkflowDescription(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="workflowdescription" type="text" maxLength="150"/>
+                            <input onChange={e => setWorkflowDescription(e.target.value)} className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline" id="workflowdescription" type="text" maxLength="150"/>
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-md font-thin" htmlFor="forms">
@@ -107,7 +107,7 @@ function CreateWorkflow() {
                                 onChange={handleSelect}
                                 isSearchable={true}
                                 isMulti
-                                className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline"
                             />
                         </div>
                         <div className="flex justify-center">

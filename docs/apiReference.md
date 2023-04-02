@@ -34,7 +34,7 @@
     "assignedVendorId": "jack-1",
     "assignedAdminId": "not-jack-1",
     "assignedTo": "VENDOR", (must be VENDOR or ADMIN)
-    "status": "SUBMITTED", (status must be: INITIAL_DRAFT, SUBMITTED, ADMIN_APPROVED, RETURNED, APPROVER_APPROVED)
+    "status": "SUBMITTED", (status must be: NOT_STARTED, SUBMITTED, ADMIN_APPROVED, RETURNED, APPROVER_APPROVED)
     "submissionDeadline": "2023-03-22T09:16:28.866",
     "questionsAndAnswers": {
         "something": {

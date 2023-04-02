@@ -1,4 +1,5 @@
 import { IoGitPullRequestOutline } from 'react-icons/io5';
+import { MdKeyboardArrowLeft } from 'react-icons/md'
 
 import { React, useState, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
@@ -20,6 +21,7 @@ function WorkflowTemplateView() {
     const workflowId = location.state.workflowId;
     const [workflowsData, setWorkflowsData] = useState([]);
     const [questionnaireTitles, setQuestionnaireTitles] = useState([]);
+    const origin = location.state.origin;
     console.log(workflowId);
 
     useEffect(() => {
@@ -31,8 +33,9 @@ function WorkflowTemplateView() {
                 const temp = [];
                 for (const index in response.data.questionnaires) {
                     temp.push(
-                        [response.data.questionnaires[index].id, 
-                        response.data.questionnaires[index].title]
+                        [response.data.questionnaires[index].id,
+                        response.data.questionnaires[index].title
+                        ]
                     );
                 }
                 setQuestionnaireTitles(temp);
@@ -41,11 +44,24 @@ function WorkflowTemplateView() {
         // eslint-disable-next-line
     }, [])
 
+    const toWorkflowDash = () => {
+        navigate(`/workflows`);
+    }
+
     return (
         <>
-            <div className="rounded-t-3xl mx-10 mt-10 h-screen py-8 px-20 shadow-2xl">
+            <div className="rounded-3xl mx-10 my-10 py-8 px-20 shadow-2xl">
                 <div className="bg-white h-full overflow-y-auto">
-
+                    <div id="back">
+                        <button className="text-blue flex hover:opacity-75" 
+                            onClick={
+                                () => { toWorkflowDash() }
+                            }
+                        >
+                            <MdKeyboardArrowLeft className="font-bold"></MdKeyboardArrowLeft>
+                            <span className="text-xs font-semibold">BACK TO WORKFLOWS DASH</span>
+                        </button>
+                    </div>
                     <div className="flex flex-wrap mt-10 mb-6">
                         <div className="mr-3">
                             <IoGitPullRequestOutline size={70} color="3278AE" />
@@ -62,18 +78,18 @@ function WorkflowTemplateView() {
                             </span>
                         </div>
                     </div>
-                    <div className="grid grid-rows-1 grid-cols-4 gap-x-2 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+                    <div className="grid grid-rows-1 gap-x-2 gap-y-8">
                         <ul className="steps steps-vertical lg:steps-horizontal my-7">
                             {(questionnaireTitles).map(questionnaireTitle =>
                                 <li className="step" key={questionnaireTitle[0]}>{questionnaireTitle[1]}</li>
                             )}
                         </ul>
                     </div>
-                    <div className='grid grid-rows-1 grid-cols-2 mt-5'>
-                        <div className="card w-[35rem] bg-base-100 ml-3 drop-shadow-xl">
+                    <div className='grid grid-rows-1 gap-2 grid-cols-2 my-5'>
+                        <div className="card w-full bg-base-100 ml-3 drop-shadow-xl">
                             <div className="card-body text-left">
                                 <div>
-                                    <h2 className="text-xl font-semibold text-blue">Included Forms</h2>
+                                    <h2 className="text-xl font-semibold text-blue">Included Questionnaires</h2>
                                 </div>
                                 <div className="card w-80">
                                     <div className="text-left">

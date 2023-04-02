@@ -13,23 +13,16 @@ function ApproverDash() {
         document.title = 'Workflows Dashboard'
             getAssignedWorkflowsByStatus("FLAGGED")
             .then(function (response) {
-                // console.log(response.data)
                     setWorkflowsData(response.data)
                 
             }).catch(error =>{
-                console.log("FAIL")
                 setWorkflowsData([])
             })
         
         // eslint-disable-next-line
     }, [])
 
-
-    console.log("WORKFLOWSDATA")
-    console.log(workflowsData)
-
     const toWorkflowView = (workflow) => {
-        console.log("===== INSIDE toWorkflowView =====")
         navigate(`/workflow-assigned/${workflow.id}`, { state: { workflowId: workflow.id } });
     }
 
@@ -42,12 +35,7 @@ function ApproverDash() {
                         <div className="flex-auto">
                             <p className="text-3xl font-semibold text-blue">Workflows for Approval</p>
                         </div>
-                        <div className="flex ">
-                            {/* <CreateWorkflow></CreateWorkflow> */}
-                        </div>
                     </div>
-
-                    {/* <h1 className="text-3xl font-semibold text-blue pb-6">Workflows</h1> */}
 
                     <div className="grid grid-rows-3 grid-cols-4 gap-x-4 gap-y-8 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                         {(workflowsData).map(workflow =>
@@ -71,6 +59,8 @@ function ApproverDash() {
                         )}
 
                     </div>
+
+                    <h2 hidden={workflowsData.length == 0 ? false : true} className="text-center mt-5 text-gray-300 text-base font-semibold italic text-blue mr-5">No workflows for approval.</h2>
                 </div>
             </div>
         </>

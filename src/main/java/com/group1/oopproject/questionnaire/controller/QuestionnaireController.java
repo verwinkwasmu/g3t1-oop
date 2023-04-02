@@ -1,8 +1,6 @@
 package com.group1.oopproject.questionnaire.controller;
 
 import java.time.LocalDateTime;
-import java.util.List;
-
 import com.group1.oopproject.exception.ApiErrorResponse;
 import com.group1.oopproject.exception.QuestionnaireNotFoundException;
 import com.group1.oopproject.questionnaire.entity.Questionnaire;

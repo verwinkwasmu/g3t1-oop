@@ -9,7 +9,6 @@ import {
   getVendors,
 } from "../../../apiCalls";
 import useToken from "../../../useToken";
-import axios from "axios";
 
 function AssignNewUser(props) {
   console.log("ASSIGN NEW USER");
@@ -90,12 +89,10 @@ function AssignNewUser(props) {
     workflowCopy.assignedAdminId = user[0];
     workflowCopy.status = "NOT_STARTED";
     workflowCopy["approverReviewStatus"] = "INITIAL_DRAFT";
-
     const response = await createWorkflowAssigned(workflowCopy);
 
     if (response.status == 200) {
-      alert("CREATE ASSIGNED WORKFLOW SUCCESSFUL");
-      window.location.replace(`http://localhost:3000/workflows`);
+        navigate(`/workflow-assigned/${response.data.id}`, { state: { workflowId: response.data.id } });
     }
   }
 
@@ -108,14 +105,14 @@ function AssignNewUser(props) {
         questionnaireFR["submissionDeadline"] = values[index];
         questionnaireFR["assignedVendorId"] = selectedVendors.value;
         questionnaireFR["assignedAdminId"] = user[0];
+        questionnaireFR["status"] = "NOT_STARTED";
         const createQuestionnaireResponse = await createQuestionnaire(
           questionnaireFR
         );
-        console.log("createQuestionnaireResponse", createQuestionnaireResponse);
+        // console.log("createQuestionnaireResponse", createQuestionnaireResponse);
 
         const questionnaireId = createQuestionnaireResponse.data.id;
 
-        console.log("???????", questionnaireIds);
         questionnaireIds.push(questionnaireId);
         if (questionnaireIds.length == questionnaires.length) {
           resolve(questionnaireIds);
@@ -192,13 +189,6 @@ function AssignNewUser(props) {
                   >
                     Please input deadline in DD/MM/YYYY format.
                   </label>
-                  {/* <input 
-                                        key={questionnaireInfo[0]}
-                                        onChange={(event) => handleDeadlines(event, index)}
-                                        id="questionnairedeadline" 
-                                        type="text"
-                                        className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline" 
-                                    /> */}
                   <input
                     type="datetime-local"
                     onChange={(event) => handleDateChange(event, idx)}
