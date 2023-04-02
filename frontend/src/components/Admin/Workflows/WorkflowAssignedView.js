@@ -116,6 +116,9 @@ function WorkflowAssignedView() {
                                 <SaveWorkflowAsPDF workflow={workflowsData}></SaveWorkflowAsPDF>
                                 {approverReviewStatus != "FLAGGED" ? <DeleteWorkflow workflow={workflowsData} render="assigned"></DeleteWorkflow> : null}
                             </span>
+                            <span>
+                                <SubmitReview workflow={workflowsData}/>
+                            </span>
                         </div>
                     </div>
                     <div className="grid grid-rows-1 grid-cols-4 gap-x-2 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">

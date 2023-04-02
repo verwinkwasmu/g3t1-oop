@@ -22,7 +22,7 @@ function AdminDash() {
                 // console.log(response.data)
                 if (response.data.length > 0) {
                     setCurrentWorkflowsView("ACTIVE")
-                    setCurrentWorkflowsData(response.data.filter(w => w.approvalRequestDate == null))
+                    setCurrentWorkflowsData(response.data.filter(w => w.approverReviewStatus == "INITIAL_DRAFT"))
                     setWorkflowsData(response.data)
                 } else {
                     setWorkflowsData([])
@@ -54,9 +54,9 @@ function AdminDash() {
     const toggleWorkflowsView = (status) => {
         if (status == "ACTIVE") {
             console.log('inside ACTIVE toggle')
-            setCurrentWorkflowsData(workflowsData.filter(w => w.approvalRequestDate == null))
+            setCurrentWorkflowsData(workflowsData.filter(w => w.approverReviewStatus == "INITIAL_DRAFT" || w.approverReviewStatus == "REJECTED"))
         } else if (status == "PENDING") {
-            setCurrentWorkflowsData(workflowsData.filter(w => w.approvalRequestDate != null))
+            setCurrentWorkflowsData(workflowsData.filter(w => w.approverReviewStatus == "FLAGGED"))
         }
         setCurrentWorkflowsView(status);
     }
