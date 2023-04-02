@@ -206,6 +206,9 @@ function AssignNewUser(props) {
         console.log("questionnaire ids: ")
         console.log(questionnaireIds)
 
+        setTimeout(() => {
+            isResolvingConditionSettled = true;
+        }, 5000);
 
         const updatedWorkflow = {
             ...workflowData,
