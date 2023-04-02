@@ -104,7 +104,34 @@ function AssignNewUser(props) {
     const updateQuestionnaireUserInfo = async () => {
         console.log("I AM ADDING I AM DYING")
       
-        const questionnaireIds = handleQuestionnaires()
+        let isCreatingConditionSettled = false;
+        let isResolvingConditionSettled = false;
+        let promises = handleQuestionnaires()
+        let questionnaireIds = []
+
+        setTimeout(() => {
+            isCreatingConditionSettled = true;
+        }, 3000);
+
+        while (!isCreatingConditionSettled) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+
+        promises.then(result => {
+            console.log(result);
+            questionnaireIds.push(result[0]);
+        });
+
+        console.log("QUESTIONNAIRE IDS")
+        console.log(questionnaireIds)
+
+        setTimeout(() => {
+            isResolvingConditionSettled = true;
+        }, 3000);
+
+        while (!isResolvingConditionSettled) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
       
         for (let id of questionnaireIds) {
           let updateQuestionnaire;
@@ -124,11 +151,13 @@ function AssignNewUser(props) {
           } catch (error) {
             console.log("SOMETHING IS WRONG ")
             console.log(error)
+
           }
+          console.log(updateQuestionnaire)
       
           // update the questionnaire object
           try {
-            const response = await axios.put(`http://localhost:8080/api/v1/questionnaire/`, updateQuestionnaire);
+            const response = await axios.put(`http://localhost:8080/api/v1/questionnaire/update`, updateQuestionnaire);
             console.log(response.data)
           } catch (error) {
             console.log("SIAN")

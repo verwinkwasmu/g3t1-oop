@@ -22,6 +22,7 @@ export default function ViewIndivQuestionnaire(props) {
     const navigate = useNavigate();
 
     console.log(location.state)
+    console.log(user)
 
 
     const [questionnaire, setQuestionnaire] = useState(null);
@@ -84,6 +85,7 @@ export default function ViewIndivQuestionnaire(props) {
     // add in feedback field 
     const handleAdminRejectClick = async () => {
         console.log("CLICKING reject")
+        console.log(feedback)
         const updatedQuestionnaire = {
             ...questionnaire,
             status: "RETURNED",
@@ -91,6 +93,8 @@ export default function ViewIndivQuestionnaire(props) {
 
         };
         // change the id to the id gotten from workflow
+        console.log("weeheeeheehee")
+        console.log(updatedQuestionnaire)
         try {
             const response = await axios.put(`${baseURL}/update`, updatedQuestionnaire);
             setQuestionnaire(response.data);
@@ -125,6 +129,7 @@ export default function ViewIndivQuestionnaire(props) {
             feedback: feedback
         };
         // change the id to the id gotten from workflow
+
         try {
             const response = await axios.put(`${baseURL}/update`, updatedQuestionnaire);
             setQuestionnaire(response.data);
@@ -248,7 +253,7 @@ export default function ViewIndivQuestionnaire(props) {
                                             Update Questionnaire
                                             </button>
                                             
-                                            <p>questionnaire.feedback</p>
+                                            <p>{questionnaire.feedback}</p>
                                         </div>
                                         )}
                                         {(questionnaire.status == "ADMIN_APPROVED" || questionnaire.status == "APPROVER_APPROVED") && (
@@ -336,7 +341,7 @@ export default function ViewIndivQuestionnaire(props) {
                                                 </button>
                                                 {/* add lbel */}
                                                 <input type="text" name="feedback" onChange={(e) => {
-                                                    setFeedback(e.target.value)
+                                                    setFeedback([e.target.value])
                                                 }}>
                                                     
                                                 </input>
@@ -359,18 +364,18 @@ export default function ViewIndivQuestionnaire(props) {
                                               </button>
                                               {/* add label */}
                                               <input type="text" name="feedback" onChange={(e) => {
-                                                    setFeedback(e.target.value)
+                                                    setFeedback([e.target.value])
                                                 }}>
-                                                    Comments
                                                 </input>
+                                                {console.log("feedback" + feedback)}
 
                                           </div>
                                         )}
-                                        {(questionnaire.status == "ADMIN_APPROVED" || questionnaire.status == "APPROVER_APPROVED") && (
+                                        {/* {(questionnaire.status == "ADMIN_APPROVED" || questionnaire.status == "APPROVER_APPROVED") && (
                                               <button className="btn w-full mb-2" disabled>
                                                 Update Questionnaire
                                             </button>
-                                        )}
+                                        )} */}
 
                                     </div>
                                 </div>

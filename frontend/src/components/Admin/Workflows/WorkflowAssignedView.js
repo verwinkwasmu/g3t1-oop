@@ -9,10 +9,10 @@ import AssignNewUser from './AssignNewUser';
 import UpdateWorkflow from './UpdateWorkflow';
 import FlagApproval from './FlagApproval';
 import SubmitReview from '../../Approver/SubmitReview';
+import SaveWorkflowAsPDF from './SaveWorkflowAsPDF';
 import { getIndividualAssignedWorkflow } from '../../../apiCalls';
 
 import useToken from '../../../useToken';
-import jsPDF from 'jspdf';
 
 function WorkflowAssignedView() {
     console.log("IN ASSIGNED VIEW?")
@@ -43,7 +43,7 @@ function WorkflowAssignedView() {
     useEffect(() => {
         getIndividualAssignedWorkflow(workflowId)
             .then(function (response) {
-                console.log(response.data)
+                // console.log(response.data)
                 setWorkflowsData(response.data)
 
                 const temp = [];
@@ -57,7 +57,9 @@ function WorkflowAssignedView() {
                 setQuestionnaireTitles(temp);
             })
         // eslint-disable-next-line
-    }, [])
+    }, []) 
+
+    const approverReviewStatus = workflowsData.approverReviewStatus;
 
     const checkStatusSteps = (status) => {
         if (status == "SUBMITTED") {
@@ -95,32 +97,6 @@ function WorkflowAssignedView() {
         }
     }
 
-    const handleSaveAsPDF = (questions) => {
-        console.log("saving pdf fuck")
-        const doc = new jsPDF({unit: "cm"});
-      
-        // Define the x and y coordinates for the first question
-        let x = 2.54;
-        let y = 2.54;
-      
-        Object.values(questions).forEach((question, index) => {
-          doc.text(`${index + 1}. ${question.prompt}`, x, y);
-      
-          y += 10;
-      
-          if (question.options.length > 0) {
-            question.options.forEach((option) => {
-              doc.text(`- ${option.value}`, x + 10, y);
-              y += 10;
-            });
-          }
-      
-          y += 10;
-        });
-      
-        doc.save('questionnaire.pdf');
-      };
-
     return (
         <>
             <div className="rounded-t-3xl mx-10 mt-10 h-screen py-8 px-20 shadow-2xl">
@@ -135,9 +111,10 @@ function WorkflowAssignedView() {
                         </div>
                         <div className="flex mt-5">
                             <span hidden={token[1] == "ADMIN" ? false : true}>
-                                <UpdateWorkflow workflow={workflowsData} render="assigned"></UpdateWorkflow>
+                                {approverReviewStatus != "FLAGGED" ? <UpdateWorkflow workflow={workflowsData} render="assigned"></UpdateWorkflow> : null}
                                 <FlagApproval workflow={workflowsData}></FlagApproval>
-                                <DeleteWorkflow workflow={workflowsData} render="assigned"></DeleteWorkflow>
+                                <SaveWorkflowAsPDF workflow={workflowsData}></SaveWorkflowAsPDF>
+                                {approverReviewStatus != "FLAGGED" ? <DeleteWorkflow workflow={workflowsData} render="assigned"></DeleteWorkflow> : null}
                             </span>
                         </div>
                     </div>
