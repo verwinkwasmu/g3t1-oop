@@ -219,7 +219,6 @@ function AssignNewUser(props) {
                 Assign New User
               </label>
             </div>
-            <CreationSuccess workflowName={workflowName}></CreationSuccess>
           </form>
         </div>
       </div>
