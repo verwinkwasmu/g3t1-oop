@@ -1,5 +1,6 @@
 package com.group1.oopproject.questionnaire.entity;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ public class Questionnaire {
     private AssignedTo assignedTo;
     private QuestionnaireStatus status;
     private LocalDateTime submissionDate;
-    private LocalDateTime submissionDeadline;
+    private Date submissionDeadline;
     private Map<String, Object> questionsAndAnswers;
     private List<String> feedback;
     
