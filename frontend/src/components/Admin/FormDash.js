@@ -120,9 +120,9 @@ function FormDash() {
                                 <p className="text-base">Lorem Ipsum</p>
                                 <div className="card-actions justify-end">
                                     <Link to={`/questionnaires/view-questionnaire-indiv/${q.id}`}>
-                                    <button className="btn bg-blue hover:bg-cyan border-transparent hover:border-transparent">View</button>
+                                    <button className="btn bg-blue hover:bg-cyan border-transparent hover:border-transparent">View Questionnaire</button>
                                     </Link>
-                                    {(user[1] == "ADMIN" || user[1] == "APPROVER") && (
+                                    {/* {(user[1] == "ADMIN" || user[1] == "APPROVER") && (
                                         <>
                                         {console.log("PASSING ID"  + q.id)}
                                         <DeleteQuestionnaire
@@ -142,7 +142,7 @@ function FormDash() {
                                         </>
                                         
 
-                                    )}
+                                    )} */}
                                     {/* {(userInfo.userType == "ADMIN" || userInfo.userType == "APPROVER") && (
                                         <button className="btn bg-red hover:bg-cyan border-transparent hover:border-transparent" onClick={() => setQuestionToEdit(q.id)}>Edit</button>
                                     )} */}

@@ -16,6 +16,7 @@ const CreateQuestionnaire = () => {
   const [admin, setAdmin] = useState("DEFAULT");
   const [status, setStatus] = useState("NOT_STARTED");
   const [assignedTo, setAssignedTo] = useState("");
+  const [emptyError, setEmptyError] = useState(false)
 
   useEffect(() => {
     localStorage.setItem('questions', JSON.stringify(questions));
@@ -65,6 +66,12 @@ const CreateQuestionnaire = () => {
 
 
   const saveQuestionnaire = () => {
+    const questionArray = Object.values(questions);
+    console.log(questionArray);
+    if (questionArray.some(question => !question.answer)) {
+      setEmptyError(true)
+      return;
+    }
     console.log(questions);
     const questionnaireData = {
       title: title,
@@ -81,6 +88,7 @@ const CreateQuestionnaire = () => {
         setSubmitSuccess(true);
         setTimeout(() => {
           setSubmitSuccess(false);
+          setEmptyError(false)
           setQuestions({});
           setTitle("");
           setVendor("");
@@ -310,6 +318,18 @@ const updateTextInput = (questionId, value) => {
           </div>
         </div>
       )}
+      {emptyError && (
+        <div className="toast toast-top toast-start">
+          <div className="alert alert-warning">
+            <div>
+              <span>One or more fields are empty</span>
+              <button className="btn btn-square btn-outline" onClick={() => setEmptyError(false)}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="rounded-t-3xl mx-10 mt-10 h-screen py-8 px-20 shadow-2xl">
         <div className="bg-white h-full overflow-y-auto">
           <div className="flex flex-wrap mb-5">
@@ -373,7 +393,7 @@ const updateTextInput = (questionId, value) => {
 
 
               {/* add warning for deletion upon dragging out  */}
-              
+
               <div className="grid h-500 card bg-base-300 rounded-box place-items-center" >
                 <DragDropContext onDragEnd={onDragEnd}>
                   {console.log(questions)}
