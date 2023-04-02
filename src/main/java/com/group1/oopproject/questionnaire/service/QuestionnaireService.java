@@ -45,7 +45,10 @@ public class QuestionnaireService {
         try {
             Optional<Questionnaire> questionnaire = questionnaireRepository.findById(id);
             return questionnaire.orElseThrow(() -> new QuestionnaireNotFoundException("Questionnaire not found with id: " + id));
-        } catch (Exception e) {
+        } catch (QuestionnaireNotFoundException e){
+            throw e;
+        }
+        catch (Exception e) {
             throw new DatabaseCommunicationException("Error communicating with database for method findById: " + e.getMessage(), e);
         }
     }
@@ -122,7 +125,10 @@ public class QuestionnaireService {
             } else {
                 throw new QuestionnaireNotFoundException("No questionnaire found in the database with id: " + questionnaire.getId());
             }
-        } catch (Exception e) {
+        } catch (QuestionnaireNotFoundException e){
+            throw e;
+        }
+        catch (Exception e) {
             throw new DatabaseCommunicationException("Error communicating with database for method updateById: " + e.getMessage(), e);
         }
     }
