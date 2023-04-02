@@ -11,7 +11,8 @@ import com.group1.oopproject.workflow.entity.AssignedWorkflow;
 public interface AssignedWorkflowRepository extends MongoRepository<AssignedWorkflow, String> {
 
     Optional<AssignedWorkflow> findById(String id);
-
+    ArrayList<AssignedWorkflow> findByAssignedVendorId(String vendorId);
+    ArrayList<AssignedWorkflow> findByAssignedAdminId(String adminId);
     ArrayList<AssignedWorkflow> findByApproverReviewStatus(ApproverReviewStatus approverReviewStatus);
 
 
