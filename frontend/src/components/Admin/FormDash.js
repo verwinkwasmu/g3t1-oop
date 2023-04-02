@@ -120,29 +120,17 @@ function FormDash() {
                                 <p className="text-base">Lorem Ipsum</p>
                                 <div className="card-actions justify-end">
                                     <Link to={`/questionnaires/view-questionnaire-indiv/${q.id}`}>
-                                    <button className="btn bg-blue hover:bg-cyan border-transparent hover:border-transparent">View Questionnaire</button>
+                                    <button className="btn bg-blue hover:bg-cyan border-transparent hover:border-transparent">View</button>
                                     </Link>
-                                    {/* {(user[1] == "ADMIN" || user[1] == "APPROVER") && (
-                                        <>
-                                        {console.log("PASSING ID"  + q.id)}
-                                        <DeleteQuestionnaire
-                                        questionnaireId={q.id}
-                                        onClose={() => setQuestionToDelete(null)}
-                                        onDeleted={() => {
-                                        setQuestionToDelete(null);
-                                        axios.get(baseURL).then((response) => {
-                                            setQuestionnaireData(response.data);
-                                        });
-                                        }}
-                                        />
-
+                                    {(user[1] == "ADMIN" || user[1] == "APPROVER") && (
+                            
                                         <Link to={`/questionnaires/edit-questionnaire/${q.id}`}>
                                                 <button className="btn bg-blue hover:bg-cyan border-transparent hover:border-transparent">Edit</button>                                 
                                         </Link>
-                                        </>
-                                        
+                                    
+                                       
 
-                                    )} */}
+                                    )}
                                     {/* {(userInfo.userType == "ADMIN" || userInfo.userType == "APPROVER") && (
                                         <button className="btn bg-red hover:bg-cyan border-transparent hover:border-transparent" onClick={() => setQuestionToEdit(q.id)}>Edit</button>
                                     )} */}

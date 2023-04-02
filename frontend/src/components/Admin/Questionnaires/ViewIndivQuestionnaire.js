@@ -203,7 +203,6 @@ export default function ViewIndivQuestionnaire(props) {
 
                                 </div>
                                 <div className="card w-80">
-                                    <div className="text-left">
                                     <ul>
                                         {Object.keys(questionnaire.questionsAndAnswers).map((questionId) => {
                                         const question = questionnaire.questionsAndAnswers[questionId];
@@ -257,9 +256,7 @@ export default function ViewIndivQuestionnaire(props) {
                                                 Update Questionnaire
                                             </button>
                                         )}
-
                                     </div>
-                                </div>
                             </div>
                         </div>   
 
