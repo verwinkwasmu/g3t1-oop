@@ -103,7 +103,7 @@ function Profile() {
     },[account])
 
       const toWorkflowView = (workflow) => {
-        navigate(`/workflows/${workflow.id}`, { state: { workflow: workflow } });
+        navigate(`/workflow-assigned/${workflow.id}`, { state: { workflowId: workflow.id } });
     }
 
       const getWorkflowCompletion = (questionnaires) => {

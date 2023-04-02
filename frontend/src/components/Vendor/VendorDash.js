@@ -24,7 +24,6 @@ function VendorDash() {
                     setCurrentWorkflowsView("ACTIVE")
                     setCurrentWorkflowsData(response.data.filter(w => w.approverReviewStatus == "INITIAL_DRAFT" || w.approverReviewStatus == "REJECTED"))
                     setWorkflowsData(response.data)
-                    getQuestionnairesFromWorkflows(response.data)
                     
                 } else {
                     setWorkflowsData([])
@@ -52,15 +51,6 @@ function VendorDash() {
     const [currentQuestionnairesData, setCurrentQuestionnairesData] = useState([]);
     const [currentWorkflowsView, setCurrentWorkflowsView] = useState("ACTIVE");
     const [currentQuestionnairesView, setCurrentQuestionnairesView] = useState("ACTIVE");
-    
-    const getQuestionnairesFromWorkflows = (workflows) => {
-        console.log("inside getQfW")
-        
-        workflows.map((workflow, idx)=>{
-            console.log(workflow)
-            
-        })
-    }
 
     const toggleWorkflowsView = (status) => {
         if (status == "ACTIVE") {
@@ -132,7 +122,7 @@ function VendorDash() {
             </div>
             <div hidden={currentWorkflowsData.length == 0 ? true : false}>
             <div className="carousel carousel-center p-4 space-x-4 shadow-2xl rounded-box">
-            {(workflowsData).map(workflow =>
+            {(currentWorkflowsData).map(workflow =>
                 <div className="carousel-item">
                     <div className="card card-compact w-72 h-72 bg-base-100 shadow-xl image-full" key={workflow.id}>
                         <figure><img src="https://startinfinity.s3.us-east-2.amazonaws.com/production/blog/post/17/main/GeiehNbQ1t86Mg5zKnEgucWslfZXTckjj8mSDV2O.png" alt="workflow description" /></figure>

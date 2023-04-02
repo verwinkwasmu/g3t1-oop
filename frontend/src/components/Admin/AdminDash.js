@@ -81,7 +81,7 @@ function AdminDash() {
             var total = questionnaires != null ? questionnaires.length : 0;
 
             questionnaires.map((qnnaire, idx)=>{
-                if (qnnaire.status != "NOT_STARTED" && qnnaire.status != "RETURNED") { 
+                if (qnnaire.status == "ADMIN_APPROVED") { 
                     complete += 1;
                 }
             })
