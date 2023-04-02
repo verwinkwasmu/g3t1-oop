@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { MdRemoveRedEye, MdEdit } from 'react-icons/md';
 
-import { getWorkflows, getAssignedWorkflowsByVendorId, getIndividualQuestionnaire, getQuestionnaires } from '../../apiCalls';
+import { getWorkflows, getAssignedWorkflowsByVendorId, getQuestionnairesByVendorId, getQuestionnaires } from '../../apiCalls';
 
 import useToken from '../../useToken';
 
@@ -15,21 +15,23 @@ function VendorDash() {
     const accountType = useToken().token[1];
 
     useEffect(() => {
-        document.title = 'User Dashboard'
+        document.title = 'Vendor Dashboard'
 
         getAssignedWorkflowsByVendorId(accountId)
             .then(function (response) {
                 // console.log(response.data)
                 if (response.data.length > 0) {
                     setCurrentWorkflowsView("ACTIVE")
-                    setCurrentWorkflowsData(response.data.filter(w => w.approvalRequestDate == null))
+                    setCurrentWorkflowsData(response.data.filter(w => w.approverReviewStatus == "INITIAL_DRAFT" || w.approverReviewStatus == "REJECTED"))
                     setWorkflowsData(response.data)
+                    getQuestionnairesFromWorkflows(response.data)
+                    
                 } else {
                     setWorkflowsData([])
                 }
             })
 
-        getQuestionnaires()
+        getQuestionnairesByVendorId(accountId)
             .then(function (response) {
                 // console.log(response.data)
                 if (response.data.length > 0) {
@@ -51,14 +53,23 @@ function VendorDash() {
     const [currentWorkflowsView, setCurrentWorkflowsView] = useState("ACTIVE");
     const [currentQuestionnairesView, setCurrentQuestionnairesView] = useState("ACTIVE");
     
+    const getQuestionnairesFromWorkflows = (workflows) => {
+        console.log("inside getQfW")
+        
+        workflows.map((workflow, idx)=>{
+            console.log(workflow)
+            
+        })
+    }
+
     const toggleWorkflowsView = (status) => {
         if (status == "ACTIVE") {
-            console.log('inside ACTIVE toggle')
-            setCurrentWorkflowsData(workflowsData.filter(w => w.approvalRequestDate == null))
+            console.log("ACTIVE", workflowsData.filter(w => w.approverReviewStatus == "INITIAL_DRAFT" || w.approverReviewStatus == "REJECTED"))
+            setCurrentWorkflowsData(workflowsData.filter(w => w.approverReviewStatus == "INITIAL_DRAFT" || w.approverReviewStatus == "REJECTED"))
         } else if (status == "PENDING") {
-            setCurrentWorkflowsData(workflowsData.filter(w => w.approvalRequestDate != null))
+            console.log("PENDING", workflowsData.filter(w => w.approverReviewStatus == "FLAGGED"))
+            setCurrentWorkflowsData(workflowsData.filter(w => w.approverReviewStatus == "FLAGGED"))
         }
-        console.log("currentWData: ", currentWorkflowsData);
         setCurrentWorkflowsView(status);
     }
 
@@ -79,16 +90,21 @@ function VendorDash() {
     }
 
     const getWorkflowCompletion = (questionnaires) => {
-        var complete = 0; 
-        var total = questionnaires != null ? questionnaires.length : 0;
 
-        questionnaires.map((qnnaire, idx)=>{
-            console.log(idx, qnnaire, qnnaire.title, qnnaire.status)
-            if (qnnaire.status != "NOT_STARTED" && qnnaire.status != "RETURNED") { 
-                complete += 1;
-            }
-        })
-        return `${complete} / ${total}`;
+        if (questionnaires != null) {
+            var complete = 0; 
+            var total = questionnaires != null ? questionnaires.length : 0;
+
+            questionnaires.map((qnnaire, idx)=>{
+                if (qnnaire.status != "NOT_STARTED" && qnnaire.status != "RETURNED") { 
+                    complete += 1;
+                }
+            })
+            return `${complete} / ${total}`;
+        } else {
+            return 'nil';
+        }
+        
     }
 
     return (
@@ -166,7 +182,6 @@ function VendorDash() {
                             <tr>
                                 <th className="p-2">Deadline</th>
                                 <th>Questionnaire</th>
-                                <th>Workflow</th>
                                 <th>Status</th>
                                 <th></th>
                                 <th></th>
@@ -177,7 +192,6 @@ function VendorDash() {
                                 <tr key={qnnaire.id}>
                                     <td className="p-2">[DEADLINE]</td>
                                     <td className="name">{qnnaire.title}</td>
-                                    <td className="workflow">[WORKFLOW]</td>
                                     <td className="status"><span className="badge">{qnnaire.status}</span></td>
                                     <td></td>
                                     <td>

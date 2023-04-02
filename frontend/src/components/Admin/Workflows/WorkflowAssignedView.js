@@ -116,7 +116,7 @@ function WorkflowAssignedView() {
                                 <SaveWorkflowAsPDF workflow={workflowsData}></SaveWorkflowAsPDF>
                                 {approverReviewStatus != "FLAGGED" ? <DeleteWorkflow workflow={workflowsData} render="assigned"></DeleteWorkflow> : null}
                             </span>
-                            <span>
+                            <span hidden={token[1] == "APPROVER" ? false : true}>
                                 <SubmitReview workflow={workflowsData}/>
                             </span>
                         </div>
