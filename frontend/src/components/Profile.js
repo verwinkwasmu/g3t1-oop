@@ -144,6 +144,7 @@ function Profile() {
                         </div>                      
                     </div>
                 </div>
+                <div hidden={userType == "APPROVER" ? true : false}>
                 <div className={userType == "VENDOR" ? "grid grid-cols-3 gap-10" : ""}>
                     <div id="workflows" className="col-span-2">
                     <div className="mb-10">
@@ -248,6 +249,9 @@ function Profile() {
                         </table>
                     </div>
                 </div>
+                    
+                </div>
+                
                 
 
             </div>

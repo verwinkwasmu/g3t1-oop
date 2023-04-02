@@ -390,7 +390,6 @@ function AccountDash() {
                     <td className="status">
                       <span
                         className={
-                        //   checkActiveWorkflows(account.id) == "ACTIVE"
                         accountActiveStatus[account.id] == 'ACTIVE'
                             ? "badge bg-blue-500"
                             : "badge"
@@ -444,7 +443,6 @@ function AccountDash() {
                         >
                           <MdEdit></MdEdit>
                         </label>
-                        {/* <EditUserAccount account={account} type="ADMIN" hidden={currentView == "ADMIN" ? false : true}></EditUserAccount> */}
                       </span>
                     </td>
                   </tr>
@@ -460,7 +458,6 @@ function AccountDash() {
           >
             <thead>
               <tr>
-                {/* <th className="p-2">[]</th> */}
                 <th className="p-2">ID</th>
                 <th>Name</th>
                 <th>Email</th>
@@ -471,9 +468,6 @@ function AccountDash() {
             <tbody className="divide-y divide-slate-700">
               {approversData.map((account) => (
                 <tr key={account.id}>
-                  {/* <td className="p-2">
-                                    <input id={account.id} type="checkbox" onChange={() => {handleSelect(account)}} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                                </td> */}
                   <td className="id p-2">{account.id}</td>
                   <td className="name">{account.name}</td>
                   <td className="company">{account.email}</td>

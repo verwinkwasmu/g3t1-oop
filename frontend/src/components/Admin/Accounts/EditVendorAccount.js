@@ -42,7 +42,6 @@ function EditVendorAccount(props) {
         console.log("INSIDE HANDLE SAVE");
         updateVendor({id: id, name: name, email: email, password: password, userType: "VENDOR", companyName: companyName, regNumber: regNumber, bizNature: bizNature, contactNum: contactNum, gstnumber: gstNumber})
             .then(function(response){
-                // navigate('/accounts');
                 navigate(`/accounts/${id}`, {state: {account: {id: id, name: name, email: email, password: password, userType: "VENDOR", companyName: companyName, regNumber: "4567", bizNature: "Love", contactNum: "12345678", gstnumber: "GST456"}}});
             })
             .catch(function(error){
@@ -57,8 +56,6 @@ function EditVendorAccount(props) {
             <label htmlFor="EditVendorAccount" className="btn btn-xs btn-link text-lg text-blue hover:opacity-75">
                 <MdEdit></MdEdit>
             </label>
-            {/* <button className="text-blue hover:opacity-75" htmlFor="EditVendorAccount"><MdEdit></MdEdit></button> */}
-
             
             <input type="checkbox" id="EditVendorAccount" className="modal-toggle" />
             <div className="modal text-left">

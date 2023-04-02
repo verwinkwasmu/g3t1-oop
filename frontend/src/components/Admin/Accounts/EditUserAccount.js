@@ -29,7 +29,6 @@ function EditUserAccount(props) {
         console.log("INSIDE HANDLE SAVE");
         updateUser({id: id, name: name, email: email, userType: userType, password: password})
             .then(function(response){
-                // navigate('/accounts');
                 navigate(`/accounts/${id}`, {state: {account: {id: id, name: name, email: email, userType: userType, password: password}}});
             })
             .catch(function(error){
@@ -46,8 +45,6 @@ function EditUserAccount(props) {
             <label htmlFor="EditUserAccount" className="btn btn-xs btn-link text-lg text-blue hover:opacity-75">
                 <MdEdit></MdEdit>
             </label>
-            {/* <button className="text-blue hover:opacity-75" htmlFor="EditUserAccount"><MdEdit></MdEdit></button> */}
-
             
             <input type="checkbox" id="EditUserAccount" className="modal-toggle" />
             <div className="modal text-left">

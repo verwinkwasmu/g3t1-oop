@@ -30,7 +30,6 @@ function CreateAdminAccount(props) {
         createUser({id: id, name: name, email: email, userType: userType, password: password})
             .then(function(response){
                 window.location.reload();
-                // navigate(`/accounts/${id}`, {state: {account: {id: id, name: name, email: email, password: password, userType: "VENDOR", companyName: company, regNumber: "4567", bizNature: "Love", contactNum: "12345678", gstnumber: "GST456"}}});
             })
             .catch(function(error){
                 console.log("CREATEACCOUNT ERROR")
