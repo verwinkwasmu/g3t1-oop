@@ -194,21 +194,30 @@ public class WorkflowService {
 
     public List<AssignedWorkflow> findAssignedByVendorId(String id) throws WorkflowNotFoundException {
         try {
-            List<AssignedWorkflow> assignedWorkflows = assignedWorkflowRepository.findAll();
+            List<AssignedWorkflow> assignedWorkflows = assignedWorkflowRepository.findByAssignedVendorId(id);
+
             if (assignedWorkflows.isEmpty()) {
                 throw new WorkflowNotFoundException("No workflows found in the database");
             }
-            List<AssignedWorkflow> returned = new ArrayList<AssignedWorkflow>();
-
-            for (AssignedWorkflow assignedWorkflow : assignedWorkflows){
-                if(assignedWorkflow.getAssignedVendorId() != null && assignedWorkflow.getAssignedVendorId().equals(id)){
-                    returned.add(assignedWorkflow);
+            for (AssignedWorkflow assignedWorkflow : assignedWorkflows) {
+                List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
+                if(assignedWorkflow.getQuestionnaireList()!= null){
+                    for (String questionnaireId : assignedWorkflow.getQuestionnaireList()) {
+                        try{
+                            if (questionnaireId != null){
+                                Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+                                Questionnaire questionnaire = optionalQuestionnaire.get();
+                                questionnaireList.add(questionnaire);
+                                assignedWorkflow.setQuestionnaires(questionnaireList);
+                            }
+                        }catch(Exception e){
+                            List<String> newQuestionnaireList = assignedWorkflow.getQuestionnaireList();
+                            while(newQuestionnaireList.remove(questionnaireId));
+                        }
+                    }
                 }
             }
-            if (returned.isEmpty()){
-                throw new WorkflowNotFoundException("No workflows found under Vendor Id " + id);
-            }
-            return returned;
+            return assignedWorkflows;
         } catch (UncategorizedMongoDbException e) {
             throw new DatabaseCommunicationException("Error communicating with database for method findById", e);
         }
@@ -216,21 +225,30 @@ public class WorkflowService {
 
     public List<AssignedWorkflow> findAssignedByAdminId(String id) throws WorkflowNotFoundException {
         try {
-            List<AssignedWorkflow> assignedWorkflows = assignedWorkflowRepository.findAll();
+            List<AssignedWorkflow> assignedWorkflows = assignedWorkflowRepository.findByAssignedAdminId(id);
+
             if (assignedWorkflows.isEmpty()) {
                 throw new WorkflowNotFoundException("No workflows found in the database");
             }
-            List<AssignedWorkflow> returned = new ArrayList<AssignedWorkflow>();
-
-            for (AssignedWorkflow assignedWorkflow : assignedWorkflows){
-                if(assignedWorkflow.getAssignedAdminId() != null && assignedWorkflow.getAssignedAdminId().equals(id)){
-                    returned.add(assignedWorkflow);
+            for (AssignedWorkflow assignedWorkflow : assignedWorkflows) {
+                List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
+                if(assignedWorkflow.getQuestionnaireList()!= null){
+                    for (String questionnaireId : assignedWorkflow.getQuestionnaireList()) {
+                        try{
+                            if (questionnaireId != null){
+                                Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+                                Questionnaire questionnaire = optionalQuestionnaire.get();
+                                questionnaireList.add(questionnaire);
+                                assignedWorkflow.setQuestionnaires(questionnaireList);
+                            }
+                        }catch(Exception e){
+                            List<String> newQuestionnaireList = assignedWorkflow.getQuestionnaireList();
+                            while(newQuestionnaireList.remove(questionnaireId));
+                        }
+                    }
                 }
             }
-            if (returned.isEmpty()){
-                throw new WorkflowNotFoundException("No workflows found under Admin Id " + id);
-            }
-            return returned;
+            return assignedWorkflows;
         } catch (UncategorizedMongoDbException e) {
             throw new DatabaseCommunicationException("Error communicating with database for method findById", e);
         }
