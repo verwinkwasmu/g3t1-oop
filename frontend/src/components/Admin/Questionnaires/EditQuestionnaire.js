@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams,useNavigate } from "react-router-dom";
 import axios from "axios";
+import { MdHomeFilled, MdChecklist, MdDescription, MdGroup } from "react-icons/md";
+
 
 const EditQuestionnaire = ({ questionnaireId }) => {
 
@@ -83,8 +85,19 @@ const EditQuestionnaire = ({ questionnaireId }) => {
         </div>
       )}
 
-      <div>
-        <h1>Edit Questionnaire</h1>
+    <div className="rounded-t-3xl mx-10 mt-10 h-screen py-8 px-20 shadow-2xl">
+            <div className="bg-white">
+              <div className="flex flex-wrap mt-10 mb-6"> 
+                <div className="mr-3">
+                        <MdDescription size={50} color="3278AE" />
+                  </div>
+                  <div className="flex-auto">
+                        {/* <p className="font-thin mt-1">ID: {workflowId}</p> */}
+                        <h2 className="text-3xl font-semibold text-blue">{questionnaire.title}</h2>
+                  </div>
+              </div>
+            </div>
+        <div className="overflow-y-auto max-h-96">
         <form onSubmit={handleFormSubmit}>
           <label>
             Title:
@@ -93,6 +106,7 @@ const EditQuestionnaire = ({ questionnaireId }) => {
               name="title"
               value={formData?.title ?? questionnaire.title}
               onChange={handleFormChange}
+              className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline"
             />
           </label>
           <label>
@@ -104,6 +118,8 @@ const EditQuestionnaire = ({ questionnaireId }) => {
                 formData?.assignedVendorId ?? questionnaire.assignedVendorId
               }
               onChange={handleFormChange}
+              className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline"
+
             />
           </label>
           <label>
@@ -113,6 +129,8 @@ const EditQuestionnaire = ({ questionnaireId }) => {
               name="assignedAdminId"
               value={formData?.assignedAdminId ?? questionnaire.assignedAdminId}
               onChange={handleFormChange}
+              className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline"
+
             />
           </label>
           {Object.entries(questionnaire.questionsAndAnswers).map(
@@ -125,6 +143,8 @@ const EditQuestionnaire = ({ questionnaireId }) => {
                     name={`questionsAndAnswers.${questionId}.prompt`}
                     value={formData?.questionsAndAnswers?.[questionId]?.prompt ?? question.prompt}
                     onChange={handleFormChange}
+                    className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline"
+
                   />
                 </label>
                 {console.log(question.options)}
@@ -140,15 +160,25 @@ const EditQuestionnaire = ({ questionnaireId }) => {
                         name={`options[${optionId}]`}
                         value={formData?.questionsAndAnswers?.[questionId]?.options?.[optionId].value ?? option.value}
                         onChange={handleFormChange}
+                        className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline"
+
                     />
                   </div>
                 ))}
               </div>
             )
           )}
-          <button type="submit">Save</button>
+          <div className="p-2">
+            <button className="btn btn" type="submit">Save</button>
+
+
+          </div>
         </form>
       </div>
+    </div>
+
+
+     
     </>
   );
 };
