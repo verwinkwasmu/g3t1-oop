@@ -53,25 +53,25 @@ function CreateAdminAccount(props) {
                                 <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="id">
                                     ID
                                 </label>
-                                <input onChange={e => setId(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="id" type="text"/>
+                                <input onChange={e => setId(e.target.value)} className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline" id="id" type="text"/>
                             </div>
                             <div className="mb-4">
                                 <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="firstname">
                                     Name
                                 </label>
-                                <input onChange={e => setName(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="firstname" type="text"/>
+                                <input onChange={e => setName(e.target.value)} className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline" id="firstname" type="text"/>
                             </div>
                             <div className="mb-4">
                                 <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="email">
                                     Email
                                 </label>
-                                <input onChange={e => setEmail(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="text"/>
+                                <input onChange={e => setEmail(e.target.value)} className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline" id="email" type="text"/>
                             </div>
                             <div className="mb-6">
                                 <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="password">
                                     Password
                                 </label>
-                                <input onChange={e => setPassword(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************"/>
+                                <input onChange={e => setPassword(e.target.value)} className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline mb-3" id="password" type="password" placeholder="******************"/>
                             </div>                    
                         </div>
                     <div className="flex justify-center">

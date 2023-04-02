@@ -110,7 +110,7 @@ function SaveWorkflowAsPDF(props) {
                             <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="workflowname">
                                 PDF Title
                             </label>
-                            <input onChange={e => setPdfTitle(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="pdfname" type="text" />
+                            <input onChange={e => setPdfTitle(e.target.value)} className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline" id="pdfname" type="text" />
                         </div>
                         <div className="flex justify-center">
                             <label htmlFor="saveworkflowaspdf" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" onClick={() => handleSaveAsPDF()} type="button" disabled={!validateForm()}>
