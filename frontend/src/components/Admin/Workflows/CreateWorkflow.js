@@ -12,6 +12,7 @@ function CreateWorkflow() {
     const navigate = useNavigate();
 
     const [workflowName, setWorkflowName] = useState("");
+    const [workflowDescription, setWorkflowDescription] = useState("");
     const [selectedQuestionnaires, setSelectedQuestionnaires] = useState("");
     const [questionnaireOptions, setQuestionnaireOptions] = useState();
     // const [selectedOptions, setSelectedOptions] = useState();
@@ -28,7 +29,6 @@ function CreateWorkflow() {
     useEffect(() => {
         getQuestionnaires()
             .then(function (response) {
-                // console.log(response.data)
                 if (response.data.length > 0) {
                     const selectOptions = [];
                     for (const element of response.data) {
@@ -48,17 +48,23 @@ function CreateWorkflow() {
         // eslint-disable-next-line
     }, [])
 
-    const handleCreate = () => {
+    const handleCreate = async () => {
         console.log("INSIDE HANDLE CREATE");
+
+        let isConditionSettled = false;
 
         const temp = [];
         for (const element of selectedQuestionnaires) {
             temp.push(element.value);
         }
 
-        createWorkflowTemplate({ workflowName: workflowName, workflowList: temp })
+        createWorkflowTemplate({ 
+            workflowName: workflowName, 
+            workflowDescription: workflowDescription, 
+            questionnaireList: temp 
+        })
             .then(function (response) {
-                navigate('/workflows');
+                window.location.reload(false)
             })
             .catch(function (error) {
                 console.log("ERROR CREATING WORKFLOW")
@@ -83,6 +89,12 @@ function CreateWorkflow() {
                                 Workflow Name
                             </label>
                             <input onChange={e => setWorkflowName(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="workflowname" type="text" />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="workflowdescription">
+                                Workflow Description
+                            </label>
+                            <input onChange={e => setWorkflowDescription(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="workflowdescription" type="text" maxLength="150"/>
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-md font-thin" htmlFor="forms">

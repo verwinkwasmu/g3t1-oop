@@ -5,6 +5,7 @@ import Select from 'react-select'
 import { BsGear } from "react-icons/bs";
 
 import { updateIndividualTemplateWorkflow, getQuestionnaires, updateIndividualAssignedWorkflow } from '../../../apiCalls';
+import { current } from 'tailwindcss/colors';
 
 function UpateWorkflow(props) {
 
@@ -16,7 +17,10 @@ function UpateWorkflow(props) {
 
     const workflowId = props.workflow.id;
     const workflowName = props.workflow.workflowName;
-    const [test, setworkflowName] = useState("");
+    const currentWorkflowDescription = props.workflow.workflowDescription;
+    const currentQuestionnaireList = props.workflow.questionnaireList;
+    const [newWorkflowName, setNewWorkflowName] = useState("");
+    const [newWorkflowDescription, setNewWorkflowDescription] = useState("");
     const [selectedQuestionnaires, setSelectedQuestionnaires] = useState("");
     const [questionnaireOptions, setQuestionnaireOptions] = useState();
 
@@ -30,9 +34,7 @@ function UpateWorkflow(props) {
     }
 
     useEffect(() => {
-        setworkflowName(props.workflow.workflowName)
-        console.log("TEST NAME")
-        console.log(test)
+        setNewWorkflowName(props.workflow.workflowName)
 
         getQuestionnaires()
             .then(function (response) {
@@ -52,67 +54,86 @@ function UpateWorkflow(props) {
                     setQuestionnaireOptions([])
                 }
             })
-
-        // var temp = []
-        // for (const index in props.workflow.questionnaires) {
-        //     temp.push(
-        //         {
-        //             value: props.workflow.questionnaires[index].id, 
-        //             label: props.workflow.questionnaires[index].title
-        //         }
-        //     );
-        // }
-        // setSelectedQuestionnaires(temp)
-        // console.log("selectedQuestionnaires")
-        // console.log(selectedQuestionnaires)
-        // eslint-disable-next-line
     }, [])
-
-    // console.log("selectedQuestionnaires")
-    // console.log(selectedQuestionnaires)
 
     const handleUpdate = () => {
         console.log("INSIDE HANDLE UPDATE");
 
-        const temp = [];
-        for (const element of selectedQuestionnaires) {
-            temp.push(element.value);
+        let questionnaireListInput = [];
+        if (selectedQuestionnaires.length == 0) {
+            questionnaireListInput = currentQuestionnaireList
+        }
+        else {
+            for (const element of selectedQuestionnaires) {
+                questionnaireListInput.push(element.value);
+            }
         }
 
-        if (props.render=="templates") {
+        if (props.render == "templates") {
             var workflowNameToPass = workflowName;
-            if (test!=undefined) {
-                workflowNameToPass = test;
+            if (newWorkflowName != undefined) {
+                workflowNameToPass = newWorkflowName;
             }
 
-            
-            updateIndividualTemplateWorkflow({ id: workflowId, workflowName: workflowNameToPass, questionnaireList: temp })
-            .then(function (response) {
-                window.location.reload(false)
-            })
-            .catch(function (error) {
-                console.log("ERROR UPDATING WORKFLOW")
-            })
-        }
-        else if (props.render=="assigned") {
-            var workflowNameToPass = workflowName;
-            if (test!=undefined) {
-                workflowNameToPass = test;
+            var workflowDescriptionToPass = currentWorkflowDescription;
+            if (newWorkflowDescription != undefined) {
+                workflowDescriptionToPass = newWorkflowDescription;
             }
-            var approverReviewStatus = "INTIIAL_DRAFT"
-            if (props.workflow.approverReviewStatus!=null) {
+
+            updateIndividualTemplateWorkflow({ 
+                id: workflowId, 
+                workflowName: workflowNameToPass, 
+                workflowDescription: workflowDescriptionToPass, 
+                questionnaireList: questionnaireListInput 
+            })
+                .then(function (response) {
+                    window.location.reload(false)
+                })
+                .catch(function (error) {
+                    console.log("ERROR UPDATING WORKFLOW")
+                })
+        }
+        else if (props.render == "assigned") {
+            const createdAt = props.workflow.createdAt;
+            const assignedVendorId = props.workflow.assignedVendorId;
+            const assignedAdminId = props.workflow.assignedAdminId;
+            const approvalRequestDate = props.workflow.approvalRequestDate;
+            const approvedAt = props.workflow.approvedAt;
+
+            var workflowNameToPass = workflowName;
+            if (newWorkflowName != undefined) {
+                workflowNameToPass = newWorkflowName;
+            }
+
+            var workflowDescriptionToPass = currentWorkflowDescription;
+            if (newWorkflowDescription != undefined) {
+                workflowDescriptionToPass = newWorkflowDescription;
+            }
+
+            var approverReviewStatus = "INITIAL_DRAFT"
+            if (props.workflow.approverReviewStatus != null) {
                 approverReviewStatus = props.workflow.approverReviewStatus
             }
-            updateIndividualAssignedWorkflow({ id: workflowId, workflowName: workflowNameToPass, questionnaireList: temp, createdAt: props.workflow.createdAt, assignedVendorId: props.workflow.assignedVendorId, assignedAdminId: props.workflow.assignedAdminId, approvalRequestDate: props.workflow.approvalRequestDate, approverReviewStatus: approverReviewStatus, approvedAt:props.workflow.approvedAt })
-            .then(function (response) {
-                console.log(response.data)
-                window.location.reload(false)
+
+            updateIndividualAssignedWorkflow({ 
+                id: workflowId, 
+                workflowName: workflowNameToPass, 
+                questionnaireList: questionnaireListInput, 
+                createdAt: createdAt, 
+                assignedVendorId: assignedVendorId, 
+                assignedAdminId: assignedAdminId, 
+                approvalRequestDate: approvalRequestDate, 
+                approverReviewStatus: approverReviewStatus, 
+                approvedAt: approvedAt 
             })
-            .catch(function (error) {
-                console.log("ERROR UPDATING WORKFLOW")
-            })
-        }   
-        
+                .then(function (response) {
+                    console.log(response.data)
+                    window.location.reload(false)
+                })
+                .catch(function (error) {
+                    console.log("ERROR UPDATING WORKFLOW")
+                })
+        }
     }
 
     return (
@@ -132,7 +153,13 @@ function UpateWorkflow(props) {
                             <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="workflowname">
                                 Workflow Name
                             </label>
-                            <input defaultValue={workflowName} onChange={e => setworkflowName(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="workflowname" type="text" />
+                            <input defaultValue={workflowName} onChange={e => setNewWorkflowName(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="workflowname" type="text" />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="workflowdescription">
+                                Workflow Description
+                            </label>
+                            <input defaultValue={currentWorkflowDescription} onChange={e => setNewWorkflowDescription(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="workflowdescription" type="text" />
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-md font-thin" htmlFor="forms">
@@ -149,7 +176,7 @@ function UpateWorkflow(props) {
                             />
                         </div>
                         <div className="flex justify-center">
-                            <label onClick={() => {handleUpdate()}} htmlFor="UpateWorkflow" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" type="button">
+                            <label onClick={() => { handleUpdate() }} htmlFor="UpateWorkflow" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" type="button">
                                 Update Workflow
                             </label>
                         </div>

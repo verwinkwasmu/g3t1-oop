@@ -173,8 +173,6 @@ const CreateQuestionnaire = () => {
     });
   };
 
-
-
 const onDragEnd = (result) => {
   console.log("DRAGGING");
   if (!result.destination) {
