@@ -9,8 +9,6 @@ import {
   getVendors,
 } from "../../../apiCalls";
 import useToken from "../../../useToken";
-import axios from "axios";
-import CreationSuccess from "./CreationSuccess";
 
 function AssignNewUser(props) {
   console.log("ASSIGN NEW USER");

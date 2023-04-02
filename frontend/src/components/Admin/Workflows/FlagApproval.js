@@ -26,6 +26,8 @@ export default function FlagApproval(props) {
 
   const handleUpdate = async () => {
     workflow["approverReviewStatus"] = "FLAGGED";
+    workflow["approvalRequestDate"] = new Date().toISOString().slice(0, new Date().toISOString().lastIndexOf(":"))
+    console.log(workflow)
     const response = await updateIndividualAssignedWorkflow(workflow);
     if (response.status == 200) {
       console.log("FLAGGED");
