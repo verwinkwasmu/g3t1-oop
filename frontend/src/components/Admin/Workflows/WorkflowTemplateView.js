@@ -32,7 +32,8 @@ function WorkflowTemplateView() {
                 for (const index in response.data.questionnaires) {
                     temp.push(
                         [response.data.questionnaires[index].id, 
-                        response.data.questionnaires[index].title]
+                        response.data.questionnaires[index].title
+                        ]
                     );
                 }
                 setQuestionnaireTitles(temp);
@@ -73,7 +74,7 @@ function WorkflowTemplateView() {
                         <div className="card w-full bg-base-100 ml-3 drop-shadow-xl">
                             <div className="card-body text-left">
                                 <div>
-                                    <h2 className="text-xl font-semibold text-blue">Included Forms</h2>
+                                    <h2 className="text-xl font-semibold text-blue">Included Questionnaires</h2>
                                 </div>
                                 <div className="card w-80">
                                     <div className="text-left">

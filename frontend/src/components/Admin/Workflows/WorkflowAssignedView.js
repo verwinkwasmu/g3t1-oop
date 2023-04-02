@@ -53,7 +53,8 @@ function WorkflowAssignedView() {
                     temp.push(
                         [response.data.questionnaires[index].id, 
                         response.data.questionnaires[index].title, 
-                        response.data.questionnaires[index].status]
+                        response.data.questionnaires[index].status,
+                        response.data.questionnaires[index].submissionDeadline]
                     );
                 }
                 setQuestionnaireTitles(temp);
@@ -100,6 +101,13 @@ function WorkflowAssignedView() {
         }
     }
 
+    const formatDate = (dateTime) => {
+        const splitFirst = dateTime.split("T");
+        const date = splitFirst[0];
+        const dateSplit = date.split("-");
+        return dateSplit[2] + "/" + dateSplit[1] + "/" + dateSplit[0] + ", " + splitFirst[1];
+    }
+
     return (
         <>
             <div className="rounded-3xl mx-10 my-10 py-8 px-20 shadow-2xl">
@@ -135,7 +143,7 @@ function WorkflowAssignedView() {
                         <div className="card w-full bg-base-100 ml-3 drop-shadow-xl">
                             <div className="card-body text-left">
                                 <div>
-                                    <h2 className="text-xl font-semibold text-blue">Included Forms</h2>
+                                    <h2 className="text-xl font-semibold text-blue">Included Questionnaires</h2>
                                 </div>
                                 <div className="card w-80">
                                     <div className="text-left">
@@ -148,8 +156,10 @@ function WorkflowAssignedView() {
                                                             questionnaireTitle[1]}
                                                             <span className={checkStatusBadge(questionnaireTitle[2])}>{questionnaireTitle[2]}</span>
                                                         </tr>
+                                                        <tr className='text-md italic'>
+                                                            Deadline: {formatDate(questionnaireTitle[3])}
+                                                        </tr>
                                                         <button className="btn btn-link" onClick={() => handleViewClick(questionnaireTitle[0])}>GO TO QUESTIONNAIRE</button>
-
                                                     </div>
                                                 )}
                                             </tbody>
