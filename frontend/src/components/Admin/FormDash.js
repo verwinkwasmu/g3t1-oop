@@ -34,7 +34,8 @@ function FormDash() {
         if (viewMode == "Templates") {
           return q.assignedVendorId == null && q.assignedAdminId == null;
         } else if (viewMode == "Assigned") {
-          return q.assignedVendorId != null && q.assignedVendorId == user[0] && q.assignedAdminId != null;
+            return (q.assignedVendorId != null &&  q.assignedAdminId != null && q.assignedVendorId == user[0]) || (q.assignedVendorId != null &&q.assignedAdminId != null);
+        //   return q.assignedVendorId != null && q.assignedVendorId == user[0] && q.assignedAdminId != null;
         }
         return false;
       });
@@ -97,14 +98,9 @@ function FormDash() {
                                      <div className="flex-auto">
                                         <p className="text-3xl font-semibold text-blue"> Your Assigned Questionnaires</p>
                                         {console.log(viewMode)}
-                                        {/* <button onClick={() => setViewMode("Templates")} hidden={viewMode == "Templates" ? true : false}>View Template Questionnaires</button>
-                                        <button onClick={() => setViewMode("Assigned")} hidden={viewMode != "Templates" ? true : false}>View Assigned Questionnaires</button> */}
+                
                                     </div>
-                                    {/* <div className="flex ">
-                                        <Link to="/questionnaires/create-questionnaire">
-                                            <button className="btn btn-primary">Create Questionnaire</button>
-                                        </Link>
-                                    </div> */}
+                            
                                     {filteredQuestionnaires.length == 0 &&
                                         <p>There are no questionnaires assigned to you at this time.</p>
                                     }
@@ -112,6 +108,8 @@ function FormDash() {
                             )}
                         </div>
                         <div className="grid grid-rows-3 grid-cols-4 gap-x-4 gap-y-8 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                            {console.log("BRUH")}
+                            {console.log(filteredQuestionnaires)}
                             {filteredQuestionnaires.map(q => (
                             <div className="card card-compact w-72 h-72 bg-base-100 shadow-xl image-full" key={q.id}>
                                 <figure>

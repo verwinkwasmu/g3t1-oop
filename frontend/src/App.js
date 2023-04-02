@@ -85,14 +85,10 @@ function App() {
           />
 
           <Route
-            path="/vendor/questionnaires/edit-questionnaire/:id"
+            path="/vendor/questionnaires/vendor-edit-questionnaire/:id"
             element={<VendorEditQuestionnaire />}
           />
 
-          <Route
-            path="/questionnaires/edit-questionnaire/:id"
-            element={<VendorEditQuestionnaire />}
-          />
 
           <Route
             path="/questionnaires/view-questionnaire-indiv/:id"

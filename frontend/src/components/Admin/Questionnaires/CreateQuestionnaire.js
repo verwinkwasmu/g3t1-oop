@@ -64,7 +64,6 @@ const CreateQuestionnaire = () => {
   },[])
 
 
-// 1/04/23 ADD ASSIGNED TO FIELD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   const saveQuestionnaire = () => {
     console.log(questions);
     const questionnaireData = {
@@ -372,6 +371,9 @@ const updateTextInput = (questionId, value) => {
                   <input type ="text" defaultValue="NOT_STARTED" id='status' name='status' ></input>
               </div>
 
+
+              {/* add warning for deletion upon dragging out  */}
+              
               <div className="grid h-500 card bg-base-300 rounded-box place-items-center" >
                 <DragDropContext onDragEnd={onDragEnd}>
                   {console.log(questions)}

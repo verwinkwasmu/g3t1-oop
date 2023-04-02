@@ -77,6 +77,7 @@ function AssignNewUser(props) {
 
         let isConditionSettled = false;
         const output = []
+        console.log(questionnairesInput)
 
         for (const questionnaire of questionnairesInput) {
             createQuestionnaire(questionnaire)
@@ -97,6 +98,7 @@ function AssignNewUser(props) {
             await new Promise(resolve => setTimeout(resolve, 100));
         }
 
+        console.log(output)
         return output
     };
 
@@ -116,10 +118,13 @@ function AssignNewUser(props) {
             await new Promise(resolve => setTimeout(resolve, 100));
         }
 
-        promises.then(result => {
-            console.log(result);
-            questionnaireIds.push(result[0]);
-        });
+        // promises.then(result => {
+        //     console.log(result);
+        //     questionnaireIds.push(result[0]);
+        // });
+
+        const result = await promises
+        questionnaireIds = result
 
         console.log("QUESTIONNAIRE IDS")
         console.log(questionnaireIds)
@@ -132,23 +137,23 @@ function AssignNewUser(props) {
             await new Promise(resolve => setTimeout(resolve, 100));
         }
       
+        const output = []
+        let isConditionSettled = false;
+
         for (let id of questionnaireIds) {
           let updateQuestionnaire;
       
-          // get the duplicated questionnaire first
           try {
             const response = await axios.get(`http://localhost:8080/api/v1/questionnaire/${id}`);
             const duplicatedQuestionnaire = response.data
             console.log(duplicatedQuestionnaire)
       
-            // set the questionnaire object for PUT req
             updateQuestionnaire = {
               ...duplicatedQuestionnaire,
               assignedAdminId: user[0],
               assignedVendorId: selectedVendors.value
             };
           } catch (error) {
-            console.log("SOMETHING IS WRONG ")
             console.log(error)
 
           }
@@ -157,12 +162,20 @@ function AssignNewUser(props) {
           // update the questionnaire object
           try {
             const response = await axios.put(`http://localhost:8080/api/v1/questionnaire/update`, updateQuestionnaire);
-            console.log(response.data)
+            output.push(response.data.id)
           } catch (error) {
-            console.log("SIAN")
             console.log(error)
           }
         }
+        setTimeout(() => {
+            isConditionSettled = true;
+        }, 3000);
+
+        while (!isConditionSettled) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+    
+        return output
       }
 
     const handleCreate = async () => {
@@ -170,50 +183,73 @@ function AssignNewUser(props) {
 
         let isCreatingConditionSettled = false;
         let isResolvingConditionSettled = false;
-        let promises = handleQuestionnaires()
+        let promises = updateQuestionnaireUserInfo()
         let questionnaireIds = []
 
         setTimeout(() => {
             isCreatingConditionSettled = true;
-        }, 3000);
+        }, 6000);
 
         while (!isCreatingConditionSettled) {
             await new Promise(resolve => setTimeout(resolve, 100));
         }
+        
+        // console.log("PROMISES ")
+        // console.log(promises)
+        // promises.then(result => {
+        //     console.log(result);
+        //     questionnaireIds.push(result[0]);
+        // });
 
-        promises.then(result => {
-            console.log(result);
-            questionnaireIds.push(result[0]);
-        });
-
-        console.log("QUESTIONNAIRE IDS")
+        questionnaireIds = await promises
+        console.log("questionnaire ids: ")
         console.log(questionnaireIds)
 
-        setTimeout(() => {
-            isResolvingConditionSettled = true;
-        }, 3000);
 
-        while (!isResolvingConditionSettled) {
-            await new Promise(resolve => setTimeout(resolve, 100));
-        }
-
-        createWorkflowAssigned({
-            workflowName: workflowName,
-            workflowDescription: workflowDescription,
+        const updatedWorkflow = {
+            ...workflowData,
             questionnaireList: questionnaireIds,
-            assignedAdminId: token[0],
-            assignedVendorId: selectedVendors.value,
-            approvalRequestDate: null,
-            approverReviewStatus: "INITIAL_DRAFT",
-            approvedAt: null
-        })
-            .then(function (response) {
-                console.log(response.data.id)
+            assignedVendorId: selectedVendors.value
+        };
+
+        console.log("updated workflow: ")
+        console.log(updatedWorkflow)
+
+        createWorkflowAssigned(updatedWorkflow)
+            .then(function(response){
+                console.log(response.data)
                 navigate(`/workflow-assigned/${response.data.id}`, { state: { workflowId: response.data.id } });
+
             })
-            .catch(function (error) {
-                console.log("ERROR CREATING WORKFLOW")
-            })
+
+        // console.log("?????!!!!!!?!?!?!?!!!?!?")
+        // console.log(questionnaireIds)
+
+        // setTimeout(() => {
+        //     isResolvingConditionSettled = true;
+        // }, 3000);
+
+        // while (!isResolvingConditionSettled) {
+        //     await new Promise(resolve => setTimeout(resolve, 100));
+        // }
+
+        // createWorkflowAssigned({
+        //     workflowName: workflowName,
+        //     workflowDescription: workflowDescription,
+        //     questionnaireList: questionnaireIds,
+        //     assignedAdminId: token[0],
+        //     assignedVendorId: selectedVendors.value,
+        //     approvalRequestDate: null,
+        //     approverReviewStatus: "INITIAL_DRAFT",
+        //     approvedAt: null
+        // })
+        //     .then(function (response) {
+        //         console.log(response.data)
+        //         navigate(`/workflow-assigned/${response.data.id}`, { state: { workflowId: response.data.id } });
+        //     })
+        //     .catch(function (error) {
+        //         console.log("ERROR CREATING WORKFLOW")
+        //     })
     }
 
     const handleDeadlines = (event, index) => {
@@ -227,8 +263,8 @@ function AssignNewUser(props) {
     };
 
     const handleAddUserClick =() => {
-        handleCreate();
         updateQuestionnaireUserInfo();
+        handleCreate();
     }
 
     return (
@@ -257,23 +293,31 @@ function AssignNewUser(props) {
                                 className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             />
                         </div>
-                        {(questionnaireTitles).map((questionnaireInfo) =>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-md font-thin" htmlFor="deadline" key={questionnaireInfo[0]}>
-                                    {questionnaireInfo[1]}
-                                </label>
-                                <label className="block text-gray-700 text-xs font-thin mb-2" htmlFor="deadline" key={questionnaireInfo[0]}>
-                                    Please input deadline in DD/MM/YYYY format.
-                                </label>
-                                <input 
-                                    key={questionnaireInfo[0]}
-                                    onChange={(event) => handleDeadlines(event, index)}
-                                    id="questionnairedeadline" 
-                                    type="text"
-                                    className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-                                />
-                            </div>
-                        )}
+                        <div>
+                            {console.log(questionnaireTitles)}
+                            {(questionnaireTitles).map((questionnaireInfo) =>
+                                <div className="mb-4">
+                                    {console.log('HELLOHELLOHELLO')}
+                                    {console.log(questionnaireInfo)}
+                                    <label className="block text-gray-700 text-md font-thin" htmlFor="deadline" key={questionnaireInfo[0]}>
+                                        {questionnaireInfo[1]}
+                                    </label>
+                                    <label className="block text-gray-700 text-xs font-thin mb-2" htmlFor="deadline" key={questionnaireInfo[0]}>
+                                        Please input deadline in DD/MM/YYYY format.
+                                    </label>
+                                    <input 
+                                        key={questionnaireInfo[0]}
+                                        onChange={(e) => handleDeadlines(e, questionnaireInfo[0])}
+                                        id="questionnairedeadline" 
+                                        type="text"
+                                        className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                                    />
+                                </div>
+                            )}
+
+                        </div>
+
+                        
                         <div className="flex justify-center">
                             <label onClick={() => handleAddUserClick()} htmlFor="AssignNewUser" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" type="button" disabled={!validateForm()}>
                                 Assign New User

@@ -44,6 +44,9 @@ function WorkflowAssignedView() {
             .then(function (response) {
                 // console.log(response.data)
                 setWorkflowsData(response.data)
+                console.log("KILL ME")
+                console.log(response.data)
+                console.log(response.data.questionnaires)
 
                 const temp = [];
                 for (const index in response.data.questionnaires) {
@@ -54,6 +57,7 @@ function WorkflowAssignedView() {
                     );
                 }
                 setQuestionnaireTitles(temp);
+                console.log(questionnaireTitles)
             })
         // eslint-disable-next-line
     }, []) 
@@ -134,6 +138,7 @@ function WorkflowAssignedView() {
                                     <div className="text-left">
                                         <table>
                                             <tbody>
+                                                {console.log(questionnaireTitles)}
                                                 {(questionnaireTitles).map(questionnaireTitle =>
                                                     <div key={questionnaireTitle[0]}>
                                                         <tr className="card-title mb-2 text-lg font-normal">{
