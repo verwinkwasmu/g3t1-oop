@@ -27,7 +27,7 @@ public class Questionnaire {
     private AssignedTo assignedTo;
     private QuestionnaireStatus status;
     private LocalDateTime submissionDate;
-    private Date submissionDeadline;
+    private LocalDateTime submissionDeadline;
     private Map<String, Object> questionsAndAnswers;
     private List<String> feedback;
     
