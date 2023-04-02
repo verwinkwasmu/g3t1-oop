@@ -268,7 +268,7 @@ export default function ViewIndivQuestionnaire(props) {
                         </div>   
                     )}
                     {/* for admin view, add approve button  */}
-                    {user[1] == "ADMIN" || user[1] == "APPROVER" && (
+                    {(user[1] == "ADMIN" || user[1] == "APPROVER") && (
                         <div className="flex flex-wrap mt-10 mb-6">
                             <div className="mr-3">
                                 <IoGitPullRequestOutline size={70} color="3278AE" />
