@@ -90,6 +90,13 @@ function AdminDash() {
             return 'nil';
         }
     }
+    const handleEditClick = (questionnaireId) => {
+        navigate(`/vendor/questionnaires/vendor-edit-questionnaire/${questionnaireId}`, 
+        { state: {   
+            questionnaireId: questionnaireId
+        }});    
+    }
+
 
     return (
         <>
@@ -179,13 +186,15 @@ function AdminDash() {
                             {(currentQuestionnairesData).map(qnnaire =>
                                 <tr key={qnnaire.id}>
                                     <td className="p-2">[DEADLINE]</td>
-                                    <td className="name">{qnnaire.title}</td>
+                                    <td className="name">{qnnaire.title}</td> 
                                     <td className="workflow"><span className={qnnaire.assignedTo == "VENDOR" ? "font-normal badge bg-blue-500" : "font-normal badge"}>{qnnaire.assignedTo}</span></td>
                                     <td className="status"><span className="badge">{qnnaire.status}</span></td>
                                     <td></td>
                                     <td>
                                         <span hidden={currentQuestionnairesView == "ACTIVE" ? false : true}>
-                                            <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75"><MdEdit></MdEdit></button>
+                                            <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75"  onClick={() => {
+                                                handleEditClick(qnnaire.id)
+                                            }}><MdEdit></MdEdit></button>
                                         </span>
                                         <span hidden={currentQuestionnairesView == "PENDING" ? false : true}>
                                             <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75"><MdRemoveRedEye></MdRemoveRedEye></button>
