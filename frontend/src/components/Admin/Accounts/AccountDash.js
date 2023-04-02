@@ -71,7 +71,6 @@ function AccountDash() {
 
 
   async function getAllAccounts(){
-    return new Promise(async (resolve, reject)=>{
         try{
             const responseVendor = await getVendors()
             const responseAdmin = await getUsersByType("ADMIN")
@@ -119,7 +118,6 @@ function AccountDash() {
         } catch(e){
             alert("Error occured")
         }
-    })
 }
 
   async function cAW(id, userType){
