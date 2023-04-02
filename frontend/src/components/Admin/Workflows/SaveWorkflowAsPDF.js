@@ -15,7 +15,7 @@ function SaveWorkflowAsPDF(props) {
     useEffect(() => {
         getVendorById(workflowData.assignedVendorId)
             .then(function (response) {
-                // console.log(response.data)
+                console.log(response.data)
                 setVendorInfo(response.data)
             })
         // eslint-disable-next-line
@@ -59,17 +59,26 @@ function SaveWorkflowAsPDF(props) {
             doc.setFontSize(10);
             doc.setFont("Helvetica", "Oblique");
 
+            // 27.16
             Object.values(qnA).forEach((question, index) => {
                 console.log("QUESTION")
                 console.log(question)
 
                 const prompt = doc.splitTextToSize(question.prompt, 24.62)
+                if (y >= 27.16) {
+                    doc.addPage();
+                    y = 2.54
+                }
                 doc.text(`${index + 1}. ${prompt}`, x, y);
                 y += 0.5;
 
                 if (question.options.length > 0) {
                     doc.setFont("Helvetica", "");
                     question.options.forEach((option) => {
+                        if (y >= 27.16) {
+                            doc.addPage();
+                            y = 2.54
+                        }
                         doc.text(`- ${option.value}`, x + 1, y);
                         y += 0.5;
                     });
@@ -78,9 +87,17 @@ function SaveWorkflowAsPDF(props) {
 
                 doc.setFont("Helvetica", "Oblique");
                 if (question.answer != undefined) {
+                    if (y >= 27.16) {
+                        doc.addPage();
+                        y = 2.54
+                    }
                     doc.text(`Answer: ${question.answer}`, x + 0.45, y)
                 }
                 else {
+                    if (y >= 27.16) {
+                        doc.addPage();
+                        y = 2.54
+                    }
                     doc.text(`Answer: `, x + 0.45, y)
                 }
 

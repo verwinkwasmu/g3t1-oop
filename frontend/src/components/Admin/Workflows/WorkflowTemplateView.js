@@ -1,4 +1,5 @@
 import { IoGitPullRequestOutline } from 'react-icons/io5';
+import { MdKeyboardArrowLeft } from 'react-icons/md'
 
 import { React, useState, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
@@ -20,6 +21,7 @@ function WorkflowTemplateView() {
     const workflowId = location.state.workflowId;
     const [workflowsData, setWorkflowsData] = useState([]);
     const [questionnaireTitles, setQuestionnaireTitles] = useState([]);
+    const origin = location.state.origin;
     console.log(workflowId);
 
     useEffect(() => {
@@ -31,7 +33,7 @@ function WorkflowTemplateView() {
                 const temp = [];
                 for (const index in response.data.questionnaires) {
                     temp.push(
-                        [response.data.questionnaires[index].id, 
+                        [response.data.questionnaires[index].id,
                         response.data.questionnaires[index].title
                         ]
                     );
@@ -42,11 +44,24 @@ function WorkflowTemplateView() {
         // eslint-disable-next-line
     }, [])
 
+    const toWorkflowDash = () => {
+        navigate(`/workflows`);
+    }
+
     return (
         <>
             <div className="rounded-3xl mx-10 my-10 py-8 px-20 shadow-2xl">
                 <div className="bg-white h-full overflow-y-auto">
-
+                    <div id="back">
+                        <button className="text-blue flex hover:opacity-75" 
+                            onClick={
+                                () => { toWorkflowDash() }
+                            }
+                        >
+                            <MdKeyboardArrowLeft className="font-bold"></MdKeyboardArrowLeft>
+                            <span className="text-xs font-semibold">BACK TO WORKFLOWS DASH</span>
+                        </button>
+                    </div>
                     <div className="flex flex-wrap mt-10 mb-6">
                         <div className="mr-3">
                             <IoGitPullRequestOutline size={70} color="3278AE" />

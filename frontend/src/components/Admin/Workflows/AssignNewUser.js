@@ -87,6 +87,7 @@ function AssignNewUser(props) {
     workflowCopy.questionnaireList = handleQuestionnairesPromise;
     workflowCopy.assignedVendorId = selectedVendors.value;
     workflowCopy.assignedAdminId = user[0];
+    workflowCopy.status = "NOT_STARTED";
     workflowCopy["approverReviewStatus"] = "INITIAL_DRAFT";
     const response = await createWorkflowAssigned(workflowCopy);
 
@@ -188,13 +189,6 @@ function AssignNewUser(props) {
                   >
                     Please input deadline in DD/MM/YYYY format.
                   </label>
-                  {/* <input 
-                                        key={questionnaireInfo[0]}
-                                        onChange={(event) => handleDeadlines(event, index)}
-                                        id="questionnairedeadline" 
-                                        type="text"
-                                        className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline" 
-                                    /> */}
                   <input
                     type="datetime-local"
                     onChange={(event) => handleDateChange(event, idx)}
