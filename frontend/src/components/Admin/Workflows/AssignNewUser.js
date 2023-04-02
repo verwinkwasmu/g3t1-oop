@@ -87,6 +87,7 @@ function AssignNewUser(props) {
     workflowCopy.questionnaireList = handleQuestionnairesPromise;
     workflowCopy.assignedVendorId = selectedVendors.value;
     workflowCopy.assignedAdminId = user[0];
+    workflowCopy.status = "NOT_STARTED";
     workflowCopy["approverReviewStatus"] = "INITIAL_DRAFT";
     const response = await createWorkflowAssigned(workflowCopy);
 

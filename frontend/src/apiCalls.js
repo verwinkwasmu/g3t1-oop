@@ -176,8 +176,13 @@ export function getQuestionnairesByAdminId(id) {
   return axiosClient.get(`/api/v1/questionnaire/admin/${id}`)
 }
 
+<<<<<<< HEAD
 export function createQuestionnaire(data) { 
   return axiosClient.post("/api/v1/questionnaire/create", JSON.stringify(data));  
+=======
+export function createQuestionnaire(data) {
+  return axiosClient.post("/api/v1/questionnaire/create", JSON.stringify(data));
+>>>>>>> d208286921b02933639910e7ce26560dab2a67ae
 }
 // ARCHIVE MANAGEMENT
 
