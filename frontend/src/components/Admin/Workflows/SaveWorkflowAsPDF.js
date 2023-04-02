@@ -6,7 +6,7 @@ import Select from 'react-select'
 import jsPDF from 'jspdf';
 
 import { createWorkflowTemplate, getQuestionnaires } from '../../../apiCalls';
-
+import Logo from "../../../assets/QL-Logo-Full.png";
 
 function SaveWorkflowAsPDF(props) {
 
@@ -15,7 +15,7 @@ function SaveWorkflowAsPDF(props) {
     console.log(workflowData)
     const [pdfTitle, setPdfTitle] = useState("")
 
-    
+
     const validateForm = () => {
         return !(pdfTitle.length == 0);
     }
@@ -25,7 +25,7 @@ function SaveWorkflowAsPDF(props) {
         console.log(doc.getFontList())
         doc.addFont("../../../assets/Calibri-Regular.ttf", "CalibriNormal");
         doc.addFont("../../../assets/Calibri-Bold.TTF", "CalibriBold");
-        doc.setFont("Helvetica");
+        doc.setFont("Helvetica", "BoldOblique");
         // doc.setFontStyle("bold");
         doc.setFontSize(12);
 
@@ -34,13 +34,22 @@ function SaveWorkflowAsPDF(props) {
         let y = 2.54;
 
         doc.text(workflowData.workflowName, x, y);
-        doc.setFontSize(11);
         y = 3.54;
 
         Object.values(workflowData.questionnaires).forEach((questionnaire) => {
             const qnA = questionnaire.questionsAndAnswers;
+            doc.setFont("Helvetica", "Bold");
+            doc.setFontSize(11);
+
+            // doc.addImage("../../../assets/QL-Logo-Full.png", "png", 25, y)
+            const imgSrc = Logo;
+            doc.addImage(imgSrc, 'PNG', 25, y, 10, 5)
+
             doc.text(`${questionnaire.title}`, x, y);
             y += 1;
+
+            doc.setFontSize(10);
+            doc.setFont("Helvetica", "Oblique");
 
             Object.values(qnA).forEach((question, index) => {
                 console.log("QUESTION")
@@ -51,6 +60,7 @@ function SaveWorkflowAsPDF(props) {
                 y += 0.5;
 
                 if (question.options.length > 0) {
+                    doc.setFont("Helvetica", "");
                     question.options.forEach((option) => {
                         doc.text(`- ${option.value}`, x + 1, y);
                         y += 0.5;
@@ -58,7 +68,8 @@ function SaveWorkflowAsPDF(props) {
                 }
                 y += 0.5;
 
-                if (question.answer!=undefined) {
+                doc.setFont("Helvetica", "Oblique");
+                if (question.answer != undefined) {
                     doc.text(`Answer: ${question.answer}`, x + 0.45, y)
                 }
                 else {
