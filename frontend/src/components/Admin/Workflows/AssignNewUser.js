@@ -89,14 +89,11 @@ function AssignNewUser(props) {
     workflowCopy.questionnaireList = handleQuestionnairesPromise;
     workflowCopy.assignedVendorId = selectedVendors.value;
     workflowCopy.assignedAdminId = user[0];
-    workflowCopy.status = "NOT_STARTED";
     workflowCopy["approverReviewStatus"] = "INITIAL_DRAFT";
-
     const response = await createWorkflowAssigned(workflowCopy);
 
     if (response.status == 200) {
-      alert("CREATE ASSIGNED WORKFLOW SUCCESSFUL");
-      window.location.replace(`http://localhost:3000/workflows`);
+        navigate(`/workflow-assigned/${response.data.id}`, { state: { workflowId: response.data.id } });
     }
   }
 
@@ -109,14 +106,14 @@ function AssignNewUser(props) {
         questionnaireFR["submissionDeadline"] = values[index];
         questionnaireFR["assignedVendorId"] = selectedVendors.value;
         questionnaireFR["assignedAdminId"] = user[0];
+        questionnaireFR["status"] = "NOT_STARTED";
         const createQuestionnaireResponse = await createQuestionnaire(
           questionnaireFR
         );
-        console.log("createQuestionnaireResponse", createQuestionnaireResponse);
+        // console.log("createQuestionnaireResponse", createQuestionnaireResponse);
 
         const questionnaireId = createQuestionnaireResponse.data.id;
 
-        console.log("???????", questionnaireIds);
         questionnaireIds.push(questionnaireId);
         if (questionnaireIds.length == questionnaires.length) {
           resolve(questionnaireIds);
@@ -222,7 +219,6 @@ function AssignNewUser(props) {
                 Assign New User
               </label>
             </div>
-            <CreationSuccess workflowName={workflowName}></CreationSuccess>
           </form>
         </div>
       </div>
