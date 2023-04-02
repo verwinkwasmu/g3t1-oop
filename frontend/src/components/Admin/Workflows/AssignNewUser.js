@@ -191,7 +191,7 @@ function AssignNewUser(props) {
 
         setTimeout(() => {
             isResolvingConditionSettled = true;
-        }, 3000);
+        }, 5000);
 
         while (!isResolvingConditionSettled) {
             await new Promise(resolve => setTimeout(resolve, 100));

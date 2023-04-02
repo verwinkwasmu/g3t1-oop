@@ -64,7 +64,7 @@ function CreateWorkflow() {
             questionnaireList: temp 
         })
             .then(function (response) {
-                window.location.reload(false)
+                navigate(`/workflow-templates/${response.data.id}`, { state: { workflowId: response.data.id } });
             })
             .catch(function (error) {
                 console.log("ERROR CREATING WORKFLOW")
