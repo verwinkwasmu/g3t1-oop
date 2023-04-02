@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { MdRemoveRedEye, MdEdit } from 'react-icons/md';
 
-import { getWorkflows, getAssignedWorkflowsByVendorId, getQuestionnaires } from '../../apiCalls';
+import { getWorkflows, getAssignedWorkflowsByVendorId, getIndividualQuestionnaire, getQuestionnaires } from '../../apiCalls';
 
 import useToken from '../../useToken';
 
@@ -82,11 +82,12 @@ function VendorDash() {
         var complete = 0; 
         var total = questionnaires != null ? questionnaires.length : 0;
 
-        for (var qnnaire in questionnaires) {
-            if (!(qnnaire.status in ["INITIAL DRAFT", "RETURNED"])) { 
+        questionnaires.map((qnnaire, idx)=>{
+            console.log(idx, qnnaire, qnnaire.title, qnnaire.status)
+            if (qnnaire.status != "NOT_STARTED" && qnnaire.status != "RETURNED") { 
                 complete += 1;
             }
-        }
+        })
         return `${complete} / ${total}`;
     }
 

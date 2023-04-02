@@ -80,11 +80,13 @@ function AdminDash() {
 
         var total = questionnaires != null ? questionnaires.length : 0;
 
-        for (var qnnaire in questionnaires) {
-            if (!(qnnaire.status in ["INITIAL DRAFT", "RETURNED"])) { 
+        questionnaires.map((qnnaire, idx)=>{
+            console.log(idx, qnnaire, qnnaire.title, qnnaire.status)
+            if (qnnaire.status == "ADMIN_APPROVED") { 
                 complete += 1;
             }
-        }
+        })
+
         return `${complete} / ${total}`;
     }
 
