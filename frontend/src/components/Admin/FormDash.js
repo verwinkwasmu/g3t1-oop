@@ -14,11 +14,11 @@ function FormDash() {
 
     const [questionnaires, setQuestionnaireData] = useState([]);
     const [isLoading, setIsLoading] = useState(true)
-    const [viewMode, setViewMode] = useState("templates");
+    const [viewMode, setViewMode] = useState("Assigned");
     const [questionToDelete, setQuestionToDelete] = useState(null);
     const [questionToEdit, setQuestionToEdit] = useState(null);
-    const user = localStorage.getItem('token');    
-    const userInfo = JSON.parse(user)
+    const user = useToken().token    
+    console.log(user[1])
 
 
     useEffect(() => {
@@ -28,19 +28,17 @@ function FormDash() {
         });
       }, []);
 
-
       const filteredQuestionnaires = questionnaires.filter(q => {
         console.log("KAKAKAKAKKA")
         console.log(q.assignedAdminId)
         if (viewMode == "Templates") {
           return q.assignedVendorId == null && q.assignedAdminId == null;
         } else if (viewMode == "Assigned") {
-          return q.assignedVendorId != null || q.assignedAdminId != null;
+          return q.assignedVendorId != null && q.assignedVendorId == user[0] && q.assignedAdminId != null;
         }
         return false;
       });
-
-
+      
     //   const handleEditClick 
 
 
@@ -80,19 +78,39 @@ function FormDash() {
                 <div className="rounded-t-3xl mx-10 mt-10 h-screen py-8 px-20 shadow-2xl">
                     <div className="bg-white h-full overflow-y-auto">
                         <div className="flex flex-wrap mb-5">
-                            <div className="flex-auto">
-                            <p className="text-3xl font-semibold text-blue">Questionnaires</p>
-                            <button onClick={() => setViewMode("Templates")} hidden={viewMode == "Templates" ? true : false}>View Template Questionnaires</button>
-                            <button onClick={() => setViewMode("Assigned")} hidden={viewMode != "Templates" ? true : false}>View Assigned Questionnaires</button>
-                            
-                         </div>
-                            <div className="flex ">
-                            <Link to="/questionnaires/create-questionnaire">
-                                <button className="btn btn-primary">Create Questionnaire</button>
-                            </Link>
-                            </div>
+                            {(user[1] == "ADMIN" || user[1] == "APPROVER") && (
+                                <div>
+                                     <div className="flex-auto">
+                                        <p className="text-3xl font-semibold text-blue">Questionnaires</p>
+                                        <button onClick={() => setViewMode("Templates")} hidden={viewMode == "Templates" ? true : false}>View Template Questionnaires</button>
+                                        <button onClick={() => setViewMode("Assigned")} hidden={viewMode != "Templates" ? true : false}>View Assigned Questionnaires</button>
+                                    </div>
+                                    <div className="flex ">
+                                        <Link to="/questionnaires/create-questionnaire">
+                                            <button className="btn btn-primary">Create Questionnaire</button>
+                                        </Link>
+                                    </div>
+                                </div>
+                            )}
+                            {(user[1] == "VENDOR") && (
+                                <div>
+                                     <div className="flex-auto">
+                                        <p className="text-3xl font-semibold text-blue"> Your Assigned Questionnaires</p>
+                                        {console.log(viewMode)}
+                                        {/* <button onClick={() => setViewMode("Templates")} hidden={viewMode == "Templates" ? true : false}>View Template Questionnaires</button>
+                                        <button onClick={() => setViewMode("Assigned")} hidden={viewMode != "Templates" ? true : false}>View Assigned Questionnaires</button> */}
+                                    </div>
+                                    {/* <div className="flex ">
+                                        <Link to="/questionnaires/create-questionnaire">
+                                            <button className="btn btn-primary">Create Questionnaire</button>
+                                        </Link>
+                                    </div> */}
+                                    {filteredQuestionnaires.length == 0 &&
+                                        <p>There are no questionnaires assigned to you at this time.</p>
+                                    }
+                                </div>
+                            )}
                         </div>
-
                         <div className="grid grid-rows-3 grid-cols-4 gap-x-4 gap-y-8 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                             {filteredQuestionnaires.map(q => (
                             <div className="card card-compact w-72 h-72 bg-base-100 shadow-xl image-full" key={q.id}>
