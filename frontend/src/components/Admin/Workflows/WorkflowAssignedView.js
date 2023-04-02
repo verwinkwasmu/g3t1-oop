@@ -3,11 +3,11 @@ import { IoGitPullRequestOutline } from 'react-icons/io5';
 import { React, useState, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 
-
 import DeleteWorkflow from './DeleteWorkflow';
 import AssignNewUser from './AssignNewUser';
 import UpdateWorkflow from './UpdateWorkflow';
 import FlagApproval from './FlagApproval';
+import SubmitReview from '../../Approver/SubmitReview';
 import SaveWorkflowAsPDF from './SaveWorkflowAsPDF';
 import { getIndividualAssignedWorkflow } from '../../../apiCalls';
 
@@ -44,16 +44,21 @@ function WorkflowAssignedView() {
             .then(function (response) {
                 // console.log(response.data)
                 setWorkflowsData(response.data)
+                console.log("KILL ME")
+                console.log(response.data)
+                console.log(response.data.questionnaires)
 
                 const temp = [];
                 for (const index in response.data.questionnaires) {
                     temp.push(
                         [response.data.questionnaires[index].id, 
                         response.data.questionnaires[index].title, 
-                        response.data.questionnaires[index].status]
+                        response.data.questionnaires[index].status,
+                        response.data.questionnaires[index].submissionDeadline]
                     );
                 }
                 setQuestionnaireTitles(temp);
+                console.log(questionnaireTitles)
             })
         // eslint-disable-next-line
     }, []) 
@@ -96,9 +101,16 @@ function WorkflowAssignedView() {
         }
     }
 
+    const formatDate = (dateTime) => {
+        const splitFirst = dateTime.split("T");
+        const date = splitFirst[0];
+        const dateSplit = date.split("-");
+        return dateSplit[2] + "/" + dateSplit[1] + "/" + dateSplit[0] + ", " + splitFirst[1];
+    }
+
     return (
         <>
-            <div className="rounded-t-3xl mx-10 mt-10 h-screen py-8 px-20 shadow-2xl">
+            <div className="rounded-3xl mx-10 my-10 py-8 px-20 shadow-2xl">
                 <div className="bg-white h-full overflow-y-auto">
                     <div className="flex flex-wrap mt-10 mb-6">
                         <div className="mr-3">
@@ -115,33 +127,39 @@ function WorkflowAssignedView() {
                                 <SaveWorkflowAsPDF workflow={workflowsData}></SaveWorkflowAsPDF>
                                 {approverReviewStatus != "FLAGGED" ? <DeleteWorkflow workflow={workflowsData} render="assigned"></DeleteWorkflow> : null}
                             </span>
+                            <span hidden={token[1] == "APPROVER" ? false : true}>
+                                <SubmitReview workflow={workflowsData}/>
+                            </span>
                         </div>
                     </div>
-                    <div className="grid grid-rows-1 grid-cols-4 gap-x-2 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+                    <div className="grid grid-rows-1 gap-x-2 gap-y-8">
                         <ul className="steps steps-vertical lg:steps-horizontal my-7">
                             {(questionnaireTitles).map(questionnaireTitle =>
                                 <li className={checkStatusSteps(questionnaireTitle[2])} key={questionnaireTitle[0]}>{questionnaireTitle[1]}</li>
                             )}
                         </ul>
                     </div>
-                    <div className='grid grid-rows-1 grid-cols-2 mt-5'>
-                        <div className="card w-[35rem] bg-base-100 ml-3 drop-shadow-xl">
+                    <div className='grid grid-rows-1 gap-2 grid-cols-2 my-5'>
+                        <div className="card w-full bg-base-100 ml-3 drop-shadow-xl">
                             <div className="card-body text-left">
                                 <div>
-                                    <h2 className="text-xl font-semibold text-blue">Included Forms</h2>
+                                    <h2 className="text-xl font-semibold text-blue">Included Questionnaires</h2>
                                 </div>
                                 <div className="card w-80">
                                     <div className="text-left">
                                         <table>
                                             <tbody>
+                                                {console.log(questionnaireTitles)}
                                                 {(questionnaireTitles).map(questionnaireTitle =>
                                                     <div key={questionnaireTitle[0]}>
                                                         <tr className="card-title mb-2 text-lg font-normal">{
                                                             questionnaireTitle[1]}
                                                             <span className={checkStatusBadge(questionnaireTitle[2])}>{questionnaireTitle[2]}</span>
                                                         </tr>
+                                                        <tr className='text-md italic'>
+                                                            Deadline: {formatDate(questionnaireTitle[3])}
+                                                        </tr>
                                                         <button className="btn btn-link" onClick={() => handleViewClick(questionnaireTitle[0])}>GO TO QUESTIONNAIRE</button>
-
                                                     </div>
                                                 )}
                                             </tbody>

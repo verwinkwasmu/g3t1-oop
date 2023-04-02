@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { MdRemoveRedEye, MdEdit } from 'react-icons/md';
 
-import { getWorkflows, getAssignedWorkflowsByAdminId, getQuestionnaires } from '../../apiCalls';
+import { getWorkflows, getAssignedWorkflowsByAdminId, getQuestionnairesByAdminId } from '../../apiCalls';
 
 import useToken from '../../useToken';
 
@@ -22,19 +22,19 @@ function AdminDash() {
                 // console.log(response.data)
                 if (response.data.length > 0) {
                     setCurrentWorkflowsView("ACTIVE")
-                    setCurrentWorkflowsData(response.data.filter(w => w.approvalRequestDate == null))
+                    setCurrentWorkflowsData(response.data.filter(w => w.approverReviewStatus == "INITIAL_DRAFT" || w.approverReviewStatus == "REJECTED"))
                     setWorkflowsData(response.data)
                 } else {
                     setWorkflowsData([])
                 }
             })
         
-        getQuestionnaires()
+        getQuestionnairesByAdminId(accountId)
             .then(function (response) {
                 // console.log(response.data)
                 if (response.data.length > 0) {
                     setCurrentQuestionnairesView("ACTIVE")
-                    setCurrentQuestionnairesData(response.data.filter(qnnaire => qnnaire.status == "NOT_STARTED" || qnnaire.status == "RETURNED"))
+                    setCurrentQuestionnairesData(response.data.filter(qnnaire => (qnnaire.assignedTo == "VENDOR" && qnnaire.status == "SUBMITTED") || (qnnaire.assignedTo == "ADMIN" && (qnnaire.status == "NOT_STARTED" || qnnaire.status == "RETURNED"))))
                     setQuestionnairesData(response.data)
                 } else {
                     setQuestionnairesData([])
@@ -54,18 +54,18 @@ function AdminDash() {
     const toggleWorkflowsView = (status) => {
         if (status == "ACTIVE") {
             console.log('inside ACTIVE toggle')
-            setCurrentWorkflowsData(workflowsData.filter(w => w.approvalRequestDate == null))
+            setCurrentWorkflowsData(workflowsData.filter(w => w.approverReviewStatus == "INITIAL_DRAFT" || w.approverReviewStatus == "REJECTED"))
         } else if (status == "PENDING") {
-            setCurrentWorkflowsData(workflowsData.filter(w => w.approvalRequestDate != null))
+            setCurrentWorkflowsData(workflowsData.filter(w => w.approverReviewStatus == "FLAGGED"))
         }
         setCurrentWorkflowsView(status);
     }
 
     const toggleQuestionnairesView = (status) => {
         if (status == "ACTIVE") {
-            setCurrentQuestionnairesData(questionnairesData.filter(q => q.status == "NOT_STARTED" || q.status == "RETURNED"))
+            setCurrentQuestionnairesData(questionnairesData.filter(qnnaire => (qnnaire.assignedTo == "VENDOR" && qnnaire.status == "SUBMITTED") || (qnnaire.assignedTo == "ADMIN" && (qnnaire.status == "NOT_STARTED" || qnnaire.status == "RETURNED"))))
         } else if (status == "PENDING") {
-            setCurrentQuestionnairesData(questionnairesData.filter(q => q.status == "SUBMITTED"))
+            setCurrentQuestionnairesData(questionnairesData.filter(qnnaire => qnnaire.status == "ADMIN_APPROVED"))
         }
         setCurrentQuestionnairesView(status);
     }
@@ -76,17 +76,27 @@ function AdminDash() {
     }
 
     const getWorkflowCompletion = (questionnaires) => {
-        var complete = 0; 
+        if (questionnaires != null) {
+            var complete = 0; 
+            var total = questionnaires != null ? questionnaires.length : 0;
 
-        var total = questionnaires != null ? questionnaires.length : 0;
-
-        for (var qnnaire in questionnaires) {
-            if (!(qnnaire.status in ["INITIAL DRAFT", "RETURNED"])) { 
-                complete += 1;
-            }
+            questionnaires.map((qnnaire, idx)=>{
+                if (qnnaire.status == "ADMIN_APPROVED") { 
+                    complete += 1;
+                }
+            })
+            return `${complete} / ${total}`;
+        } else {
+            return 'nil';
         }
-        return `${complete} / ${total}`;
     }
+    const handleEditClick = (questionnaireId) => {
+        navigate(`/vendor/questionnaires/vendor-edit-questionnaire/${questionnaireId}`, 
+        { state: {   
+            questionnaireId: questionnaireId
+        }});    
+    }
+
 
     return (
         <>
@@ -166,7 +176,7 @@ function AdminDash() {
                             <tr>
                                 <th className="p-2">Deadline</th>
                                 <th>Questionnaire</th>
-                                <th>Workflow</th>
+                                <th>Assigned To</th>
                                 <th>Status</th>
                                 <th></th>
                                 <th></th>
@@ -176,13 +186,15 @@ function AdminDash() {
                             {(currentQuestionnairesData).map(qnnaire =>
                                 <tr key={qnnaire.id}>
                                     <td className="p-2">[DEADLINE]</td>
-                                    <td className="name">{qnnaire.title}</td>
-                                    <td className="workflow">[WORKFLOW]</td>
+                                    <td className="name">{qnnaire.title}</td> 
+                                    <td className="workflow"><span className={qnnaire.assignedTo == "VENDOR" ? "font-normal badge bg-blue-500" : "font-normal badge"}>{qnnaire.assignedTo}</span></td>
                                     <td className="status"><span className="badge">{qnnaire.status}</span></td>
                                     <td></td>
                                     <td>
                                         <span hidden={currentQuestionnairesView == "ACTIVE" ? false : true}>
-                                            <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75"><MdEdit></MdEdit></button>
+                                            <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75"  onClick={() => {
+                                                handleEditClick(qnnaire.id)
+                                            }}><MdEdit></MdEdit></button>
                                         </span>
                                         <span hidden={currentQuestionnairesView == "PENDING" ? false : true}>
                                             <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75"><MdRemoveRedEye></MdRemoveRedEye></button>

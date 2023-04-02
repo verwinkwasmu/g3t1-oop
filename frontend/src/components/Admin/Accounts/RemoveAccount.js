@@ -4,15 +4,11 @@ import { MdDelete } from "react-icons/md";
 
 import { useNavigate } from 'react-router-dom';
 
-import { deleteUser } from '../../../apiCalls';
-import { deleteVendor } from '../../../apiCalls';
+import { deleteUser, deleteVendor } from '../../../apiCalls';
 
 function RemoveAccount(props) {
 
     const navigate = useNavigate();
-
-    console.log("removeAccount –> props.accounts: ", props.accounts)
-    // even though props.accounts is accurate, it isnt updating in the modal fast enough
 
     const [token] = useState('admin1')
     const [id] = useState(props.accounts[0].id)

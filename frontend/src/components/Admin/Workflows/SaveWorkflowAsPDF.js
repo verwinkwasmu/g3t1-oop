@@ -1,20 +1,25 @@
 import { AiOutlineFilePdf } from 'react-icons/ai';
 
-import { React, useState, useEffect } from 'react'
-import { useNavigate } from "react-router-dom";
-import Select from 'react-select'
+import { React, useState, useEffect } from 'react';
 import jsPDF from 'jspdf';
 
-import { createWorkflowTemplate, getQuestionnaires } from '../../../apiCalls';
+import { getVendorById } from "../../../apiCalls";
 import Logo from "../../../assets/QL-Logo-Full.png";
 
 function SaveWorkflowAsPDF(props) {
 
     const workflowData = props.workflow;
-    console.log("WORKFLOW")
-    console.log(workflowData)
     const [pdfTitle, setPdfTitle] = useState("")
+    const [vendorInfo, setVendorInfo] = useState("")
 
+    useEffect(() => {
+        getVendorById(workflowData.assignedVendorId)
+            .then(function (response) {
+                // console.log(response.data)
+                setVendorInfo(response.data)
+            })
+        // eslint-disable-next-line
+    }, [])
 
     const validateForm = () => {
         return !(pdfTitle.length == 0);
@@ -22,19 +27,22 @@ function SaveWorkflowAsPDF(props) {
 
     const handleSaveAsPDF = () => {
         const doc = new jsPDF({ unit: "cm" });
-        console.log(doc.getFontList())
-        doc.addFont("../../../assets/Calibri-Regular.ttf", "CalibriNormal");
-        doc.addFont("../../../assets/Calibri-Bold.TTF", "CalibriBold");
-        doc.setFont("Helvetica", "BoldOblique");
-        // doc.setFontStyle("bold");
-        doc.setFontSize(12);
 
         // Define the x and y coordinates for the first question
         let x = 2.54;
         let y = 2.54;
 
+        doc.setFont("Helvetica", "Oblique");
+        doc.setFontSize(9);
+        doc.text(`Assigned Vendor: ${vendorInfo.name} (${workflowData.assignedVendorId})`, 14, 2)
+        doc.text(`Company: ${vendorInfo.companyName}`, 16.3, 2.5)
+        y += 1
+
+        doc.setFont("Helvetica", "BoldOblique");
+        doc.setFontSize(12);
+
         doc.text(workflowData.workflowName, x, y);
-        y = 3.54;
+        y += 1
 
         Object.values(workflowData.questionnaires).forEach((questionnaire) => {
             const qnA = questionnaire.questionsAndAnswers;
@@ -102,7 +110,7 @@ function SaveWorkflowAsPDF(props) {
                             <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="workflowname">
                                 PDF Title
                             </label>
-                            <input onChange={e => setPdfTitle(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="pdfname" type="text" />
+                            <input onChange={e => setPdfTitle(e.target.value)} className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline" id="pdfname" type="text" />
                         </div>
                         <div className="flex justify-center">
                             <label htmlFor="saveworkflowaspdf" className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" onClick={() => handleSaveAsPDF()} type="button" disabled={!validateForm()}>

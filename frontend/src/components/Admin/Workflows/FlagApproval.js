@@ -1,9 +1,13 @@
 import { React, useState, useEffect } from "react";
 import { AiOutlineDelete, AiOutlineFlag } from "react-icons/ai";
+import { useNavigate  } from "react-router-dom";
 
 import { updateIndividualAssignedWorkflow } from "../../../apiCalls";
 
 export default function FlagApproval(props) {
+
+  const navigate = useNavigate();
+
   const [checker, setChecker] = useState(false);
   const workflow = props.workflow;
   const approverReviewStatus = workflow.approverReviewStatus;
@@ -25,6 +29,7 @@ export default function FlagApproval(props) {
     const response = await updateIndividualAssignedWorkflow(workflow);
     if (response.status == 200) {
       console.log("FLAGGED");
+      navigate(`/workflow-assigned/${workflow.id}`, { state: { workflowId: workflow.id } });
     }
   };
 

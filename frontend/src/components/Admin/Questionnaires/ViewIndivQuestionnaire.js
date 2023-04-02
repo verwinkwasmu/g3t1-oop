@@ -22,10 +22,12 @@ export default function ViewIndivQuestionnaire(props) {
     const navigate = useNavigate();
 
     console.log(location.state)
+    console.log(user)
 
 
     const [questionnaire, setQuestionnaire] = useState(null);
     const [workflow, setWorkflow] = useState([])
+    const [feedback, setFeedback] = useState([])
     const  id  = useParams()
 
     const workflowId = location.state.workflowId
@@ -83,11 +85,51 @@ export default function ViewIndivQuestionnaire(props) {
     // add in feedback field 
     const handleAdminRejectClick = async () => {
         console.log("CLICKING reject")
+        console.log(feedback)
         const updatedQuestionnaire = {
             ...questionnaire,
-            status: "RETURNED"
+            status: "RETURNED",
+            feedback: feedback
+
         };
         // change the id to the id gotten from workflow
+        console.log("weeheeeheehee")
+        console.log(updatedQuestionnaire)
+        try {
+            const response = await axios.put(`${baseURL}/update`, updatedQuestionnaire);
+            setQuestionnaire(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+    const handleApproverApproveClick = async () => {
+        console.log("CLICKING")
+        const updatedQuestionnaire = {
+            ...questionnaire,
+            status: "APPROVER_APPROVED"
+        };
+
+        // change the id to the id from workflow
+        try {
+            const response = await axios.put(`${baseURL}/update`, updatedQuestionnaire);
+            setQuestionnaire(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    // add in feedback field 
+    const handleApproverRejectClick = async () => {
+        console.log("CLICKING reject")
+        const updatedQuestionnaire = {
+            ...questionnaire,
+            status: "RETURNED",
+            feedback: feedback
+        };
+        // change the id to the id gotten from workflow
+
         try {
             const response = await axios.put(`${baseURL}/update`, updatedQuestionnaire);
             setQuestionnaire(response.data);
@@ -98,9 +140,8 @@ export default function ViewIndivQuestionnaire(props) {
 
 
     const handleEditClick = (questionnaireId) => {
-        navigate(`/vendor/questionnaires/edit-questionnaire/${questionnaireId}`, 
+        navigate(`/vendor/questionnaires/vendor-edit-questionnaire/${questionnaireId}`, 
         { state: {   
-            workflowId: workflowId,
             questionnaireId: questionnaireId
         }});    
     }
@@ -133,14 +174,6 @@ export default function ViewIndivQuestionnaire(props) {
             <div className="rounded-t-3xl mx-10 mt-10 h-screen py-8 px-20 shadow-2xl">
                 <div className="bg-white">
 
-                    {/* from ssigned should show edit button, approve, reject button for answers */}
-                    {/* else its just view of template for admin and approver only  */}
-                    {/* {fromAssigned == "fromAssigned" && (
-
-                    )} */}
-
-                    {/* for vendor and for assigned to show edit button and workflow name */}
-                    {/* if there are already answers, i want an update button, if not i want edit button */}
                     {user[1] == "VENDOR" && (
                         <div className="flex flex-wrap mt-10 mb-6">
                             <div className="mr-3">
@@ -202,7 +235,19 @@ export default function ViewIndivQuestionnaire(props) {
                                             }}>
                                                 Update Questionnaire
                                             </button>
+                                           
                                         )}
+
+                                        {questionnaire.status == "RETURNED" && (
+                                        <div>
+                                            {/* <button className="btn btn-info w-full mb-2" onClick={() => handleEditClick(questionnaire.id)}>
+                                            Edit Questionnaire
+                                            </button> */}
+                                            
+                                            <p>{questionnaire.feedback}</p>
+                                        </div>
+                                        )}
+
                                         {(questionnaire.status == "ADMIN_APPROVED" || questionnaire.status == "APPROVER_APPROVED") && (
                                               <button className="btn w-full mb-2" disabled>
                                                 Update Questionnaire
@@ -214,8 +259,7 @@ export default function ViewIndivQuestionnaire(props) {
                             </div>
                         </div>   
                     )}
-                    {/* for admin view, add approve button  */}
-                    {user[1] == "ADMIN" && (
+                    {(user[1] == "ADMIN" || user[1] == "APPROVER")  && (
                         <div className="flex flex-wrap mt-10 mb-6">
                             <div className="mr-3">
                                 <IoGitPullRequestOutline size={70} color="3278AE" />
@@ -230,7 +274,6 @@ export default function ViewIndivQuestionnaire(props) {
                                 <div>
                                     <h2 className="text-xl font-semibold text-blue">{questionnaire.title}</h2>
                                     <span className={checkStatusBadge(questionnaire.status)}>{questionnaire.status}</span>
-                                    <p>{questionnaire.assignedVendorId}</p>
                                 </div>
                                 <div>
 
@@ -269,6 +312,7 @@ export default function ViewIndivQuestionnaire(props) {
                                                 <button className="btn w-full mb-2" disabled>
                                                     REJECT
                                                 </button>
+                                                
                                             </div> 
                                         )}
 
@@ -285,21 +329,65 @@ export default function ViewIndivQuestionnaire(props) {
                                                 }}>
                                                     REJECT
                                                 </button>
+                                                {/* add lbel */}
+                                                <input type="text" name="feedback" onChange={(e) => {
+                                                    setFeedback([e.target.value])
+                                                }}>
+                                                    
+                                                </input>
 
                                             </div>
                                     
                                         )}
-                                        {(questionnaire.status == "ADMIN_APPROVED" || questionnaire.status == "APPROVER_APPROVED") && (
+                                       
+                                        {(questionnaire.assignedTo == "ADMIN" && questionnaire.status == "NOT_STARTED") && (
+                                              <div>
+                                                
+                                                <button className="btn btn-info w-full mb-2" onClick={() => {
+                                                    handleEditClick(questionnaire.id)
+                                                }}>
+                                                    Start Questionnaire
+                                                </button>
+                        
+                                            </div>
+                                        )}
+
+
+                                        {/* {(questionnaire.status == "ADMIN_APPROVED" || questionnaire.status == "APPROVER_APPROVED") && (
                                               <button className="btn w-full mb-2" disabled>
                                                 Update Questionnaire
                                             </button>
-                                        )}
+                                        )} */}
 
                                     </div>
                                 </div>
                             </div>
                         </div>   
                     )}
+
+                    {(user[1] == "APPROVER" && questionnaire.status == "ADMIN_APPROVED") && (
+                           <div>
+                               <button className="btn btn-success w-full mb-2" onClick={() => {
+                                   handleApproverApproveClick(questionnaire.id)
+                               }}>
+                                   APPROVE
+                               </button>
+                
+                               <button className="btn btn-warning w-full mb-2" onClick={() => {
+                                   handleApproverRejectClick(questionnaire.id)
+                               }}>
+                                   REJECT
+                               </button>                  
+                                                 {/* add label */}
+                                   <input type="text" name="feedback" onChange={(e) => {
+                                       setFeedback([e.target.value])
+                                   }}>
+                                   </input>
+                                   {console.log("feedback" + feedback)}
+                
+                           </div>
+                        )}
+              
                 </div>
             </div>      
         </>

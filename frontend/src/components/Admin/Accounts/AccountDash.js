@@ -85,7 +85,6 @@ function AccountDash() {
             let promise 
             vendorData.map(async (vendor, idx)=>{
                 promise = await cAW(vendor.id, "VENDOR")
-                console.log("vendor response data", promise)
     
                 let checker = "INACTIVE"
                 promise.map((assignedWorkflow, idx)=>{
@@ -94,7 +93,6 @@ function AccountDash() {
                     }
                 })
                 const id = vendor.id
-                console.log("VENDOR ID", id)
                 const newStatus = accountActiveStatus
                 newStatus[id] = checker
                 setAccountActiveStatus(oldStatus => ({...oldStatus, ...newStatus}))
@@ -102,7 +100,6 @@ function AccountDash() {
     
             adminData.map(async (admin, idx)=>{
                 promise = await cAW(admin.id, "ADMIN")
-                console.log("admin response data", promise)
     
                 let checker = "INACTIVE"
                 promise.map((assignedWorkflow, idx)=>{
@@ -245,48 +242,6 @@ function AccountDash() {
     setSelected(updatedAccounts);
   };
 
-  async function checkActiveWorkflows(id) {
-    var indivStatus = "INACTIVE";
-    // console.log("checking new id: ", id);
-    // console.log("initial status: ", indivStatus);
-
-    try{
-        const response1 = await getAssignedWorkflowsByVendorId(id);
-        // console.log(id)
-        for (var workflow in response1.data) {
-            if (workflow.approvalRequestDate == null) {
-              // setWorkflowStatus("ACTIVE");
-              indivStatus = "ACTIVE";
-              return indivStatus
-              console.log("prelim status: ", indivStatus);
-              break;
-            }
-          }
-    }catch(e){
-        // console.log("YOYOYOYO")
-        return "INACTIVE"
-    }
-    try{
-        const response2 = await getAssignedWorkflowsByAdminId(id);
-        for (var workflow in response2.data) {
-            if (workflow.approvalRequestDate == null) {
-              //   setWorkflowStatus("ACTIVE");
-              indivStatus = "ACTIVE";
-              return indivStatus
-
-              console.log("prelim2 status: ", indivStatus);
-              break;
-            }
-          }
-    }catch(e){
-        // console.log("YOYOYOYO")
-        return "INACTIVE"
-    }
-      
-    }
-
-    // setWorkflowStatus(currentWorkflowStatus => [...currentWorkflowStatus, indivStatus])
-
   const toAccountView = (account) => {
     navigate(`/accounts/${account.id}`, {
       state: { account: account, origin: "ACCOUNTDASH" },
@@ -388,7 +343,6 @@ function AccountDash() {
                     <td className="status">
                       <span
                         className={
-                        //   checkActiveWorkflows(account.id) == "ACTIVE"
                         accountActiveStatus[account.id] == 'ACTIVE'
                             ? "badge bg-blue-500"
                             : "badge"
@@ -442,7 +396,6 @@ function AccountDash() {
                         >
                           <MdEdit></MdEdit>
                         </label>
-                        {/* <EditUserAccount account={account} type="ADMIN" hidden={currentView == "ADMIN" ? false : true}></EditUserAccount> */}
                       </span>
                     </td>
                   </tr>
@@ -458,7 +411,6 @@ function AccountDash() {
           >
             <thead>
               <tr>
-                {/* <th className="p-2">[]</th> */}
                 <th className="p-2">ID</th>
                 <th>Name</th>
                 <th>Email</th>
@@ -469,9 +421,6 @@ function AccountDash() {
             <tbody className="divide-y divide-slate-700">
               {approversData.map((account) => (
                 <tr key={account.id}>
-                  {/* <td className="p-2">
-                                    <input id={account.id} type="checkbox" onChange={() => {handleSelect(account)}} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                                </td> */}
                   <td className="id p-2">{account.id}</td>
                   <td className="name">{account.name}</td>
                   <td className="company">{account.email}</td>
@@ -533,7 +482,7 @@ function AccountDash() {
                     disabled
                     defaultValue={vendorId}
                     onChange={(e) => setVendorId(e.target.value)}
-                    className="bg-gray-50 shadow appearance-none border border-gray-300 rounded-full w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
+                    className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline bg-gray-50 text-gray-400"
                     id="id"
                     type="text"
                   />
@@ -548,7 +497,7 @@ function AccountDash() {
                   <input
                     defaultValue={vendorName}
                     onChange={(e) => setVendorName(e.target.value)}
-                    className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline"
                     id="firstname"
                     type="text"
                   />
@@ -563,7 +512,7 @@ function AccountDash() {
                   <input
                     defaultValue={vendorEmail}
                     onChange={(e) => setVendorEmail(e.target.value)}
-                    className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline"
                     id="email"
                     type="text"
                   />
@@ -578,7 +527,7 @@ function AccountDash() {
                   <input
                     defaultValue={vendorContactNum}
                     onChange={(e) => setVendorContactNum(e.target.value)}
-                    className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline"
                     id="contactNum"
                     type="text"
                   />
@@ -593,7 +542,7 @@ function AccountDash() {
                   <input
                     defaultValue={itemToEdit.password}
                     onChange={(e) => setVendorPassword(e.target.value)}
-                    className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                    className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline mb-3"
                     id="password"
                     type="password"
                     placeholder="******************"
@@ -611,7 +560,7 @@ function AccountDash() {
                   <input
                     defaultValue={vendorCompanyName}
                     onChange={(e) => setVendorCompanyName(e.target.value)}
-                    className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline"
                     id="companyName"
                     type="text"
                   />
@@ -653,7 +602,7 @@ function AccountDash() {
                   <input
                     defaultValue={vendorRegNumber}
                     onChange={(e) => setVendorRegNumber(e.target.value)}
-                    className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline"
                     id="regNumber"
                     type="text"
                   />
@@ -668,7 +617,7 @@ function AccountDash() {
                   <input
                     defaultValue={vendorBizNature}
                     onChange={(e) => setVendorBizNature(e.target.value)}
-                    className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline"
                     id="bizNature"
                     type="text"
                   />
@@ -683,7 +632,7 @@ function AccountDash() {
                   <input
                     defaultValue={vendorGstNumber}
                     onChange={(e) => setVendorGstNumber(e.target.value)}
-                    className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline"
                     id="gstNumber"
                     type="text"
                   />
@@ -733,7 +682,7 @@ function AccountDash() {
                   disabled
                   defaultValue={userId}
                   onChange={(e) => setUserId(e.target.value)}
-                  className="bg-gray-50 shadow appearance-none border border-gray-300 rounded-full w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
+                  className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline bg-gray-50 text-gray-400"
                   id="id"
                   type="text"
                 />
@@ -748,7 +697,7 @@ function AccountDash() {
                 <input
                   defaultValue={userName}
                   onChange={(e) => setUserName(e.target.value)}
-                  className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline"
                   id="firstname"
                   type="text"
                 />
@@ -763,7 +712,7 @@ function AccountDash() {
                 <input
                   defaultValue={userEmail}
                   onChange={(e) => setUserEmail(e.target.value)}
-                  className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline"
                   id="email"
                   type="text"
                 />
@@ -778,7 +727,7 @@ function AccountDash() {
                 <input
                   defaultValue={userPassword}
                   onChange={(e) => setUserPassword(e.target.value)}
-                  className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                  className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline mb-3"
                   id="password"
                   type="password"
                   placeholder="******************"
