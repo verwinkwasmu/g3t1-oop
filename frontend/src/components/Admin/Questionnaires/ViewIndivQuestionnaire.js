@@ -17,7 +17,6 @@ const updateBaseURL = "http://localhost:8080/api/v1/workflow/assigned"
 export default function ViewIndivQuestionnaire(props) {
     console.log("IN INDIV QUESTIONNAIRE VIEW")
 
-
     // const user = localStorage.getItem('token');
     const user = useToken().token;
     const location = useLocation();
@@ -40,7 +39,6 @@ export default function ViewIndivQuestionnaire(props) {
 
     useEffect(() => {
         const getQuestionnaire = async () => {
-            console.log('I AM GETTING QUESTIONNNAIRES BY ID FROM WORKFLOW')
 
             try {
                 const response = await axios.get(`${baseURL}/${questionnaireId}`);
@@ -179,18 +177,15 @@ export default function ViewIndivQuestionnaire(props) {
                     {user[1] == "VENDOR" && (
                         <div className="flex flex-wrap mt-10 mb-6">
                             <div className="mr-3">
-                                <IoGitPullRequestOutline size={70} color="3278AE" />
+                                <MdDescription size={70} color="3278AE" />
                             </div>
                             <div className="flex-auto">
-                                <p className="font-thin mt-1">ID: {workflowId}</p>
-                                <h2 className="text-3xl font-semibold text-blue">{workflow.workflowName}</h2>
+                                <p className="font-thin mt-1">ID: {questionnaire.title}</p>
+                                <span className={checkStatusBadge(questionnaire.status)}>{questionnaire.status}</span>
                             </div>
-
-
                             <div className="card w-full h-full bg-base-100 drop-shadow-xl flex justify-center">
                                 <div class="flex-col text-center">
-
-                                <div >
+                                <div>
                                     <div>
                                         <h2 className="text-xl font-semibold text-blue">{questionnaire.title}</h2>
                                         <span className={checkStatusBadge(questionnaire.status)}>{questionnaire.status}</span>
@@ -198,9 +193,7 @@ export default function ViewIndivQuestionnaire(props) {
                                     <p>{questionnaire.assignedVendorId}</p>
                                 </div>
                                 <div>
-
                                     <p className="text-xl font-semibold text-blue">{questionnaire.assignedVendorId}</p>
-
                                 </div>
                                 <div className="card w-80">
                                     <div className="text-left">

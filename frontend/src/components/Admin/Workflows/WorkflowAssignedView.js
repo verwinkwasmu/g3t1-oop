@@ -139,7 +139,11 @@ function WorkflowAssignedView() {
                             <span hidden={token[1] == "ADMIN" ? false : true}>
                                 {approverReviewStatus != "FLAGGED" ? <UpdateWorkflow workflow={workflowsData} render="assigned"></UpdateWorkflow> : null}
                                 <FlagApproval workflow={workflowsData}></FlagApproval>
-                                <SaveWorkflowAsPDF workflow={workflowsData}></SaveWorkflowAsPDF>
+                            </span>
+                            <span hidden={token[1] == "ADMIN" || token[1] == "VENDOR" ? false : true}>
+                                {approverReviewStatus == "APPROVER_APPROVED" ? <SaveWorkflowAsPDF workflow={workflowsData}></SaveWorkflowAsPDF> : null}
+                            </span>
+                            <span hidden={token[1] == "ADMIN" ? false : true}>
                                 {approverReviewStatus != "FLAGGED" ? <DeleteWorkflow workflow={workflowsData} render="assigned"></DeleteWorkflow> : null}
                             </span>
                             <span hidden={token[1] == "APPROVER" ? false : true}>
