@@ -43,25 +43,24 @@ public class WorkflowService {
 
             for (Workflow workflow : workflows) {
                 List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
-                for (String questionnaireId : workflow.getQuestionnaireList()) {
-                    try{
-                        if (questionnaireId != null){
-                            Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+                if(workflow.getQuestionnaireList()!= null){
+                    for (String questionnaireId : workflow.getQuestionnaireList()) {
+                        Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+                        if(optionalQuestionnaire.isPresent()){
                             Questionnaire questionnaire = optionalQuestionnaire.get();
                             questionnaireList.add(questionnaire);
-                            workflow.setQuestionnaires(questionnaireList);    
-                    }
-
-                    }catch(Exception e){
-                        System.out.println(e);
-                        List<String> newQuestionnaireList = workflow.getQuestionnaireList();
-                        while(newQuestionnaireList.remove(questionnaireId));
-                        workflow.setQuestionnaireList(newQuestionnaireList);
-                        workflowRepository.save(workflow);
-                    }
+                        }else{
+                            List<String> newQuestionnaireList = new ArrayList<String>(workflow.getQuestionnaireList());
+                            newQuestionnaireList.remove(questionnaireId);
+                            workflow.setQuestionnaireList(newQuestionnaireList);
+                            workflow.setQuestionnaires(null);
+                            workflowRepository.save(workflow);
+                        }
+                        workflow.setQuestionnaires(questionnaireList);
                 }
             }
-            return workflows;
+        }
+        return workflows;
         } catch (WorkflowNotFoundException e) {
             throw e;
         } catch (Exception e) {
@@ -115,19 +114,18 @@ public class WorkflowService {
                 List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
                 if(assignedWorkflow.getQuestionnaireList()!= null){
                     for (String questionnaireId : assignedWorkflow.getQuestionnaireList()) {
-                        try{
-                            if (questionnaireId != null){
-                                Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
-                                Questionnaire questionnaire = optionalQuestionnaire.get();
-                                questionnaireList.add(questionnaire);
-                                assignedWorkflow.setQuestionnaires(questionnaireList);
-                            }
-                        }catch(Exception e){
-                            List<String> newQuestionnaireList = assignedWorkflow.getQuestionnaireList();
-                            while(newQuestionnaireList.remove(questionnaireId));
+                        Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+                        if(optionalQuestionnaire.isPresent()){
+                            Questionnaire questionnaire = optionalQuestionnaire.get();
+                            questionnaireList.add(questionnaire);
+                        }else{
+                            List<String> newQuestionnaireList = new ArrayList<String>(assignedWorkflow.getQuestionnaireList());
+                            newQuestionnaireList.remove(questionnaireId);
                             assignedWorkflow.setQuestionnaireList(newQuestionnaireList);
+                            assignedWorkflow.setQuestionnaires(null);
                             assignedWorkflowRepository.save(assignedWorkflow);
                         }
+                        assignedWorkflow.setQuestionnaires(questionnaireList);
                     }
                 }
             }
@@ -149,22 +147,22 @@ public class WorkflowService {
             Workflow workflow = optionalWorkflow.get();
             List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
             for (String questionnaireId : workflow.getQuestionnaireList()) {
-                try{
-                    if (questionnaireId != null){
-
+                if(questionnaireId != null){
                 Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
-                Questionnaire questionnaire = optionalQuestionnaire.get();
-                questionnaireList.add(questionnaire);
+                if(optionalQuestionnaire.isPresent()){
+                    Questionnaire questionnaire = optionalQuestionnaire.get();
+                    questionnaireList.add(questionnaire);
+                }else{
+                    List<String> newQuestionnaireList = new ArrayList<String>(workflow.getQuestionnaireList());
+                    newQuestionnaireList.remove(questionnaireId);
+                    workflow.setQuestionnaireList(newQuestionnaireList);
+                    workflow.setQuestionnaires(null);
+                    workflowRepository.save(workflow);
+                }
                 workflow.setQuestionnaires(questionnaireList);
-                    }}catch(Exception e){
-                        List<String> newQuestionnaireList = workflow.getQuestionnaireList();
-                            while(newQuestionnaireList.remove(questionnaireId));
-                            workflow.setQuestionnaireList(newQuestionnaireList);
-                            workflowRepository.save(workflow);
-                    }
             }
-
-            return workflow;
+        }
+        return workflow;
         } catch (UncategorizedMongoDbException e) {
             throw new DatabaseCommunicationException("Error communicating with database for method findById", e);
         }
@@ -180,20 +178,19 @@ public class WorkflowService {
             List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
             for (String questionnaireId : assignedWorkflow.getQuestionnaireList()) {
                 if(questionnaireId != null){
-                    try{
-                        Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+                    Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+                    if(optionalQuestionnaire.isPresent()){
                         Questionnaire questionnaire = optionalQuestionnaire.get();
                         questionnaireList.add(questionnaire);
-                        assignedWorkflow.setQuestionnaires(questionnaireList);
-                    }catch(Exception e){
-                        List<String> newQuestionnaireList = assignedWorkflow.getQuestionnaireList();
-                        while(newQuestionnaireList.remove(questionnaireId));
+                    }else{
+                        List<String> newQuestionnaireList = new ArrayList<String>(assignedWorkflow.getQuestionnaireList());
+                        newQuestionnaireList.remove(questionnaireId);
                         assignedWorkflow.setQuestionnaireList(newQuestionnaireList);
+                        assignedWorkflow.setQuestionnaires(null);
                         assignedWorkflowRepository.save(assignedWorkflow);
                     }
-                    
+                    assignedWorkflow.setQuestionnaires(questionnaireList);
                 }
-               
             }
 
             return assignedWorkflow;
@@ -214,19 +211,18 @@ public class WorkflowService {
                 List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
                 if(assignedWorkflow.getQuestionnaireList()!= null){
                     for (String questionnaireId : assignedWorkflow.getQuestionnaireList()) {
-                        try{
-                            if (questionnaireId != null){
-                                Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
-                                Questionnaire questionnaire = optionalQuestionnaire.get();
-                                questionnaireList.add(questionnaire);
-                                assignedWorkflow.setQuestionnaires(questionnaireList);
-                            }
-                        }catch(Exception e){
-                            List<String> newQuestionnaireList = assignedWorkflow.getQuestionnaireList();
-                            while(newQuestionnaireList.remove(questionnaireId));
+                        Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+                        if(optionalQuestionnaire.isPresent()){
+                            Questionnaire questionnaire = optionalQuestionnaire.get();
+                            questionnaireList.add(questionnaire);
+                        }else{
+                            List<String> newQuestionnaireList = new ArrayList<String>(assignedWorkflow.getQuestionnaireList());
+                            newQuestionnaireList.remove(questionnaireId);
                             assignedWorkflow.setQuestionnaireList(newQuestionnaireList);
+                            assignedWorkflow.setQuestionnaires(null);
                             assignedWorkflowRepository.save(assignedWorkflow);
                         }
+                        assignedWorkflow.setQuestionnaires(questionnaireList);
                     }
                 }
             }
@@ -247,19 +243,18 @@ public class WorkflowService {
                 List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
                 if(assignedWorkflow.getQuestionnaireList()!= null){
                     for (String questionnaireId : assignedWorkflow.getQuestionnaireList()) {
-                        try{
-                            if (questionnaireId != null){
-                                Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
-                                Questionnaire questionnaire = optionalQuestionnaire.get();
-                                questionnaireList.add(questionnaire);
-                                assignedWorkflow.setQuestionnaires(questionnaireList);
-                            }
-                        }catch(Exception e){
-                            List<String> newQuestionnaireList = assignedWorkflow.getQuestionnaireList();
-                            while(newQuestionnaireList.remove(questionnaireId));
+                        Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+                        if(optionalQuestionnaire.isPresent()){
+                            Questionnaire questionnaire = optionalQuestionnaire.get();
+                            questionnaireList.add(questionnaire);
+                        }else{
+                            List<String> newQuestionnaireList = new ArrayList<String>(assignedWorkflow.getQuestionnaireList());
+                            newQuestionnaireList.remove(questionnaireId);
                             assignedWorkflow.setQuestionnaireList(newQuestionnaireList);
+                            assignedWorkflow.setQuestionnaires(null);
                             assignedWorkflowRepository.save(assignedWorkflow);
                         }
+                        assignedWorkflow.setQuestionnaires(questionnaireList);
                     }
                 }
             }
