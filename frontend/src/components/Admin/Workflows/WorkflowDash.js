@@ -15,19 +15,38 @@ function WorkflowDash() {
 
     useEffect(() => {
         document.title = 'Workflows Dashboard'
-        setRender("Templates");
 
-        getWorkflows()
-            .then(function (response) {
-                // console.log(response.data)
-                if (response.data.length > 0) {
-                    setWorkflowsData(response.data)
-                } else {
-                    setWorkflowsData([])
-                }
-            })
+        if (token[1] == "ADMIN") {
+            setRender("Templates");
 
-        // eslint-disable-next-line
+            getWorkflows()
+                .then(function (response) {
+                    // console.log(response.data)
+                    if (response.data.length > 0) {
+                        setWorkflowsData(response.data)
+                    } else {
+                        setWorkflowsData([])
+                    }
+                })
+
+            // eslint-disable-next-line
+        }
+        else {
+            setRender("Assigned");
+
+            getAssignedWorkflowsByVendorId(token[0])
+                .then(function (response) {
+                    // console.log(response.data)
+                    if (response.data.length > 0) {
+                        setWorkflowsData(response.data)
+                    } else {
+                        setWorkflowsData([])
+                    }
+                })
+
+            // eslint-disable-next-line
+        }
+
     }, [])
 
     console.log("WORKFLOWSDATA")
@@ -99,7 +118,7 @@ function WorkflowDash() {
                                 <span hidden={render != "Templates" ? false : true}>: Assigned</span>
                             </h1>
                             <div className="pb-2 inline-flex">
-                                <button onClick={() => renderTemplates()} hidden={render == "Templates" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
+                                <button onClick={() => renderTemplates()} hidden={render == "Templates" || token[1]!="ADMIN" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
                                     See Templates
                                 </button>
                                 <button onClick={() => renderAssigned()} hidden={render != "Templates" ? true : false} className="bg-gray-300 bg-opacity-0 hover:bg-opacity-50 italic text-xs uppercase font-bold leading-snug text-blue py-2 px-4 rounded">
@@ -119,7 +138,11 @@ function WorkflowDash() {
                                 <figure><img src="https://startinfinity.s3.us-east-2.amazonaws.com/production/blog/post/17/main/GeiehNbQ1t86Mg5zKnEgucWslfZXTckjj8mSDV2O.png" alt="workflow description" /></figure>
                                 <div className="card-body m-1.5">
                                     <h2 className="card-title">{workflow.workflowName}</h2>
-                                    {render == "Templates" ? <p className="text-base text-md">{workflow.workflowDescription}</p> : <p className="text-base text-md">Assigned Vendor ID: {workflow.assignedVendorId}<br />Assigned Admin ID: {workflow.assignedAdminId}</p>}
+                                    {render == "Templates" ? 
+                                        <p className="text-base text-md">{workflow.workflowDescription}</p> 
+                                        : 
+                                        <p className="text-base text-md">Assigned Vendor ID: {workflow.assignedVendorId}<br />Assigned Admin ID: {workflow.assignedAdminId}<br/> Workflow Status:</p>
+                                    }
                                     <div className="card-actions justify-end">
                                         <button className="btn bg-blue hover:bg-cyan border-transparent hover:border-transparent" onClick={() => { toWorkflowView(workflow) }}>See Workflow</button>
                                     </div>
