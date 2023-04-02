@@ -53,8 +53,11 @@ public class WorkflowService {
                     }
 
                     }catch(Exception e){
+                        System.out.println(e);
                         List<String> newQuestionnaireList = workflow.getQuestionnaireList();
                         while(newQuestionnaireList.remove(questionnaireId));
+                        workflow.setQuestionnaireList(newQuestionnaireList);
+                        workflowRepository.save(workflow);
                     }
                 }
             }
@@ -77,17 +80,18 @@ public class WorkflowService {
                 List<Questionnaire> questionnaireList = new ArrayList<Questionnaire>();
                 if(assignedWorkflow.getQuestionnaireList()!= null){
                     for (String questionnaireId : assignedWorkflow.getQuestionnaireList()) {
-                        try{
-                            if (questionnaireId != null){
-                                Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
-                                Questionnaire questionnaire = optionalQuestionnaire.get();
-                                questionnaireList.add(questionnaire);
-                                assignedWorkflow.setQuestionnaires(questionnaireList);
-                            }
-                        }catch(Exception e){
-                            List<String> newQuestionnaireList = assignedWorkflow.getQuestionnaireList();
-                            while(newQuestionnaireList.remove(questionnaireId));
+                        Optional<Questionnaire> optionalQuestionnaire = questionnaireRepository.findById(questionnaireId);
+                        if(optionalQuestionnaire.isPresent()){
+                            Questionnaire questionnaire = optionalQuestionnaire.get();
+                            questionnaireList.add(questionnaire);
+                        }else{
+                            List<String> newQuestionnaireList = new ArrayList<String>(assignedWorkflow.getQuestionnaireList());
+                            newQuestionnaireList.remove(questionnaireId);
+                            assignedWorkflow.setQuestionnaireList(newQuestionnaireList);
+                            assignedWorkflow.setQuestionnaires(null);
+                            assignedWorkflowRepository.save(assignedWorkflow);
                         }
+                        assignedWorkflow.setQuestionnaires(questionnaireList);
                     }
                 }
             }
@@ -121,6 +125,8 @@ public class WorkflowService {
                         }catch(Exception e){
                             List<String> newQuestionnaireList = assignedWorkflow.getQuestionnaireList();
                             while(newQuestionnaireList.remove(questionnaireId));
+                            assignedWorkflow.setQuestionnaireList(newQuestionnaireList);
+                            assignedWorkflowRepository.save(assignedWorkflow);
                         }
                     }
                 }
@@ -153,6 +159,8 @@ public class WorkflowService {
                     }}catch(Exception e){
                         List<String> newQuestionnaireList = workflow.getQuestionnaireList();
                             while(newQuestionnaireList.remove(questionnaireId));
+                            workflow.setQuestionnaireList(newQuestionnaireList);
+                            workflowRepository.save(workflow);
                     }
             }
 
@@ -180,6 +188,8 @@ public class WorkflowService {
                     }catch(Exception e){
                         List<String> newQuestionnaireList = assignedWorkflow.getQuestionnaireList();
                         while(newQuestionnaireList.remove(questionnaireId));
+                        assignedWorkflow.setQuestionnaireList(newQuestionnaireList);
+                        assignedWorkflowRepository.save(assignedWorkflow);
                     }
                     
                 }
@@ -214,6 +224,8 @@ public class WorkflowService {
                         }catch(Exception e){
                             List<String> newQuestionnaireList = assignedWorkflow.getQuestionnaireList();
                             while(newQuestionnaireList.remove(questionnaireId));
+                            assignedWorkflow.setQuestionnaireList(newQuestionnaireList);
+                            assignedWorkflowRepository.save(assignedWorkflow);
                         }
                     }
                 }
@@ -245,6 +257,8 @@ public class WorkflowService {
                         }catch(Exception e){
                             List<String> newQuestionnaireList = assignedWorkflow.getQuestionnaireList();
                             while(newQuestionnaireList.remove(questionnaireId));
+                            assignedWorkflow.setQuestionnaireList(newQuestionnaireList);
+                            assignedWorkflowRepository.save(assignedWorkflow);
                         }
                     }
                 }

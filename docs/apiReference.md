@@ -1,12 +1,12 @@
-## API Reference Documentation
-1. [Questionnaire](#Questionnaire)
-2. [User](#User)
-3. [Workflow](#Workflow)
-4. [Archive](#Archive)
+# API Reference Documentation
+1. [Questionnaire](##Questionnaire)
+2. [User](##User)
+3. [Workflow](##Workflow)
+4. [Archive](##Archive)
 
 ---
 
-### Questionnaire
+## Questionnaire
 
 1. Get all questionnaires (returns a list of questionnaires)
 
@@ -81,7 +81,7 @@
 
 ---
 
-### User 
+## User 
 
 1. Get all users and vendors
 
@@ -206,7 +206,80 @@ will return the following output
 
 ---
 
-### Archive
+## Workflow
+
+1. Get all workflows
+`[GET] /api/v1/workflow`
+
+2. Get all assigned workflows
+`[GET] /api/v1/workflow/assigned`
+
+3. Get all assigned workflow with a specific status
+`[GET] /api/v1/workflow/assigned/status/{approverReviewStatus}`
+
+4. Find by ID
+`[GET] /api/v1/workflow/{id}`
+
+5. Find assigned workflow by ID
+`[GET] /api/v1/workflow/assigned/{id}`
+
+6. Find assigned by admin ID
+`[GET] /api/v1/workflow/assigned/admin/{id}`
+
+7. Find assigned by vendor ID
+`[GET] /api/v1/workflow/assigned/vendor/{id}`
+
+8. Create workflow
+`[POST] /api/v1/workflow/`
+
+```
+{
+    "id": "asodnoiefwe112312312",
+    "workflowName": "OOP is the best!",
+    "workflowDescription": "Best mod in SMU",
+    "questionnaireList": List<String>,
+    "questionnaires": List<Questionnaire>,
+    "createdAt": "2023-03-21T11:09:36.533"
+}
+
+```
+
+9. create assigned workflow
+`[POST] /api/v1/workflow/assigned`
+
+approverReviewStatus must be in the following format: `INITIAL_DRAFT`, `REJECTED`, `FLAGGED`, `APPROVED`
+
+```
+{
+    "id": "asodnoiefwe112312312",
+    "workflowName": "OOP is the best!",
+    "workflowDescription": "Best mod in SMU",
+    "questionnaireList": List<String>,
+    "questionnaires": List<Questionnaire>,
+    "createdAt": "2023-03-21T11:09:36.533",
+    "assignedVendorId": "vendor1",
+    "assignedAdminId": "admin1",
+    "approvalRequestDate": "2023-03-22T11:09:36.533",
+    "approverReviewStatus": "APPROVED",
+    "approvedAt": "2023-03-23T11:09:36.533"
+}
+
+```
+10. Update workflow
+`[PUT] /api/v1/workflow`
+
+11. Update assigned workflow
+`[PUT] /api/v1/workflow/assigned`
+
+12. Delete workflow
+`[DELETE] /api/v1/workflow`
+
+13. Delete assigned workflow
+`[DELETE] /api/v1/workflow/assigned`
+
+---
+
+## Archive
 1. Get all archive document based on its collection (returns a list of archive document)
 - Collection `collection` include: `WORFKLOWS`, `QUESTIONNAIRES`, `USERS`, `VENDORS`
 

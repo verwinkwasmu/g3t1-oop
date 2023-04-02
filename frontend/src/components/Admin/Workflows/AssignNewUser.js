@@ -126,7 +126,7 @@ function AssignNewUser(props) {
 
   const handleDateChange = (event, index) => {
     let dateTime = event.target.value;
-    dateTime = dateTime.concat(":00.000+00:00");
+    dateTime = dateTime.concat(":00.000");
 
     setValues((prevValues) => {
       const newValues = [...prevValues];
