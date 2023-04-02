@@ -290,6 +290,10 @@ public class WorkflowService {
         try {
             if (assignedWorkflowRepository.findById(assignedWorkflow.getId()).isPresent()){
                 // UPDATE
+
+                if(assignedWorkflow.getApproverReviewStatus().equals("FLAGGED") && !assignedWorkflowRepository.findById(assignedWorkflow.getId()).get().getApproverReviewStatus().equals("FLAGGED") ){
+                    assignedWorkflow.setApprovalRequestDate(LocalDateTime.now());
+                }
                 return assignedWorkflowRepository.save(assignedWorkflow);
             } else {
                 throw new WorkflowNotFoundException("No workflow found in the database with id: " + assignedWorkflow.getId());
