@@ -97,6 +97,13 @@ function VendorDash() {
         
     }
 
+    const handleEditClick = (questionnaireId) => {
+        navigate(`/vendor/questionnaires/vendor-edit-questionnaire/${questionnaireId}`, 
+        { state: {   
+            questionnaireId: questionnaireId
+        }});    
+    }
+
     return (
         <>
         <div className="mx-10 my-10 pt-8 px-20">
@@ -186,7 +193,9 @@ function VendorDash() {
                                     <td></td>
                                     <td>
                                         <span hidden={currentQuestionnairesView == "ACTIVE" ? false : true}>
-                                            <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75"><MdEdit></MdEdit></button>
+                                        <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75"  onClick={() => {
+                                                handleEditClick(qnnaire.id)
+                                            }}><MdEdit></MdEdit></button>
                                         </span>
                                         <span hidden={currentQuestionnairesView == "PENDING" ? false : true}>
                                             <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75"><MdRemoveRedEye></MdRemoveRedEye></button>
