@@ -77,6 +77,7 @@ function WorkflowDash() {
                     // console.log(response.data)
                     if (response.data.length > 0) {
                         setWorkflowsData(response.data)
+                        console.log("???????", response.data)
                     } else {
                         setWorkflowsData([])
                     }
@@ -87,11 +88,14 @@ function WorkflowDash() {
                 .then(function (response) {
                     // console.log(response.data)
                     if (response.data.length > 0) {
-                        setWorkflowsData(response.data)
+                        console.log(response.data)
+                        setWorkflowsData("??????????????", response.data)
                     } else {
                         setWorkflowsData([])
                     }
                 })
+
+
         }
     }
 
