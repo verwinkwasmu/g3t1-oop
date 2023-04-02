@@ -13,7 +13,6 @@ import AccountDash from "./components/Admin/Accounts/AccountDash";
 import AccountView from "./components/Admin/Accounts/AccountView";
 import WorkflowTemplateView from "./components/Admin/Workflows/WorkflowTemplateView";
 import WorkflowAssignedView from "./components/Admin/Workflows/WorkflowAssignedView";
-import WorkflowView from "./components/Admin/Workflows/WorkflowView";
 
 import ApproverDash from "./components/Approver/ApproverDash";
 
@@ -63,7 +62,6 @@ function App() {
           />
 
           <Route path="/accounts" element={<AccountDash />} />
-          <Route path="/workflows/:id" element={<WorkflowView />} />
           <Route path="/forms" element={<FormDash />} />
           <Route path="/accounts" element={<AccountDash />} />
           <Route path="/accounts/:id" element={<AccountView />} />

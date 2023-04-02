@@ -9,7 +9,9 @@ import AssignNewUser from './AssignNewUser';
 import UpdateWorkflow from './UpdateWorkflow';
 import FlagApproval from './FlagApproval';
 import { getIndividualAssignedWorkflow } from '../../../apiCalls';
+
 import useToken from '../../../useToken';
+import jsPDF from 'jspdf';
 
 function WorkflowAssignedView() {
     console.log("IN ASSIGNED VIEW?")
@@ -91,6 +93,32 @@ function WorkflowAssignedView() {
             return "badge"
         }
     }
+
+    const handleSaveAsPDF = (questions) => {
+        console.log("saving pdf fuck")
+        const doc = new jsPDF({unit: "cm"});
+      
+        // Define the x and y coordinates for the first question
+        let x = 2.54;
+        let y = 2.54;
+      
+        Object.values(questions).forEach((question, index) => {
+          doc.text(`${index + 1}. ${question.prompt}`, x, y);
+      
+          y += 10;
+      
+          if (question.options.length > 0) {
+            question.options.forEach((option) => {
+              doc.text(`- ${option.value}`, x + 10, y);
+              y += 10;
+            });
+          }
+      
+          y += 10;
+        });
+      
+        doc.save('questionnaire.pdf');
+      };
 
     return (
         <>
