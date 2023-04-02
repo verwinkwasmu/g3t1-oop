@@ -42,7 +42,6 @@ function EditVendorAccount(props) {
         console.log("INSIDE HANDLE SAVE");
         updateVendor({id: id, name: name, email: email, password: password, userType: "VENDOR", companyName: companyName, regNumber: regNumber, bizNature: bizNature, contactNum: contactNum, gstnumber: gstNumber})
             .then(function(response){
-                // navigate('/accounts');
                 navigate(`/accounts/${id}`, {state: {account: {id: id, name: name, email: email, password: password, userType: "VENDOR", companyName: companyName, regNumber: "4567", bizNature: "Love", contactNum: "12345678", gstnumber: "GST456"}}});
             })
             .catch(function(error){
@@ -57,8 +56,6 @@ function EditVendorAccount(props) {
             <label htmlFor="EditVendorAccount" className="btn btn-xs btn-link text-lg text-blue hover:opacity-75">
                 <MdEdit></MdEdit>
             </label>
-            {/* <button className="text-blue hover:opacity-75" htmlFor="EditVendorAccount"><MdEdit></MdEdit></button> */}
-
             
             <input type="checkbox" id="EditVendorAccount" className="modal-toggle" />
             <div className="modal text-left">
@@ -73,31 +70,31 @@ function EditVendorAccount(props) {
                             <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="id">
                                     ID
                                 </label>
-                                <input defaultValue={id} onChange={e => setId(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="id" type="text"/>
+                                <input defaultValue={id} onChange={e => setId(e.target.value)} className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline" id="id" type="text"/>
                             </div>
                             <div className="mb-4">
                                 <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="firstname">
                                     Name
                                 </label>
-                                <input defaultValue={name} onChange={e => setName(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="firstname" type="text"/>
+                                <input defaultValue={name} onChange={e => setName(e.target.value)} className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline" id="firstname" type="text"/>
                             </div>
                             <div className="mb-4">
                                 <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="email">
                                     Email
                                 </label>
-                                <input defaultValue={email} onChange={e => setEmail(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="text"/>
+                                <input defaultValue={email} onChange={e => setEmail(e.target.value)} className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline" id="email" type="text"/>
                             </div>
                             <div className="mb-4">
                                 <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="contactNum">
                                     Contact Number
                                 </label>
-                                <input defaultValue={contactNum} onChange={e => setContactNum(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="contactNum" type="text"/>
+                                <input defaultValue={contactNum} onChange={e => setContactNum(e.target.value)} className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline" id="contactNum" type="text"/>
                             </div>
                             <div className="mb-6">
                                 <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="password">
                                     Password
                                 </label>
-                                <input defaultValue={password} onChange={e => setPassword(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************"/>
+                                <input defaultValue={password} onChange={e => setPassword(e.target.value)} className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline mb-3" id="password" type="password" placeholder="******************"/>
                             </div>
                         </div>
                         <div id="companyDetails">
@@ -105,7 +102,7 @@ function EditVendorAccount(props) {
                             <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="companyName">
                                 Company Name
                             </label>
-                            <input defaultValue={companyName} onChange={e => setCompanyName(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="companyName" type="text"/>
+                            <input defaultValue={companyName} onChange={e => setCompanyName(e.target.value)} className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline" id="companyName" type="text"/>
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="companyName">
@@ -122,19 +119,19 @@ function EditVendorAccount(props) {
                             <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="regNumber">
                                 Company Registration Number
                             </label>
-                            <input defaultValue={regNumber} onChange={e => setRegNumber(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="regNumber" type="text"/>
+                            <input defaultValue={regNumber} onChange={e => setRegNumber(e.target.value)} className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline" id="regNumber" type="text"/>
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="bizNature">
                                 Nature of Business
                             </label>
-                            <input defaultValue={bizNature} onChange={e => setBizNature(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="bizNature" type="text"/>
+                            <input defaultValue={bizNature} onChange={e => setBizNature(e.target.value)} className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline" id="bizNature" type="text"/>
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="gstNumber">
                                 GST Number
                             </label>
-                            <input defaultValue={gstNumber} onChange={e => setGstNumber(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="gstNumber" type="text"/>
+                            <input defaultValue={gstNumber} onChange={e => setGstNumber(e.target.value)} className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline" id="gstNumber" type="text"/>
                         </div>
                             
                         </div>

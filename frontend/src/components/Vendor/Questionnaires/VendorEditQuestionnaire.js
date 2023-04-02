@@ -15,10 +15,8 @@ export default function VendorEditQuestionnaire(){
   const [questionnaire, setQuestionnaire] = useState(null);
   const [answers, setAnswers] = useState({});
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  const workflowId = location.state.workflowId
   const id = useParams()
 
-  console.log(workflowId)
 
   // useEffect(() => {
   //   const fetchQuestionnaire = async () => {
@@ -53,13 +51,14 @@ export default function VendorEditQuestionnaire(){
       const response = await fetch(`${baseURL}/${id.id}`);
       const data = await response.json();
       console.log(data)
-      const updatedQuestionsAndAnswers = {};
-      for (const [key, value] of Object.entries(data.questionsAndAnswers)) {
-        updatedQuestionsAndAnswers[key] = { ...value, answer: '' };
-      }
-      console.log("FUDSNDJNVDSNVBCDONVANB")
-      console.log(updatedQuestionsAndAnswers)
-      setQuestionnaire({ ...data, questionsAndAnswers: updatedQuestionsAndAnswers });
+      setQuestionnaire(data)
+      // const updatedQuestionsAndAnswers = {};
+      // for (const [key, value] of Object.entries(data.questionsAndAnswers)) {
+      //   updatedQuestionsAndAnswers[key] = { ...value, answer: '' };
+      // }
+      // console.log("FUDSNDJNVDSNVBCDONVANB")
+      // console.log(updatedQuestionsAndAnswers)
+      // setQuestionnaire({ ...data, questionsAndAnswers: updatedQuestionsAndAnswers });
     };
     fetchQuestionnaire();
   }, [id.id]);
@@ -143,12 +142,12 @@ export default function VendorEditQuestionnaire(){
       <form onSubmit={handleSubmit}>
           <h1>{title}</h1>
           {Object.values(questionsAndAnswers).map((question) => {
-            const { id, type, prompt, options } = question;
+            const { id, type, prompt, options, answer } = question;
             return (
               <div key={id}>
                 <label htmlFor={id}>{prompt}</label>
                 {type === 'text' && (
-                  <input type="text" id={id} onChange={(e) => handleChange(e, id)} />
+                  <input type="text" id={id} value={answer} onChange={(e) => handleChange(e, id)} />
                 )}
                 {type === 'radio' && (
                   <>
@@ -158,6 +157,7 @@ export default function VendorEditQuestionnaire(){
                           type="radio"
                           name={id}
                           value={option.value}
+                          checked={option.value == answer}
                           onChange={(e) => handleChange(e, id)}
                         />
                         {option.value}
@@ -174,6 +174,7 @@ export default function VendorEditQuestionnaire(){
                           name={id}
                           value={option.value}
                           onChange={(e) => handleChange(e, id)}
+                          checked={option.value == answer}
                         />
                         {option.value}
                       </label>

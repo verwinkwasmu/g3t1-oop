@@ -30,7 +30,6 @@ function Profile() {
         // setAccountsData(getUsers());
 
         if (accountType == "VENDOR") {
-            console.log("HI")
             getAssignedWorkflowsByVendorId(accountId)
             .then(function(response){
                 console.log(response.data)
@@ -43,7 +42,8 @@ function Profile() {
 
             getVendorById(accountId)
             .then(function(response) {
-                // setAccount(response.data)
+                console.log(response.data)
+                setAccount(response.data)
                 setId(response.data.id)
                 setName(response.data.name)
                 setEmail(response.data.email)
@@ -68,7 +68,7 @@ function Profile() {
 
             getUserById(accountId)
             .then(function(response) {
-                // setAccount(response.data)
+                setAccount(response.data)
                 setId(response.data.id)
                 setName(response.data.name)
                 setEmail(response.data.email)
@@ -82,7 +82,7 @@ function Profile() {
 
       }, [])
 
-        // const [account, setAccount] = useState();
+        const [account, setAccount] = useState();
         const [id, setId] = useState();
         const [name, setName] = useState();
         const [email, setEmail] = useState();
@@ -97,9 +97,13 @@ function Profile() {
         const [gstNumber, setGstNumber] = useState();
     
       const [assignedWorkflowsData, setAssignedWorkflowsData] = useState([]);
+    //   console.log("account: ", account)
+      useEffect(()=>{
+        console.log("account: ", account)
+    },[account])
 
       const toWorkflowView = (workflow) => {
-        navigate(`/workflows/${workflow.id}`, { state: { workflow: workflow } });
+        navigate(`/workflow-assigned/${workflow.id}`, { state: { workflowId: workflow.id } });
     }
 
       const getWorkflowCompletion = (questionnaires) => {
@@ -132,14 +136,15 @@ function Profile() {
                         <div>
                             {/* <span hidden={userType == "VENDOR" ? false : true}>
                                 <EditVendorAccount account={account}></EditVendorAccount>
-                            </span> */}
-                            {/* <span hidden={userType != "VENDOR" ? false : true}>
+                            </span>
+                            <span hidden={userType != "VENDOR" ? false : true}>
                                 <EditUserAccount account={account}></EditUserAccount>
                             </span> */}
 
                         </div>                      
                     </div>
                 </div>
+                <div hidden={userType == "APPROVER" ? true : false}>
                 <div className={userType == "VENDOR" ? "grid grid-cols-3 gap-10" : ""}>
                     <div id="workflows" className="col-span-2">
                     <div className="mb-10">
@@ -244,6 +249,9 @@ function Profile() {
                         </table>
                     </div>
                 </div>
+                    
+                </div>
+                
                 
 
             </div>

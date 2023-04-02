@@ -29,7 +29,6 @@ function EditUserAccount(props) {
         console.log("INSIDE HANDLE SAVE");
         updateUser({id: id, name: name, email: email, userType: userType, password: password})
             .then(function(response){
-                // navigate('/accounts');
                 navigate(`/accounts/${id}`, {state: {account: {id: id, name: name, email: email, userType: userType, password: password}}});
             })
             .catch(function(error){
@@ -46,8 +45,6 @@ function EditUserAccount(props) {
             <label htmlFor="EditUserAccount" className="btn btn-xs btn-link text-lg text-blue hover:opacity-75">
                 <MdEdit></MdEdit>
             </label>
-            {/* <button className="text-blue hover:opacity-75" htmlFor="EditUserAccount"><MdEdit></MdEdit></button> */}
-
             
             <input type="checkbox" id="EditUserAccount" className="modal-toggle" />
             <div className="modal text-left">
@@ -60,19 +57,19 @@ function EditUserAccount(props) {
                                 <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="id">
                                     ID
                                 </label>
-                                <input disabled defaultValue={id} onChange={e => setId(e.target.value)} className="bg-gray-50 shadow appearance-none border border-gray-300 rounded-full w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline" id="id" type="text"/>
+                                <input disabled defaultValue={id} onChange={e => setId(e.target.value)} className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline bg-gray-50 text-gray-400" id="id" type="text"/>
                             </div>
                             <div className="mb-4">
                                 <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="firstname">
                                     Name
                                 </label>
-                                <input defaultValue={name} onChange={e => setName(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="firstname" type="text"/>
+                                <input defaultValue={name} onChange={e => setName(e.target.value)} className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline" id="firstname" type="text"/>
                             </div>
                             <div className="mb-4">
                                 <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="email">
                                     Email
                                 </label>
-                                <input defaultValue={email} onChange={e => setEmail(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="text"/>
+                                <input defaultValue={email} onChange={e => setEmail(e.target.value)} className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline" id="email" type="text"/>
                             </div>
                             <div className="mb-4">
                                 <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="userType">
@@ -87,7 +84,7 @@ function EditUserAccount(props) {
                                 <label className="block text-gray-700 text-md font-thin mb-2" htmlFor="password">
                                     Password
                                 </label>
-                                <input defaultValue={password} onChange={e => setPassword(e.target.value)} className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************"/>
+                                <input defaultValue={password} onChange={e => setPassword(e.target.value)} className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline mb-3" id="password" type="password" placeholder="******************"/>
                             </div>                    
                         </div>
                                         

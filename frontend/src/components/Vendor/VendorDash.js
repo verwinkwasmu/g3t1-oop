@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { MdRemoveRedEye, MdEdit } from 'react-icons/md';
 
-import { getWorkflows, getAssignedWorkflowsByVendorId, getQuestionnaires } from '../../apiCalls';
+import { getWorkflows, getAssignedWorkflowsByVendorId, getQuestionnairesByVendorId, getQuestionnaires } from '../../apiCalls';
 
 import useToken from '../../useToken';
 
@@ -15,21 +15,22 @@ function VendorDash() {
     const accountType = useToken().token[1];
 
     useEffect(() => {
-        document.title = 'User Dashboard'
+        document.title = 'Vendor Dashboard'
 
         getAssignedWorkflowsByVendorId(accountId)
             .then(function (response) {
                 // console.log(response.data)
                 if (response.data.length > 0) {
                     setCurrentWorkflowsView("ACTIVE")
-                    setCurrentWorkflowsData(response.data.filter(w => w.approvalRequestDate == null))
+                    setCurrentWorkflowsData(response.data.filter(w => w.approverReviewStatus == "INITIAL_DRAFT" || w.approverReviewStatus == "REJECTED"))
                     setWorkflowsData(response.data)
+                    
                 } else {
                     setWorkflowsData([])
                 }
             })
 
-        getQuestionnaires()
+        getQuestionnairesByVendorId(accountId)
             .then(function (response) {
                 // console.log(response.data)
                 if (response.data.length > 0) {
@@ -50,15 +51,15 @@ function VendorDash() {
     const [currentQuestionnairesData, setCurrentQuestionnairesData] = useState([]);
     const [currentWorkflowsView, setCurrentWorkflowsView] = useState("ACTIVE");
     const [currentQuestionnairesView, setCurrentQuestionnairesView] = useState("ACTIVE");
-    
+
     const toggleWorkflowsView = (status) => {
         if (status == "ACTIVE") {
-            console.log('inside ACTIVE toggle')
-            setCurrentWorkflowsData(workflowsData.filter(w => w.approvalRequestDate == null))
+            console.log("ACTIVE", workflowsData.filter(w => w.approverReviewStatus == "INITIAL_DRAFT" || w.approverReviewStatus == "REJECTED"))
+            setCurrentWorkflowsData(workflowsData.filter(w => w.approverReviewStatus == "INITIAL_DRAFT" || w.approverReviewStatus == "REJECTED"))
         } else if (status == "PENDING") {
-            setCurrentWorkflowsData(workflowsData.filter(w => w.approvalRequestDate != null))
+            console.log("PENDING", workflowsData.filter(w => w.approverReviewStatus == "FLAGGED"))
+            setCurrentWorkflowsData(workflowsData.filter(w => w.approverReviewStatus == "FLAGGED"))
         }
-        console.log("currentWData: ", currentWorkflowsData);
         setCurrentWorkflowsView(status);
     }
 
@@ -75,19 +76,32 @@ function VendorDash() {
 
     const toWorkflowView = (workflow) => {
         console.log("===== INSIDE toWorkflowView =====")
-        navigate(`/workflow-assigned/${workflow.id}`, { state: { workflow: workflow } });
+        navigate(`/workflow-assigned/${workflow.id}`, { state: { workflow: workflow, workflowId: workflow.id } });
     }
 
     const getWorkflowCompletion = (questionnaires) => {
-        var complete = 0; 
-        var total = questionnaires != null ? questionnaires.length : 0;
 
-        for (var qnnaire in questionnaires) {
-            if (!(qnnaire.status in ["INITIAL DRAFT", "RETURNED"])) { 
-                complete += 1;
-            }
+        if (questionnaires != null) {
+            var complete = 0; 
+            var total = questionnaires != null ? questionnaires.length : 0;
+
+            questionnaires.map((qnnaire, idx)=>{
+                if (qnnaire.status != "NOT_STARTED" && qnnaire.status != "RETURNED") { 
+                    complete += 1;
+                }
+            })
+            return `${complete} / ${total}`;
+        } else {
+            return 'nil';
         }
-        return `${complete} / ${total}`;
+        
+    }
+
+    const handleEditClick = (questionnaireId) => {
+        navigate(`/vendor/questionnaires/vendor-edit-questionnaire/${questionnaireId}`, 
+        { state: {   
+            questionnaireId: questionnaireId
+        }});    
     }
 
     return (
@@ -115,7 +129,7 @@ function VendorDash() {
             </div>
             <div hidden={currentWorkflowsData.length == 0 ? true : false}>
             <div className="carousel carousel-center p-4 space-x-4 shadow-2xl rounded-box">
-            {(workflowsData).map(workflow =>
+            {(currentWorkflowsData).map(workflow =>
                 <div className="carousel-item">
                     <div className="card card-compact w-72 h-72 bg-base-100 shadow-xl image-full" key={workflow.id}>
                         <figure><img src="https://startinfinity.s3.us-east-2.amazonaws.com/production/blog/post/17/main/GeiehNbQ1t86Mg5zKnEgucWslfZXTckjj8mSDV2O.png" alt="workflow description" /></figure>
@@ -165,7 +179,6 @@ function VendorDash() {
                             <tr>
                                 <th className="p-2">Deadline</th>
                                 <th>Questionnaire</th>
-                                <th>Workflow</th>
                                 <th>Status</th>
                                 <th></th>
                                 <th></th>
@@ -176,12 +189,13 @@ function VendorDash() {
                                 <tr key={qnnaire.id}>
                                     <td className="p-2">[DEADLINE]</td>
                                     <td className="name">{qnnaire.title}</td>
-                                    <td className="workflow">[WORKFLOW]</td>
                                     <td className="status"><span className="badge">{qnnaire.status}</span></td>
                                     <td></td>
                                     <td>
                                         <span hidden={currentQuestionnairesView == "ACTIVE" ? false : true}>
-                                            <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75"><MdEdit></MdEdit></button>
+                                        <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75"  onClick={() => {
+                                                handleEditClick(qnnaire.id)
+                                            }}><MdEdit></MdEdit></button>
                                         </span>
                                         <span hidden={currentQuestionnairesView == "PENDING" ? false : true}>
                                             <button className="btn btn-xs btn-link text-lg text-blue hover:opacity-75"><MdRemoveRedEye></MdRemoveRedEye></button>
