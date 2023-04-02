@@ -102,7 +102,7 @@ function AssignNewUser(props) {
 
     const updateQuestionnaireUserInfo = async () => {
         console.log("I AM ADDING I AM DYING")
-      
+
         let isCreatingConditionSettled = false;
         let isResolvingConditionSettled = false;
         let promises = handleQuestionnaires()
@@ -126,44 +126,44 @@ function AssignNewUser(props) {
 
         setTimeout(() => {
             isResolvingConditionSettled = true;
-        }, 3000);
+        }, 5000);
 
         while (!isResolvingConditionSettled) {
             await new Promise(resolve => setTimeout(resolve, 100));
         }
-      
-        for (let id of questionnaireIds) {
-          let updateQuestionnaire;
-      
-          // get the duplicated questionnaire first
-          try {
-            const response = await axios.get(`http://localhost:8080/api/v1/questionnaire/${id}`);
-            const duplicatedQuestionnaire = response.data
-            console.log(duplicatedQuestionnaire)
-      
-            // set the questionnaire object for PUT req
-            updateQuestionnaire = {
-              ...duplicatedQuestionnaire,
-              assignedAdminId: user[0],
-              assignedVendorId: selectedVendors.value
-            };
-          } catch (error) {
-            console.log("SOMETHING IS WRONG ")
-            console.log(error)
 
-          }
-          console.log(updateQuestionnaire)
-      
-          // update the questionnaire object
-          try {
-            const response = await axios.put(`http://localhost:8080/api/v1/questionnaire/update`, updateQuestionnaire);
-            console.log(response.data)
-          } catch (error) {
-            console.log("SIAN")
-            console.log(error)
-          }
+        for (let id of questionnaireIds) {
+            let updateQuestionnaire;
+
+            // get the duplicated questionnaire first
+            try {
+                const response = await axios.get(`http://localhost:8080/api/v1/questionnaire/${id}`);
+                const duplicatedQuestionnaire = response.data
+                console.log(duplicatedQuestionnaire)
+
+                // set the questionnaire object for PUT req
+                updateQuestionnaire = {
+                    ...duplicatedQuestionnaire,
+                    assignedAdminId: user[0],
+                    assignedVendorId: selectedVendors.value
+                };
+            } catch (error) {
+                console.log("SOMETHING IS WRONG ")
+                console.log(error)
+
+            }
+            console.log(updateQuestionnaire)
+
+            // update the questionnaire object
+            try {
+                const response = await axios.put(`http://localhost:8080/api/v1/questionnaire/update`, updateQuestionnaire);
+                console.log(response.data)
+            } catch (error) {
+                console.log("SIAN")
+                console.log(error)
+            }
         }
-      }
+    }
 
     const handleCreate = async () => {
         console.log("INSIDE HANDLE CREATE");
@@ -226,7 +226,7 @@ function AssignNewUser(props) {
         console.log(values)
     };
 
-    const handleAddUserClick =() => {
+    const handleAddUserClick = () => {
         handleCreate();
         updateQuestionnaireUserInfo();
     }
@@ -265,12 +265,12 @@ function AssignNewUser(props) {
                                 <label className="block text-gray-700 text-xs font-thin mb-2" htmlFor="deadline" key={questionnaireInfo[0]}>
                                     Please input deadline in DD/MM/YYYY format.
                                 </label>
-                                <input 
+                                <input
                                     key={questionnaireInfo[0]}
                                     onChange={(event) => handleDeadlines(event, index)}
-                                    id="questionnairedeadline" 
+                                    id="questionnairedeadline"
                                     type="text"
-                                    className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                                    className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 />
                             </div>
                         )}
