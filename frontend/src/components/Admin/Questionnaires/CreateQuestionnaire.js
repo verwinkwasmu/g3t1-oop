@@ -4,7 +4,8 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import axios from 'axios';
 import { Button } from 'react-bulma-components';
 import jsPDF from 'jspdf';
-
+import Logo from '../../../assets/QL-Logo-Full.png'
+import { MdWidthFull } from 'react-icons/md';
 
 
 const CreateQuestionnaire = () => {
@@ -208,11 +209,23 @@ const onDragEnd = (result) => {
   const handleSaveAsPDF = () => {
     console.log("saving pdf fuck")
     const doc = new jsPDF();
+
+    const imgSrc = Logo;
+    // doc.setTitle(`${title}`)
+
+
   
     // Define the x and y coordinates for the first question
     let x = 10;
     let y = 10;
-  
+
+    doc.addImage(imgSrc, 'PNG', 0, 0, 100, 50)
+    console.log(title)
+
+    doc.text(`${title}`,50, 100)
+    
+
+
     Object.values(questions).forEach((question, index) => {
       doc.text(`${index + 1}. ${question.prompt}`, x, y);
   
@@ -341,6 +354,7 @@ const updateTextInput = (questionId, value) => {
                 />
                 </label>
               </div>
+             
               <div className='flex'>
                 <label htmlFor='questionnaire-title' className="label"  >Questionnaire TItle: </label>
                 <input type ="text" value={title} id='questionnaire-title' name='questionnaire-title' onChange={(event) => setTitle(event.target.value)} className="input-group" ></input>
@@ -393,6 +407,7 @@ const updateTextInput = (questionId, value) => {
                                                     <option value="text">Text</option>
                                                     <option value="radio">Radio</option>
                                                     <option value="checkbox">Checkbox</option>
+                                                    {/* <option value="range">Linear Scale</option> */}
                                                 </select>
                                               </label>
                                           </div>
@@ -454,6 +469,46 @@ const updateTextInput = (questionId, value) => {
                                                 ))}
                                             </div>
                                           )}
+
+                                          {/* {question.type === 'range' && (
+                                            <div>
+                                                <button onClick={() => addOption(question.id)}>Add Values</button>
+                                                {question.options.map((option, index) => (
+                                                  <div key={option.id}>
+                                                      <label>
+                                                        Minimum Value:
+                                                        <input
+                                                            type="text"
+                                                            value={option.minValue}
+                                                            onChange={(e) =>
+                                                            updateOptionValue(question.id, option.id,{
+                                                              ...option,
+                                                              minValue: e.target.value,
+                                                            })
+                                                            }
+                                                        />
+                                                      </label>
+                                        
+                                                      <label>
+                                                        Maximum Value:
+                                                        <input
+                                                            type="text"
+                                                            value={option.maxValue}
+                                                            onChange={(e) =>
+                                                            updateOptionValue(question.id, option.id, {
+                                                              ...option,
+                                                              maxValue: e.target.value,
+                                                            })
+                                                            }
+                                                        />
+                                                      </label>                                       
+                                                      <button onClick={() => deleteOption(question.id, option.id)}>
+                                                      Delete Option
+                                                      </button>
+                                                  </div>
+                                                ))}
+                                            </div>
+                                          )} */}
                                       </li>
                                   )}
                                   </Draggable>
