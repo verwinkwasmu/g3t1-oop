@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams, useLocation, useNavigate, withRouter} from "react-router-dom";
+import { useParams, useLocation, useNavigate, withRouter } from "react-router-dom";
 import { IoGitPullRequestOutline } from 'react-icons/io5';
 import { getIndividualAssignedWorkflow } from '../../../apiCalls';
 import { Link } from "react-router-dom";
 import useToken from "../../../useToken";
+import { MdHomeFilled, MdChecklist, MdDescription, MdGroup } from "react-icons/md";
+
 
 // VIEWS ASSIGNED QUESTIONNAIRES FROM ASSIGNED WORKFLOWS 
 
@@ -14,7 +16,6 @@ const updateBaseURL = "http://localhost:8080/api/v1/workflow/assigned"
 
 export default function ViewIndivQuestionnaire(props) {
     console.log("IN INDIV QUESTIONNAIRE VIEW")
-
 
     // const user = localStorage.getItem('token');
     const user = useToken().token;
@@ -28,7 +29,7 @@ export default function ViewIndivQuestionnaire(props) {
     const [questionnaire, setQuestionnaire] = useState(null);
     const [workflow, setWorkflow] = useState([])
     const [feedback, setFeedback] = useState([])
-    const  id  = useParams()
+    const id = useParams()
 
     const workflowId = location.state.workflowId
     const fromAssigned = location.state.fromAssigned
@@ -38,7 +39,6 @@ export default function ViewIndivQuestionnaire(props) {
 
     useEffect(() => {
         const getQuestionnaire = async () => {
-            console.log('I AM GETTING QUESTIONNNAIRES BY ID FROM WORKFLOW')
 
             try {
                 const response = await axios.get(`${baseURL}/${questionnaireId}`);
@@ -50,7 +50,7 @@ export default function ViewIndivQuestionnaire(props) {
         };
         getQuestionnaire();
     }, [id.id]);
-   
+
 
     useEffect(() => {
         getIndividualAssignedWorkflow(workflowId)
@@ -140,23 +140,25 @@ export default function ViewIndivQuestionnaire(props) {
 
 
     const handleEditClick = (questionnaireId) => {
-        navigate(`/vendor/questionnaires/vendor-edit-questionnaire/${questionnaireId}`, 
-        { state: {   
-            questionnaireId: questionnaireId
-        }});    
+        navigate(`/vendor/questionnaires/vendor-edit-questionnaire/${questionnaireId}`,
+            {
+                state: {
+                    questionnaireId: questionnaireId
+                }
+            });
     }
 
     const checkStatusBadge = (status) => {
-        if (status=="SUBMITTED") {
+        if (status == "SUBMITTED") {
             return "badge badge-primary"
         }
-        else if (status=="ADMIN_APPROVED") {
+        else if (status == "ADMIN_APPROVED") {
             return "badge badge-secondary"
         }
-        else if (status=="RETURNED") {
+        else if (status == "RETURNED") {
             return "badge badge-error"
         }
-        else if (status=="APPROVER_APPROVED") {
+        else if (status == "APPROVER_APPROVED") {
             return "badge badge-accent"
         }
         else {
@@ -177,96 +179,96 @@ export default function ViewIndivQuestionnaire(props) {
                     {user[1] == "VENDOR" && (
                         <div className="flex flex-wrap mt-10 mb-6">
                             <div className="mr-3">
-                                <IoGitPullRequestOutline size={70} color="3278AE" />
+                                <MdDescription size={70} color="3278AE" />
                             </div>
                             <div className="flex-auto">
-                                <p className="font-thin mt-1">ID: {workflowId}</p>
-                                <h2 className="text-3xl font-semibold text-blue">{workflow.workflowName}</h2>
+                                <p className="text-3xl font-semibold text-blue">{questionnaire.title}</p>
+                                <span className={checkStatusBadge(questionnaire.status)}>{questionnaire.status}</span>
                             </div>
-
-
-                            <div className="card w-[35rem] bg-base-100 ml-3 drop-shadow-xl">
-                                <div>
+                            <div className="card w-full h-full bg-base-100 drop-shadow-xl flex justify-center">
+                                <div class="flex-col text-center">
                                     <div>
-                                        <h2 className="text-xl font-semibold text-blue">{questionnaire.title}</h2>
-                                        <span className={checkStatusBadge(questionnaire.status)}>{questionnaire.status}</span>
-                                    </div>
-                                    <p>{questionnaire.assignedVendorId}</p>
-                                </div>
-                                <div>
-
-                                    <p className="text-xl font-semibold text-blue">{questionnaire.assignedVendorId}</p>
-
-                                </div>
-                                <div className="card w-80">
-                                    <div className="text-left">
-                                    <ul>
-                                        {Object.keys(questionnaire.questionsAndAnswers).map((questionId) => {
-                                        const question = questionnaire.questionsAndAnswers[questionId];
-                                        const hasAnswers = question.answers && question.answers.length > 0;
-                                        return (
-                                            <li key={questionId}>
-                                            <p>Question: {question.prompt}</p>
-                                            {question.options.length > 0 && (
-                                                <ul>
-                                                {question.options.map((option, index) => (
-                                                    <li key={index}>{option.label}</li>
-                                                ))}
-                                                </ul>
-                                            )}
-                                            <p>Answer: {question.answer}</p>
-                                            </li>
-                                        );
-                                        })}
-                                    </ul>
-                                    </div>
-                                    <div className="text-center mt-6">
-                                        {questionnaire.status == "NOT_STARTED" && (
-                                            <button className="btn btn-info w-full mb-2" onClick={() => {
-                                                handleEditClick(questionnaire.id)
-                                            }}>
-                                                Start Questionnaire
-                                            </button>
-                                        )}
-
-                                        {(questionnaire.status == "NOT_STARTED" || questionnaire.status == "RETURNED" || questionnaire.status == "SUBMITTED") && (
-                                            <button className="btn btn-info w-full mb-2" onClick={() => {
-                                                handleEditClick(questionnaire.id)
-                                            }}>
-                                                Update Questionnaire
-                                            </button>
-                                           
-                                        )}
-
-                                        {questionnaire.status == "RETURNED" && (
                                         <div>
-                                            {/* <button className="btn btn-info w-full mb-2" onClick={() => handleEditClick(questionnaire.id)}>
+                                            <h2 className="text-xl font-semibold text-blue">{questionnaire.title}</h2>
+                                            <span className={checkStatusBadge(questionnaire.status)}>{questionnaire.status}</span>
+                                        </div>
+                                        <p>{questionnaire.assignedVendorId}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xl font-semibold text-blue">{questionnaire.assignedVendorId}</p>
+                                    </div>
+                                    <div className="card w-80">
+                                        <div className="text-left">
+                                            <ul>
+                                                {Object.keys(questionnaire.questionsAndAnswers).map((questionId) => {
+                                                    const question = questionnaire.questionsAndAnswers[questionId];
+                                                    const hasAnswers = question.answers && question.answers.length > 0;
+                                                    return (
+                                                        <li key={questionId}>
+                                                            <h2 className="text-2xl text-blue" style={{ lineHeight: '1.5' }}>{question.prompt}</h2>
+                                                            {question.options.length > 0 && (
+                                                                <ul>
+                                                                    {question.options.map((option, index) => (
+                                                                        <li key={index}>{option.label}</li>
+                                                                    ))}
+                                                                </ul>
+                                                            )}
+                                                            <p>Answer: {question.answer}</p>
+                                                        </li>
+                                                    );
+                                                })}
+                                            </ul>
+                                        </div>
+                                        <div className="text-center mt-6">
+                                            {questionnaire.status == "NOT_STARTED" && (
+                                                <button className="btn btn-info w-full mb-2" onClick={() => {
+                                                    handleEditClick(questionnaire.id)
+                                                }}>
+                                                    Start Questionnaire
+                                                </button>
+                                            )}
+
+                                            {(questionnaire.status == "NOT_STARTED" || questionnaire.status == "RETURNED" || questionnaire.status == "SUBMITTED") && (
+                                                <button className="btn btn-info w-full mb-2" onClick={() => {
+                                                    handleEditClick(questionnaire.id)
+                                                }}>
+                                                    Update Questionnaire
+                                                </button>
+
+                                            )}
+
+                                            {questionnaire.status == "RETURNED" && (
+                                                <div>
+                                                    {/* <button className="btn btn-info w-full mb-2" onClick={() => handleEditClick(questionnaire.id)}>
                                             Edit Questionnaire
                                             </button> */}
-                                            
-                                            <p>{questionnaire.feedback}</p>
+
+                                                    <p>{questionnaire.feedback}</p>
+                                                </div>
+                                            )}
+
+                                            {(questionnaire.status == "ADMIN_APPROVED" || questionnaire.status == "APPROVER_APPROVED") && (
+                                                <button className="btn w-full mb-2" disabled>
+                                                    Update Questionnaire
+                                                </button>
+                                            )}
+
                                         </div>
-                                        )}
-
-                                        {(questionnaire.status == "ADMIN_APPROVED" || questionnaire.status == "APPROVER_APPROVED") && (
-                                              <button className="btn w-full mb-2" disabled>
-                                                Update Questionnaire
-                                            </button>
-                                        )}
-
                                     </div>
                                 </div>
                             </div>
-                        </div>   
+
+                        </div>
+
                     )}
-                    {(user[1] == "ADMIN" || user[1] == "APPROVER")  && (
+                    {(user[1] == "ADMIN" || user[1] == "APPROVER") && (
                         <div className="flex flex-wrap mt-10 mb-6">
                             <div className="mr-3">
-                                <IoGitPullRequestOutline size={70} color="3278AE" />
+                                <MdDescription size={70} color="3278AE" />
                             </div>
                             <div className="flex-auto">
-                                <p className="font-thin mt-1">ID: {workflowId}</p>
-                                <h2 className="text-3xl font-semibold text-blue">{workflow.workflowName}</h2>
+                                <p className="text-3xl font-semibold text-blue">{questionnaire.title}</p>
+                                <span className={checkStatusBadge(questionnaire.status)}>{questionnaire.status}</span>
                             </div>
 
 
@@ -282,25 +284,25 @@ export default function ViewIndivQuestionnaire(props) {
                                 </div>
                                 <div className="card w-80">
                                     <div className="text-left">
-                                    <ul>
-                                        {Object.keys(questionnaire.questionsAndAnswers).map((questionId) => {
-                                        const question = questionnaire.questionsAndAnswers[questionId];
-                                        const hasAnswers = question.answers && question.answers.length > 0;
-                                        return (
-                                            <li key={questionId}>
-                                            <p>Question: {question.prompt}</p>
-                                            {question.options.length > 0 && (
-                                                <ul>
-                                                {question.options.map((option, index) => (
-                                                    <li key={index}>{option.label}</li>
-                                                ))}
-                                                </ul>
-                                            )}
-                                            <p>Answer: {question.answer}</p>
-                                            </li>
-                                        );
-                                        })}
-                                    </ul>
+                                        <ul>
+                                            {Object.keys(questionnaire.questionsAndAnswers).map((questionId) => {
+                                                const question = questionnaire.questionsAndAnswers[questionId];
+                                                const hasAnswers = question.answers && question.answers.length > 0;
+                                                return (
+                                                    <li key={questionId}>
+                                                        <p>Question: {question.prompt}</p>
+                                                        {question.options.length > 0 && (
+                                                            <ul>
+                                                                {question.options.map((option, index) => (
+                                                                    <li key={index}>{option.label}</li>
+                                                                ))}
+                                                            </ul>
+                                                        )}
+                                                        <p>Answer: {question.answer}</p>
+                                                    </li>
+                                                );
+                                            })}
+                                        </ul>
                                     </div>
                                     <div className="text-center mt-6">
                                         {questionnaire.status == "NOT_STARTED" || questionnaire.status == "RETURNED" && (
@@ -312,14 +314,14 @@ export default function ViewIndivQuestionnaire(props) {
                                                 <button className="btn w-full mb-2" disabled>
                                                     REJECT
                                                 </button>
-                                                
-                                            </div> 
+
+                                            </div>
                                         )}
 
                                         {(questionnaire.status == "SUBMITTED") && (
                                             <div>
                                                 <button className="btn btn-success w-full mb-2" onClick={() => {
-                                                handleAdminApproveClick(questionnaire.id)
+                                                    handleAdminApproveClick(questionnaire.id)
                                                 }}>
                                                     APPROVE
                                                 </button>
@@ -333,22 +335,22 @@ export default function ViewIndivQuestionnaire(props) {
                                                 <input type="text" name="feedback" onChange={(e) => {
                                                     setFeedback([e.target.value])
                                                 }}>
-                                                    
+
                                                 </input>
 
                                             </div>
-                                    
+
                                         )}
-                                       
+
                                         {(questionnaire.assignedTo == "ADMIN" && questionnaire.status == "NOT_STARTED") && (
-                                              <div>
-                                                
+                                            <div>
+
                                                 <button className="btn btn-info w-full mb-2" onClick={() => {
                                                     handleEditClick(questionnaire.id)
                                                 }}>
                                                     Start Questionnaire
                                                 </button>
-                        
+
                                             </div>
                                         )}
 
@@ -362,34 +364,34 @@ export default function ViewIndivQuestionnaire(props) {
                                     </div>
                                 </div>
                             </div>
-                        </div>   
+                        </div>
                     )}
 
                     {(user[1] == "APPROVER" && questionnaire.status == "ADMIN_APPROVED") && (
-                           <div>
-                               <button className="btn btn-success w-full mb-2" onClick={() => {
-                                   handleApproverApproveClick(questionnaire.id)
-                               }}>
-                                   APPROVE
-                               </button>
-                
-                               <button className="btn btn-warning w-full mb-2" onClick={() => {
-                                   handleApproverRejectClick(questionnaire.id)
-                               }}>
-                                   REJECT
-                               </button>                  
-                                                 {/* add label */}
-                                   <input type="text" name="feedback" onChange={(e) => {
-                                       setFeedback([e.target.value])
-                                   }}>
-                                   </input>
-                                   {console.log("feedback" + feedback)}
-                
-                           </div>
-                        )}
-              
+                        <div>
+                            <button className="btn btn-success w-full mb-2" onClick={() => {
+                                handleApproverApproveClick(questionnaire.id)
+                            }}>
+                                APPROVE
+                            </button>
+
+                            <button className="btn btn-warning w-full mb-2" onClick={() => {
+                                handleApproverRejectClick(questionnaire.id)
+                            }}>
+                                REJECT
+                            </button>
+                            {/* add label */}
+                            <input type="text" name="feedback" onChange={(e) => {
+                                setFeedback([e.target.value])
+                            }}>
+                            </input>
+                            {console.log("feedback" + feedback)}
+
+                        </div>
+                    )}
+
                 </div>
-            </div>      
+            </div>
         </>
     );
 

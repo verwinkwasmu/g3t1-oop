@@ -17,7 +17,6 @@ import WorkflowAssignedView from "./components/Admin/Workflows/WorkflowAssignedV
 import ApproverDash from "./components/Approver/ApproverDash";
 
 import CreateQuestionnaire from "./components/Admin/Questionnaires/CreateQuestionnaire";
-import ViewAllQuestionnaires from "./components/Admin/Questionnaires/ViewAllQuestionnaires";
 import EditQuestionnaire from "./components/Admin/Questionnaires/EditQuestionnaire";
 import ViewIndivQuestionnaire from "./components/Admin/Questionnaires/ViewIndivQuestionnaire";
 
@@ -70,10 +69,6 @@ function App() {
           <Route
             path="/questionnaires/create-questionnaire"
             element={<CreateQuestionnaire />}
-          />
-          <Route
-            path="/questionnaires/view-all-questionnaires"
-            element={<ViewAllQuestionnaires />}
           />
           <Route
             path="/questionnaires/edit-questionnaire/:id"

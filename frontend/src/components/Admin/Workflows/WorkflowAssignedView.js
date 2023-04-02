@@ -1,4 +1,5 @@
 import { IoGitPullRequestOutline } from 'react-icons/io5';
+import { MdKeyboardArrowLeft } from 'react-icons/md'
 
 import { React, useState, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
@@ -51,8 +52,8 @@ function WorkflowAssignedView() {
                 const temp = [];
                 for (const index in response.data.questionnaires) {
                     temp.push(
-                        [response.data.questionnaires[index].id, 
-                        response.data.questionnaires[index].title, 
+                        [response.data.questionnaires[index].id,
+                        response.data.questionnaires[index].title,
                         response.data.questionnaires[index].status,
                         response.data.questionnaires[index].submissionDeadline]
                     );
@@ -61,7 +62,7 @@ function WorkflowAssignedView() {
                 console.log(questionnaireTitles)
             })
         // eslint-disable-next-line
-    }, []) 
+    }, [])
 
     const approverReviewStatus = workflowsData.approverReviewStatus;
 
@@ -108,10 +109,24 @@ function WorkflowAssignedView() {
         return dateSplit[2] + "/" + dateSplit[1] + "/" + dateSplit[0] + ", " + splitFirst[1];
     }
 
+    const toWorkflowDash = () => {
+        navigate(`/workflows`);
+    }
+
     return (
         <>
             <div className="rounded-3xl mx-10 my-10 py-8 px-20 shadow-2xl">
                 <div className="bg-white h-full overflow-y-auto">
+                    <div id="back">
+                        <button className="text-blue flex hover:opacity-75"
+                            onClick={
+                                () => { toWorkflowDash() }
+                            }
+                        >
+                            <MdKeyboardArrowLeft className="font-bold"></MdKeyboardArrowLeft>
+                            <span className="text-xs font-semibold">BACK TO WORKFLOWS DASH</span>
+                        </button>
+                    </div>
                     <div className="flex flex-wrap mt-10 mb-6">
                         <div className="mr-3">
                             <IoGitPullRequestOutline size={70} color="3278AE" />
@@ -124,11 +139,15 @@ function WorkflowAssignedView() {
                             <span hidden={token[1] == "ADMIN" ? false : true}>
                                 {approverReviewStatus != "FLAGGED" ? <UpdateWorkflow workflow={workflowsData} render="assigned"></UpdateWorkflow> : null}
                                 <FlagApproval workflow={workflowsData}></FlagApproval>
-                                <SaveWorkflowAsPDF workflow={workflowsData}></SaveWorkflowAsPDF>
+                            </span>
+                            <span hidden={token[1] == "ADMIN" || token[1] == "VENDOR" ? false : true}>
+                                {approverReviewStatus == "APPROVER_APPROVED" ? <SaveWorkflowAsPDF workflow={workflowsData}></SaveWorkflowAsPDF> : null}
+                            </span>
+                            <span hidden={token[1] == "ADMIN" ? false : true}>
                                 {approverReviewStatus != "FLAGGED" ? <DeleteWorkflow workflow={workflowsData} render="assigned"></DeleteWorkflow> : null}
                             </span>
                             <span hidden={token[1] == "APPROVER" ? false : true}>
-                                <SubmitReview workflow={workflowsData}/>
+                                <SubmitReview workflow={workflowsData} />
                             </span>
                         </div>
                     </div>

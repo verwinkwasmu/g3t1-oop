@@ -298,8 +298,6 @@ const updateTextInput = (questionId, value) => {
 
   const handleAssignedTo = (event) => {
     setAssignedTo(event.target.value);
-    console.log("i like barbie~!!!!!")
-    console.log(assignedTo)
   };
 
   return (
@@ -337,210 +335,179 @@ const updateTextInput = (questionId, value) => {
                 <p className="text-3xl font-semibold text-blue">Create Questionnaire</p>
               </div>
               <div className="flex ">
-                  <div className="btn-group btn-group-vertical lg:btn-group-horizontal">
-                    <button onClick={() => addQuestion('text')} className="btn" >Add Question</button>
-                    <button onClick={handleSaveAsPDF} className="btn" >Save as PDF</button>
-                    <Button onClick={saveQuestionnaire} className="btn" >Submit</Button>
-                  </div>
+                    <button onClick={() => addQuestion('text')} className="btn btn-accent mr-2" >Add Question</button>
+                    <button onClick={handleSaveAsPDF} className="btn btn-accent mr-2" >Save as PDF</button>
+                    <Button onClick={saveQuestionnaire} className="btn btn-accent" >Submit</Button>
               </div>
 
-              <div className="form-control">
-                <label className="label cursor-pointer">
-                  <span className="label-text">Admin</span> 
-                  <input  
-                  type= "checkbox"
-                  id = "admin"
-                  name = "assignedTo"
-                  value = "ADMIN"
-                  checked = {assignedTo == "ADMIN"}
-                  onChange={handleAssignedTo}
-                  className = "checkbox"
-                />
-                </label>
-              </div>
-              
-              <div className="form-control">
-                <label className="label cursor-pointer">
-                  <span className="label-text">Vendor</span> 
-                  <input  
-                  type= "checkbox"
-                  id = "vendor"
-                  name = "assignedTo"
-                  value = "VENDOR"
-                  checked = {assignedTo == "VENDOR"}
-                  onChange={handleAssignedTo}
-                  className = "checkbox"
-                />
-                </label>
-              </div>
+             
              
               <div className='flex'>
                 <label htmlFor='questionnaire-title' className="label"  >Questionnaire TItle: </label>
-                <input type ="text" value={title} id='questionnaire-title' name='questionnaire-title' onChange={(event) => setTitle(event.target.value)} className="input-group" ></input>
+                <input type ="text" value={title} id='questionnaire-title' name='questionnaire-title' className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline" onChange={(event) => setTitle(event.target.value)} ></input>
+                    <div className="form-control pl-5">
+                      <label className="label cursor-pointer">
+                        <span className="label-text">Admin</span> 
+                        <input  
+                        type= "checkbox"
+                        id = "admin"
+                        name = "assignedTo"
+                        value = "ADMIN"
+                        checked = {assignedTo == "ADMIN"}
+                        onChange={handleAssignedTo}
+                        className = "checkbox"
+                      />
+                      </label>
+                    </div>
+                  
+                    <div className="form-control">
+                      <label className="label cursor-pointer">
+                        <span className="label-text">Vendor</span> 
+                        <input  
+                        type= "checkbox"
+                        id = "vendor"
+                        name = "assignedTo"
+                        value = "VENDOR"
+                        checked = {assignedTo == "VENDOR"}
+                        onChange={handleAssignedTo}
+                        className = "checkbox"
+                      />
+                      </label>
+                    </div>                  
+              </div>
+
+              <div className='flex' style={{ visibility: 'hidden' }}>
 
                 <label htmlFor='assigned-vendor' className="label" >Assigned Vendor: </label>
                 <input type ="text" id='assigned-vendor' name='assigned-vendor' defaultValue="DEFAULT" className="input-group"  ></input>
-              </div>
-
-              <div className='flex'>
-                  <label htmlFor='assigned-admin'className="label" >Assigned Admin: </label>
-                  <input type ="text"id='assigned-admin' name='assigned-admin' defaultValue="DEFAULT" ></input>
+                  
+                <label htmlFor='assigned-admin'className="label" >Assigned Admin: </label>
+                <input type ="text"id='assigned-admin' name='assigned-admin' defaultValue="DEFAULT" ></input>
 
 
-                  <label htmlFor='status' className="label" >Status </label>
-                  <input type ="text" defaultValue="NOT_STARTED" id='status' name='status' ></input>
+                <label htmlFor='status' className="label" >Status </label>
+                <input type ="text" defaultValue="NOT_STARTED" id='status' name='status' ></input>
+
               </div>
 
 
               {/* add warning for deletion upon dragging out  */}
 
-              <div className="grid h-500 card bg-base-300 rounded-box place-items-center" >
                 <DragDropContext onDragEnd={onDragEnd}>
-                  {console.log(questions)}
                   {Object.values(questions).map((question, index) => (
                           <Droppable key={question.id} droppableId={question.id}>
                             {(provided) => (
-                              <ul {...provided.droppableProps} ref={provided.innerRef}>
-                              {/* {Object.values(questions).map((question, index) => ( */}
-                                  <Draggable key={question.id} draggableId={question.id} index={index}>
-                                  {(provided) => (
-                                      <li
-                                      {...provided.draggableProps}
-                                      {...provided.dragHandleProps}
-                                      ref={provided.innerRef}
-                                      >
-                                        <button onClick={() => deleteQuestion(question.id)}>Delete Question</button>
-                                        {console.log(question)}
-                                        <div>
-                                            <label>
-                                            Question Prompt:
-                                                <input
-                                                    type="text"
-                                                    value={question.prompt}
-                                                    onChange={(e) => updatePrompt(question.id, e.target.value)}
-                                                />
+                              <div className="card border rounded-box mb-4 w-full" ref={provided.innerRef} {...provided.droppableProps}>
+                                <div className="card-body">
+                                   <Draggable key={question.id} draggableId={question.id} index={index}>
+                                    {(provided) => (
+                                      <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                          <div className='text-right'>
+                                            <button  className="btn btn-error" onClick={() => deleteQuestion(question.id)}>Delete Question</button>
+          
+                                          </div>
+
+                                          <div className="grid grid-cols-2 gap-4">
+                                              <label>
+                                              Question Prompt:
+                                                  <input
+                                                      type="text"
+                                                      value={question.prompt}
+                                                      className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline"
+                                                      onChange={(e) => updatePrompt(question.id, e.target.value)}
+                                                  />
+                                                  </label>
+                                                  <label>
+                                                  Type of Input:
+                                                  <select
+                                                      value={question.type}
+                                                      onChange={(e) => updateQuestionType(question.id, e.target.value)}
+                                                      className="shadow appearance-none border rounded-full w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                  >
+                                                      <option value="text">Text</option>
+                                                      <option value="radio">Radio</option>
+                                                      <option value="checkbox">Checkbox</option>
+                                                      {/* <option value="range">Linear Scale</option> */}
+                                                  </select>
                                                 </label>
-                                                <label>
-                                                Type of Input:
-                                                <select
-                                                    value={question.type}
-                                                    onChange={(e) => updateQuestionType(question.id, e.target.value)}
-                                                >
-                                                    <option value="text">Text</option>
-                                                    <option value="radio">Radio</option>
-                                                    <option value="checkbox">Checkbox</option>
-                                                    {/* <option value="range">Linear Scale</option> */}
-                                                </select>
+                                            </div>
+
+
+                                            {question.type === 'text' && (
+                                            <div style={{ display: 'none' }}>
+                                              <label>
+                                                  Text Input:
+                                                  <input
+                                                  type="text"
+                                                  name ='text-input'
+                                                  id='text-input'
+                                                  defaultValue='FOR VENDOR' 
+                                                  />
                                               </label>
-                                          </div>
-                                          {question.type === 'text' && (
-                                          <div>
-                                            <label>
-                                                Text Input:
-                                                <input
-                                                type="text"
-                                                name ='text-input'
-                                                id='text-input'
-                                                defaultValue='FOR VENDOR'
-                                                />
-                                            </label>
-                                          </div>
-                                          )}
-                                          {question.type === 'radio' && (
-                                              <div>                                        
-                                                <button onClick={() => addOption(question.id)}>Add Option</button>          
-                                                {question.options.map((option, index) => (
-                                                    <div key={option.id}>                                                      
-                                                      <label>
+                                            </div>
+                                            )}
+                                            {question.type === 'radio' && (
+                                                <div>   
+                                                  <div className="grid grid-cols-2 gap-4 mb-4 pt-5">
+                                                    <button className="btn btn-outline" onClick={() => addOption(question.id)} >Add Option</button>          
+                                                  </div>                                     
+                                                  {question.options.map((option, index) => (
+                                                    <div key={option.id} className="grid grid-cols-2 gap-4 mb-4">
+                                                      <div className="col-span-1">
+                                                        <label className="text-lg font-bold block w-full">
                                                           Option {index + 1}:
                                                           <input
                                                             type="text"
                                                             value={option.value}
-                                                            onChange={(e) =>
-                                                                updateOptionValue(question.id, option.id, e.target.value)
-                                                            }
+                                                            className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline"
+                                                            onChange={(e) => updateOptionValue(question.id, option.id, e.target.value)}
                                                           />
-                                                      </label>                              
-                                                      <button onClick={() => deleteOption(question.id, option.id)}>
-                                                            Delete Option
-                                                      </button>
+                                                        </label>
+                                                      </div>
+                                                      <div className="col-span-1 flex justify-end px-20 pt-7">
+                                                        <button className="btn btn-error" onClick={() => deleteOption(question.id, option.id)}>Delete Option</button>
+                                                      </div>
+                                                    </div>
+                                                  ))}
+                                                </div>
+                                            )}
+                                        
+                                            {question.type === 'checkbox' && (
+                                              <div>
+                                                  <button className="btn btn-outline p-4" onClick={() => addOption(question.id)}>Add Option</button>
+                                                  {question.options.map((option, index) => (
+                                                    <div key={option.id} className="grid grid-cols-2 gap-4">
+                                                        <label className="text-lg font-bold">
+                                                          Option {index + 1}:
+                                                          <input
+                                                              type="text"
+                                                              value={option.value}
+                                                              className="input input-bordered w-full rounded-full shadow focus:outline-none focus:shadow-outline"
+                                                              onChange={(e) =>
+                                                              updateOptionValue(question.id, option.id, e.target.value)
+                                                              }
+                                                          />
+                                                        </label>
+                                                        <div className='text-right'>
+                                                          <button  className="btn btn-error" onClick={() => deleteOption(question.id, option.id)}>
+                                                          Delete Option
+                                                          </button>
+                                                        </div>
+                                                        
                                                     </div>
                                                   ))}
                                               </div>
-                                          )}
-                                      
-                                          {question.type === 'checkbox' && (
-                                            <div>
-                                                <button onClick={() => addOption(question.id)}>Add Option</button>
-                                                {question.options.map((option, index) => (
-                                                  <div key={option.id}>
-                                                      <label>
-                                                        Option {index + 1}:
-                                                        <input
-                                                            type="text"
-                                                            value={option.value}
-                                                            onChange={(e) =>
-                                                            updateOptionValue(question.id, option.id, e.target.value)
-                                                            }
-                                                        />
-                                                      </label>
-                                                      <button onClick={() => deleteOption(question.id, option.id)}>
-                                                      Delete Option
-                                                      </button>
-                                                  </div>
-                                                ))}
-                                            </div>
-                                          )}
-
-                                          {/* {question.type === 'range' && (
-                                            <div>
-                                                <button onClick={() => addOption(question.id)}>Add Values</button>
-                                                {question.options.map((option, index) => (
-                                                  <div key={option.id}>
-                                                      <label>
-                                                        Minimum Value:
-                                                        <input
-                                                            type="text"
-                                                            value={option.minValue}
-                                                            onChange={(e) =>
-                                                            updateOptionValue(question.id, option.id,{
-                                                              ...option,
-                                                              minValue: e.target.value,
-                                                            })
-                                                            }
-                                                        />
-                                                      </label>
-                                        
-                                                      <label>
-                                                        Maximum Value:
-                                                        <input
-                                                            type="text"
-                                                            value={option.maxValue}
-                                                            onChange={(e) =>
-                                                            updateOptionValue(question.id, option.id, {
-                                                              ...option,
-                                                              maxValue: e.target.value,
-                                                            })
-                                                            }
-                                                        />
-                                                      </label>                                       
-                                                      <button onClick={() => deleteOption(question.id, option.id)}>
-                                                      Delete Option
-                                                      </button>
-                                                  </div>
-                                                ))}
-                                            </div>
-                                          )} */}
-                                      </li>
-                                  )}
-                                  </Draggable>
-                              {provided.placeholder}
-                              </ul>
+                                            )}
+                                      </div>
+                                    )}      
+                                   </Draggable>
+                                </div>
+                                {provided.placeholder}
+                              </div> 
                             )}
                           </Droppable>
                     ))}
               </DragDropContext>
-            </div>
           </div>
         </div>
       </div>
