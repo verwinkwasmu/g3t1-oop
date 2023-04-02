@@ -12,9 +12,10 @@ export default function SubmitReview(props) {
     if (workflow["questionnaires"] != null) {
       console.log("TRUE");
       setChecker(true);
+      setReviewStatus(true);
       workflow.questionnaires.map((questionnaire, index) => {
         console.log("yoyoyo", questionnaire.status);
-        if (questionnaire.status != "APPROVER_APPROVED" || questionnaire.status != "RETURNED") {
+        if (questionnaire.status != "APPROVER_APPROVED" && questionnaire.status != "RETURNED") {
           setChecker(false);
         }
         if (questionnaire.status == "RETURNED") {
