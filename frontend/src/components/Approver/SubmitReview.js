@@ -24,15 +24,18 @@ export default function SubmitReview(props) {
     }
   }, [workflow]);
 
+
   const handleUpdate = async () => {
     if (reviewStatus) {
       workflow["approverReviewStatus"] = "APPROVED";
+      workflow["approvedAt"] = new Date().toISOString().slice(0, new Date().toISOString().lastIndexOf(":"))
     } else {
       workflow["approverReviewStatus"] = "REJECTED";
     }
     const response = await updateIndividualAssignedWorkflow(workflow);
     if (response.status == 200) {
       console.log("APPROVER REVIEW STATUS SET TO:", workflow["approverReviewStatus"]);
+      window.location.replace("http://localhost:3000/")
     }
   };
 
