@@ -278,8 +278,6 @@ const updateTextInput = (questionId, value) => {
   });
 };
 
-
-
   const deleteOption = (questionId, optionId) => {
     setQuestions(prevQuestionsState => {
       const question = prevQuestionsState[questionId];
@@ -528,28 +526,6 @@ const updateTextInput = (questionId, value) => {
     
     </>
   );
-
-  //       <div className="form-control">
-  //         <label htmlFor='questionnaire-title' className="label"  >Questionnaire TItle: </label>
-  //         <input type ="text" value={title} id='questionnaire-title' name='questionnaire-title' onChange={(event) => setTitle(event.target.value)} className="input-group" ></input>
-
-  //         <label htmlFor='assigned-vendor' className="label" >Assigned Vendor: </label>
-  //         <input type ="text" id='assigned-vendor' name='assigned-vendor' defaultValue="DEFAULT" className="input-group"  ></input>
-        
-  //         <div>
-  //          
-  //         </div>
-          
-  //       </div>
-  //     </div>
-
-  //     <div className="divider"></div> 
-
-
-
-  
-  //   </div>
-  // );
 
 };
 export default CreateQuestionnaire;

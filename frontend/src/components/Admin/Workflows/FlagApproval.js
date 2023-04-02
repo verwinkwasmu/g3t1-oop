@@ -6,6 +6,7 @@ import { updateIndividualAssignedWorkflow } from "../../../apiCalls";
 export default function FlagApproval(props) {
   const [checker, setChecker] = useState(false);
   const workflow = props.workflow;
+  const approverReviewStatus = workflow.approverReviewStatus;
 
   useEffect(() => {
     if (workflow["questionnaires"] != null) {
@@ -29,15 +30,22 @@ export default function FlagApproval(props) {
 
   return (
     <>
-      <label htmlFor="updateWorkflow" className="btn bg-red border-transparent rounded-full mr-2">
-        <AiOutlineFlag size={20} className="mr-3"></AiOutlineFlag>
-        Flag Approval
-      </label>
+      {approverReviewStatus != "FLAGGED" ?
+        <label htmlFor="flagApproval" className="btn bg-red border-transparent rounded-full mr-2">
+          <AiOutlineFlag size={20} className="mr-3"></AiOutlineFlag>
+          Flag Approval
+        </label>
+        :
+        <label htmlFor="flagApproval" className="btn bg-red border-transparent rounded-full mr-2" disabled={true}>
+          <AiOutlineFlag size={20} className="mr-3"></AiOutlineFlag>
+          PENDING APPROVAL
+        </label>
+      }
 
-      <input type="checkbox" id="updateWorkflow" className="modal-toggle" />
+      <input type="checkbox" id="flagApproval" className="modal-toggle" />
       <div className="modal">
         <div className="modal-box max-w-2xl relative py-12 px-20">
-          <label htmlFor="updateWorkflow" className="btn btn-sm btn-circle bg-red border-transparent absolute right-20 top-12">
+          <label htmlFor="flagApproval" className="btn btn-sm btn-circle bg-red border-transparent absolute right-20 top-12">
             ✕
           </label>
           <h1 className="text-3xl mb-3 font-semibold text-blue">
@@ -59,13 +67,7 @@ export default function FlagApproval(props) {
             )}
 
             <div className="flex justify-center">
-              <label
-                htmlFor="updateWorkflow"
-                onClick={handleUpdate}
-                className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4"
-                disabled={!checker}
-                type="button"
-              >
+              <label htmlFor="flagApproval" onClick={handleUpdate} className="btn btn-md btn-wide bg-cyan border-transparent outline-none rounded-full mt-4" disabled={!checker} type="button">
                 Confirm
               </label>
             </div>
