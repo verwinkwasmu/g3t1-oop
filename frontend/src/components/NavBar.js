@@ -30,8 +30,13 @@ export default function Navbar({ fixed }) {
   
   }
 
-  const getClassName = () => {
-    return "px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-blue hover:opacity-75"
+  const getClassName = (location) => {
+    let css = "px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-blue hover:opacity-75"
+    if (window.location.pathname == location){
+      css = css.concat(" underline text-[#0179b3]")
+    }
+
+    return css
   }
 
   return (
@@ -55,7 +60,7 @@ export default function Navbar({ fixed }) {
         <ul className="menu menu-horizontal px-1">
           <li className="nav-item">
               <Link
-                  className={()=>getClassName()}
+                  className={getClassName("/")}
                   to="/"
               >
                   <MdChecklist /><span>Tasks</span>
@@ -63,7 +68,7 @@ export default function Navbar({ fixed }) {
           </li>
           <li className="nav-item">
               <Link
-                  className={()=>getClassName()}
+                  className={getClassName("/workflows")}
                   to="/workflows"
               >
                   <IoGitPullRequestOutline /><span>Workflows</span>
@@ -71,7 +76,7 @@ export default function Navbar({ fixed }) {
           </li>
           <li className="nav-item">
               <Link
-                  className={()=>getClassName()}
+                  className={getClassName("/questionnaires")}
                   to="/questionnaires"
               >
                   <MdDescription /><span>Questionnaires</span>
@@ -79,7 +84,7 @@ export default function Navbar({ fixed }) {
           </li>
           <li className="nav-item">
               <Link
-                  className={()=>getClassName()}
+                  className={getClassName("/accounts")}
                   to="/accounts"
               >
                   <MdGroup /><span>Accounts</span>
@@ -91,7 +96,7 @@ export default function Navbar({ fixed }) {
         <ul className="menu menu-horizontal px-1">
           <li className="nav-item">
               <Link
-                  className={()=>getClassName()}
+                  className={getClassName("/")}
                   to="/"
               >
                   <MdHomeFilled /><span>Home</span>
@@ -99,7 +104,7 @@ export default function Navbar({ fixed }) {
           </li>
           <li className="nav-item">
               <Link
-                  className={()=>getClassName()}
+                  className={getClassName("/workflows")}
                   to="/workflows"
               >
                   <IoGitPullRequestOutline /><span>Workflows</span>
@@ -107,7 +112,7 @@ export default function Navbar({ fixed }) {
           </li>
           <li className="nav-item">
               <Link
-                  className={()=>getClassName()}
+                  className={getClassName("/questionnaires")}
                   to="/questionnaires"
               >
                   <MdDescription /><span>Questionnaires</span>
@@ -119,7 +124,7 @@ export default function Navbar({ fixed }) {
         <ul className="menu menu-horizontal px-1">
           <li className="nav-item">
               <Link
-                  className={()=>getClassName()}
+                  className={getClassName()}
                   to="/"
               >
                   <MdChecklist /><span>Tasks</span>
