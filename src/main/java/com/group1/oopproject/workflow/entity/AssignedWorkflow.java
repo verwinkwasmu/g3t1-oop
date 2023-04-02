@@ -23,7 +23,7 @@ public class AssignedWorkflow extends Workflow {
 
     private String assignedVendorId; 
     private String assignedAdminId;
-    private Date approvalRequestDate;
+    private LocalDateTime approvalRequestDate;
     private ApproverReviewStatus approverReviewStatus;
     private LocalDateTime approvedAt; 
 }
