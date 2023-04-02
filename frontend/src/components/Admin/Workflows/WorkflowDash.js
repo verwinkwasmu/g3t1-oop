@@ -141,7 +141,7 @@ function WorkflowDash() {
                                     {render == "Templates" ? 
                                         <p className="text-base text-md">{workflow.workflowDescription}</p> 
                                         : 
-                                        <p className="text-base text-md">Assigned Vendor ID: {workflow.assignedVendorId}<br />Assigned Admin ID: {workflow.assignedAdminId}<br/> Workflow Status:</p>
+                                        <p className="text-base text-md">Assigned Vendor ID: {workflow.assignedVendorId}<br />Assigned Admin ID: {workflow.assignedAdminId}</p>
                                     }
                                     <div className="card-actions justify-end">
                                         <button className="btn bg-blue hover:bg-cyan border-transparent hover:border-transparent" onClick={() => { toWorkflowView(workflow) }}>See Workflow</button>
