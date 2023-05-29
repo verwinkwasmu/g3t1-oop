@@ -7,7 +7,7 @@ exports = function(changeEvent) {
     const SibApiV3Sdk = require('sib-api-v3-sdk');
     let defaultClient = SibApiV3Sdk.ApiClient.instance;
     let apiKey = defaultClient.authentications['api-key'];
-    apiKey.apiKey = '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';
+    apiKey.apiKey = '';
     let apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
     let sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 
